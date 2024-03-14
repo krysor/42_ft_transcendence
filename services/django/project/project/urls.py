@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 from .views import index
-from pong import urls
+from .views import main_js
+# from pong import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
-    path('game/', include("pong.urls")),
+    path('game/', main_js),
 ]
