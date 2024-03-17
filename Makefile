@@ -13,6 +13,5 @@ clean:
 	docker rmi -f $$(docker images -aq);\
 	docker network rm $$(docker network ls -q);\
 	docker system prune -a --volumes;\
-	docker volume rm $$(docker volume ls -q);\
 
 .phony: all re down clean
