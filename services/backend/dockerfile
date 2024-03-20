@@ -3,10 +3,16 @@ FROM python:3
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+RUN apt-get update && apt-get install -y postgresql-client
+
 WORKDIR /code/project/
 
 EXPOSE 8000
 
-RUN pip install Django==5.0 psycopg==3.1.8 djangorestframework django-cors-headers
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY wait.sh /tmp
+ENTRYPOINT [ "sh", "/tmp/wait.sh" ]
 
 CMD python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000 

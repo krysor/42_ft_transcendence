@@ -28,5 +28,6 @@ services:
       - ./services/frontend:/usr/src/app
     ports:
       - "3000:3000"
+    restart: always
     depends_on:
       - backend

@@ -14,6 +14,7 @@ class App extends Component {
     render() {
         return (
             <Router>
+                <h1>ft_transcendence</h1>
                 <div className="App">
                     <ul className="App-header">
                         <li>

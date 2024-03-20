@@ -1,8 +1,8 @@
 all:
-	docker compose -f docker-compose.yml up -d --build
+	docker compose -f docker-compose.yml up --build
 
 re: clean
-	docker compose -f docker-compose.yml up -d --build
+	docker compose -f docker-compose.yml up --build
 
 down:
 	docker compose -f docker-compose.yml down

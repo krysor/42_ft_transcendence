@@ -11,10 +11,11 @@ function Test() {
             })
             .then(data => console.log(data))
             .catch(error => console.error('Error:', error));
-    }, []);
-
+        }, []);
+        
+    console.log("TEST")
     return (
-        <h1>Home</h1>
+        <h1>Test successfully loaded</h1>
     );
 }
 
