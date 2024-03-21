@@ -1,12 +1,15 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
-class ReactAppView(APIView):
-    def get(self, request, *args, **kwargs):
-        return Response({"answer": 42}, status=status.HTTP_200_OK)
+@csrf_exempt
+def react_app_view(request, *args, **kwargs):
+    data = JsonResponse({"answer": 42})
+    data['Access-Control-Allow-Origin'] = '*'
+    data['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE'
+    data['Access-Control-Allow-Headers'] = 'Content-Type'
+    return data
 
 def index(request):
     nav_content = """
