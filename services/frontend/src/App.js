@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Home from "./components/home";
 import About from "./components/about";
-import Game from "./components/game";
+import Game from "./components/game/game";
 import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -40,7 +40,6 @@ class App extends Component {
                             element={<About />}
                         ></Route>
                     </Routes>
-                    <p>tes</p>
             </Router>
         );
     }
