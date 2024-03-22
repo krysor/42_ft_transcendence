@@ -8,6 +8,7 @@ import {
 import Home from "./components/home";
 import About from "./components/about";
 import Game from "./components/game";
+import NotFound from "./components/notfound";
 import "./App.css";
 
 class App extends Component {
@@ -43,6 +44,10 @@ class App extends Component {
                         <Route
                             path="/about"
                             element={<About />}
+                        ></Route>
+						                        <Route
+                            path="/*"
+                            element={<NotFound />}
                         ></Route>
                     </Routes>
                 </div>
