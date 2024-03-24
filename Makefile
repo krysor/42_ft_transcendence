@@ -1,11 +1,11 @@
 all:
-	docker compose -f docker-compose.yml up --build
+	docker-compose -f docker-compose.yml up --build
 
 re: clean
-	docker compose -f docker-compose.yml up --build
+	docker-compose -f docker-compose.yml up --build
 
 down:
-	docker compose -f docker-compose.yml down
+	docker-compose -f docker-compose.yml down
 
 clean:
 	docker container stop `docker container ls -aq`;\
