@@ -1,0 +1,2 @@
+services/postgreSQL/*
+!services/postgreSQL/
