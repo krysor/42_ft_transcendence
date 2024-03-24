@@ -1,27 +1,19 @@
+version: "3"
 services:
-
   db:
     image: postgres
     volumes:
       - ./services/postgreSQL:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=postgres
-
+    env_file: .env
   backend:
     build: ./services/backend
     volumes:
       - ./services/backend:/code
     ports:
       - "8000:8000"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=postgres
+    env_file: .env
     depends_on:
       - db
-
   frontend:
     build: ./services/frontend
     volumes:
