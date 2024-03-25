@@ -1,4 +1,6 @@
 
+let listPseudo = []
+
 function loadGame()
 {
 	const mainBalise = document.querySelector("main")
@@ -42,10 +44,11 @@ function loadPseudoSelecetion(nbOfPlayers) {
 	btn.addEventListener("click", () => {
 	for ( let i = 0 ; i < nbOfPlayers ; i++ )
 	{
-		let pseudo = document.getElementById("pseudo" + i)
+		let pseudo = document.getElementById("pseudo" + i);
 
+		console.log("Here");
 		if (pseudo.value === "")
-			pseudo.value = anon
+			pseudo.value = "anon";
 		listPseudo[i] = pseudo.value
 		console.log(listPseudo[i])
 	}
@@ -79,7 +82,7 @@ function loadNbPlayers() {
 	});
 }
 
-function loadDefault() {
+function ConfigGame() {
 	let mainBalise = document.querySelector("main")
 
 	let board =`
@@ -93,3 +96,5 @@ function loadDefault() {
 		loadNbPlayers()
 	});
 }
+
+export default ConfigGame;

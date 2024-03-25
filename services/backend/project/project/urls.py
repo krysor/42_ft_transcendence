@@ -17,12 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
-from .views import index, main_js, ReactAppView
+from .views import index, main_js, react_app_view
 # from pong import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index),
-    path('test/', ReactAppView.as_view(), name="test"),
-    path('game/', main_js),
+    # path('', index),
+    # path('game/', main_js),
+    path('test/', react_app_view, name="test"),
 ]
