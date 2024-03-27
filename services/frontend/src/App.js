@@ -8,6 +8,7 @@ import {
 import Home from "./components/home";
 import About from "./components/about";
 import Game from "./components/game/game";
+import NotFound from "./components/notfound";
 import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -38,6 +39,10 @@ class App extends Component {
                         <Route
                             path="/about"
                             element={<About />}
+                        ></Route>
+						                        <Route
+                            path="/*"
+                            element={<NotFound />}
                         ></Route>
                     </Routes>
             </Router>
