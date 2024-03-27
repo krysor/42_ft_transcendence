@@ -13,7 +13,6 @@ function Test() {
             .catch(error => console.error('Error:', error));
         }, []);
         
-    console.log("TEST")
     return (
         <h1>Test successfully loaded</h1>
     );

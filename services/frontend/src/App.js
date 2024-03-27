@@ -7,32 +7,27 @@ import {
 } from "react-router-dom";
 import Home from "./components/home";
 import About from "./components/about";
-import Game from "./components/game";
+import Game from "./components/game/game";
 import NotFound from "./components/notfound";
 import "./App.css";
+import { Navbar, Container, Nav } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
     render() {
         return (
             <Router>
                 <h1>ft_transcendence</h1>
-                <div className="App">
-                    <ul className="App-header">
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/Game">
-                                Game
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/about">
-                                About Us
-                            </Link>
-                        </li>
-                    </ul>
-                    <Routes>
+                <Navbar bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
+          <Nav className="me-auto">
+            <Nav.Link as={Link} to="/Game">Game</Nav.Link>
+            <Nav.Link as={Link} to="/about">About</Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+                <Routes>
                         <Route
                             path="/"
                             element={<Home />}
@@ -50,7 +45,6 @@ class App extends Component {
                             element={<NotFound />}
                         ></Route>
                     </Routes>
-                </div>
             </Router>
         );
     }

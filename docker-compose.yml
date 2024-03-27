@@ -1,33 +1,73 @@
+version: '3.8'
+
 services:
 
   db:
-    image: postgres
+    image: postgres:latest
+    container_name: db
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    networks:
+      - default-n
+    env_file: ./.env
     volumes:
-      - ./services/postgreSQL:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=postgres
+      - db-vo:/var/lib/postgresql/data
+    restart: unless-stopped
 
   backend:
     build: ./services/backend
-    volumes:
-      - ./services/backend:/code
     ports:
       - "8000:8000"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=postgres
+    expose:
+      - 8000
+    networks:
+      - default-n
+    env_file: ./.env
+    volumes:
+      - backend-v:/code
     depends_on:
       - db
 
   frontend:
     build: ./services/frontend
+    env_file: ./.env
     volumes:
-      - ./services/frontend:/usr/src/app
+      - frontend-v:/usr/src/app
     ports:
       - "3000:3000"
+    expose:
+      - 3000
+    networks:
+      - default-n
     restart: always
     depends_on:
       - backend
+
+volumes:
+
+  frontend-v:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/services/frontend"
+
+  backend-v:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/services/backend"
+
+  db-vo:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/services/postgreSQL"
+
+networks:
+  default-n:
+    driver: bridge
