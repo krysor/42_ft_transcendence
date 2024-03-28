@@ -11,3 +11,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* #site-menu ul {
+	flex-wrap: nowrap;
+	overflow-x: auto;
+} */
+
+* {
+	box-sizing: border-box;
+}
+
+#site-menu {
+	/* white-space: nowrap; */
+}
+
+#site-menu ul {
+	display: flex;
+	/* white-space: nowrap; */
+}
+
+#site-menu ul li {
+	list-style-type: none;
+	/* display: flex; */
+}
+
+/* #site-menu {
+	white-space: nowrap;
+} */

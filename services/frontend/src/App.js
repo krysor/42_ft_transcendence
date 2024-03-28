@@ -17,7 +17,7 @@ class App extends Component {
     render() {
         return (
             <Router>
-                <h1>ft_transcendence</h1>
+                {/* <h1>ft_transcendence</h1>
                 <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
@@ -26,7 +26,7 @@ class App extends Component {
             <Nav.Link as={Link} to="/about">About</Nav.Link>
           </Nav>
         </Container>
-      </Navbar>
+      </Navbar> */}
                 <Routes>
                         <Route
                             path="/"
@@ -40,7 +40,7 @@ class App extends Component {
                             path="/about"
                             element={<About />}
                         ></Route>
-						                        <Route
+						<Route
                             path="/*"
                             element={<NotFound />}
                         ></Route>
