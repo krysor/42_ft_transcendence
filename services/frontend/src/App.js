@@ -9,6 +9,7 @@ import Home from "./components/home";
 import About from "./components/about";
 import Game from "./components/game/game";
 import Login from "./components/auth"
+import NotFound from "./components/notfound";
 import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,9 +19,8 @@ class App extends Component {
     render() {
         return (
             <Router>
-                <div className="jumbotron text-center" style={{marginBottom: 0}}>
-                <h1>FT_TRANSCENDENCE</h1>
-                </div>
+                {/* <h1>ft_transcendence</h1>
+
                 <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
@@ -30,7 +30,7 @@ class App extends Component {
             <Nav.Link as={Link} to="/login">Login</Nav.Link>
           </Nav>
         </Container>
-      </Navbar>
+      </Navbar> */}
                 <Routes>
                         <Route
                             path="/"
@@ -44,9 +44,14 @@ class App extends Component {
                             path="/about"
                             element={<About />}
                         ></Route>
+
                         <Route
                             path="/login"
                             element={<Login />}
+                         ></Route>
+						             <Route
+                            path="/*"
+                            element={<NotFound />}
                         ></Route>
                     </Routes>
             </Router>
