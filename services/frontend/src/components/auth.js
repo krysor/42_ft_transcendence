@@ -24,20 +24,6 @@ class Login extends React.Component {
       super();
       this.handleSubmit = this.handleSubmit.bind(this);
     }
-  
-    // handleSubmit(event) {
-    //   event.preventDefault();
-    //   const data = new FormData(event.target);
-      
-    //   const jsonData = {
-    //     username: formData.get('username').toUpperCase(),
-    //     password: formData.get('password')
-    //   };
-    //   fetch('http://localhost:8000/api-token-auth/', {
-    //     method: 'POST',
-    //     body: data,
-    //   });
-    // }
 
     handleSubmit(event) {
       event.preventDefault();
