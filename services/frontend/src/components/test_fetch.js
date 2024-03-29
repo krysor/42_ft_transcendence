@@ -12,10 +12,6 @@ function Test() {
             .then(data => console.log(data))
             .catch(error => console.error('Error:', error));
         }, []);
-        
-    return (
-        <h1>Test successfully loaded</h1>
-    );
 }
 
 export default Test;
