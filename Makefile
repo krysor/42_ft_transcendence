@@ -8,21 +8,21 @@ down:
 	docker-compose -f docker-compose.yml down
 
 # linux
-clean: down
-	-docker container stop `docker container ls -aq`;\
-	-docker container rm `docker container ls -aq`;\
-	-docker rmi -f `docker images -aq`;\
-	-docker network rm `docker network ls -q`;\
-	-docker system prune -a --volumes;\
-	sudo rm -rf ./services/postgreSQL
+# clean: down
+# 	-docker container stop `docker container ls -aq`;\
+# 	-docker container rm `docker container ls -aq`;\
+# 	-docker rmi -f `docker images -aq`;\
+# 	-docker network rm `docker network ls -q`;\
+# 	-docker system prune -a --volumes;\
+# 	sudo rm -rf ./services/postgreSQL
 
 # Mac at school
-# clean: down
-# 	docker container stop `docker container ls -aq`;\
-# 	docker container rm `docker container ls -aq`;\
-# 	docker rmi -f `docker images -aq`;\
-# 	docker network rm `docker network ls -q`;\
-# 	docker system prune -a --volumes;\
-# 	rm -rf ./services/postgreSQL
+clean: down
+	docker container stop `docker container ls -aq`;\
+	docker container rm `docker container ls -aq`;\
+	docker rmi -f `docker images -aq`;\
+	docker network rm `docker network ls -q`;\
+	docker system prune -a --volumes;\
+	rm -rf ./services/postgreSQL
 
 .phony: all re down clean

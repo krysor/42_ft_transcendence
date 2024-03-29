@@ -19,7 +19,7 @@ class App extends Component {
     render() {
         return (
             <Router>
-                {/* <h1>ft_transcendence</h1>
+                <h1>ft_transcendence</h1>
 
                 <Navbar bg="dark" variant="dark">
         <Container>
@@ -30,7 +30,7 @@ class App extends Component {
             <Nav.Link as={Link} to="/login">Login</Nav.Link>
           </Nav>
         </Container>
-      </Navbar> */}
+      </Navbar>
                 <Routes>
                         <Route
                             path="/"
