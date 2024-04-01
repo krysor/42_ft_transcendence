@@ -46,14 +46,16 @@ def main_js(request):
     """
     return render(request, 'index.html', {'js_content': js_content, 'nav_content': nav_content})
 
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def login(request, format=None):
-    content = {
-        'user': str(request.user),  # `django.contrib.auth.User` instance.
-        'auth': str(request.auth),  # None
-    }
-    # token = Token.objects.create(user=request.user)
-    # print(token.key)
-    return Response(content)
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authentication(request, username=username, password=password)
+        if user is not none:
+            login(request, user)
+            token = Token.objects.create(user=user)
+            return JsonResponse({'token': token.key})
+        else:
+            return JsonResponse({'error': 'Invalide login credentials'})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})

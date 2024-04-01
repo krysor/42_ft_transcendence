@@ -33,15 +33,17 @@ class Login extends React.Component {
         username: formData.get('username'),
         password: formData.get('password')
       };
-    
-      fetch('http://localhost:8000/api-token-auth/', {
+      // fetch('http://localhost:8000/api-token-auth/'
+      fetch('http://localhost:8000/login/', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(jsonData)
       })
       .then(response => {
         if (!response.ok) {throw new Error('Network response was not ok');}
-        return response.json();
+
+        localStorage.setItem('authtoken', response.data.token);
+        this.props.history.push('/');
       })
       .then(data => {console.log(data);})
       .catch(error => {console.error('There was a problem with the fetch operation:', error);});
