@@ -28,6 +28,11 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # allow the frontend to send request
+CSRF_COOKIE_NAME = 'csrftoken'
+CRSF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+]
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
 ]
@@ -42,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'api',
@@ -132,7 +136,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join('', '/app/build'),
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

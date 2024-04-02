@@ -22,12 +22,13 @@ from .views import index, main_js, react_app_view, login
 import api.urls
 from rest_framework.authtoken import views
 from authentication.views import login_page
-
+from django.conf.urls.static import static
+from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', react_app_view, name="test"),
     path('login/', login),
-    # path('login/', login_page),
+    path('login_page/', login_page),
     path('api-token-auth/', views.obtain_auth_token),
     # path('42_auth/', include(api.urls)),
 ]

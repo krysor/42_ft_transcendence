@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 from rest_framework import generics
 from api.models import Person
@@ -45,13 +46,16 @@ def main_js(request):
     </nav>
     """
     return render(request, 'index.html', {'js_content': js_content, 'nav_content': nav_content})
-
+    
+@csrf_exempt
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authentication(request, username=username, password=password)
-        if user is not none:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print(username)
+        print(password)
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
             login(request, user)
             token = Token.objects.create(user=user)
             return JsonResponse({'token': token.key})

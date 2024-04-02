@@ -17,7 +17,21 @@ import ReactDOM from 'react-dom/client';
 // }
 
 
+function getCookie(name) {
+  const cookieString = document.cookie;
+  const cookies = cookieString.split(";");
 
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    const [cookieName, cookieValue] = cookie.split("=");
+
+    if (cookieName === name) {
+      return cookieValue;
+    }
+  }
+
+  return null;
+}
 
 class Login extends React.Component {
     constructor() {
@@ -27,16 +41,17 @@ class Login extends React.Component {
 
     handleSubmit(event) {
       event.preventDefault();
-    
+      const csrftoken = getCookie('csrftoken');
       const formData = new FormData(event.target);
       const jsonData = {
         username: formData.get('username'),
         password: formData.get('password')
       };
       // fetch('http://localhost:8000/api-token-auth/'
-      fetch('http://localhost:8000/login/', {
+      fetch('http://localhost:8000/login_page/', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json',
+                  'X-CSRFToken': csrftoken},
         body: JSON.stringify(jsonData)
       })
       .then(response => {

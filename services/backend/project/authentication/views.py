@@ -1,11 +1,12 @@
 from django.shortcuts import render
-
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 from django.http import JsonResponse
 from django.contrib.auth import authenticate
 
 from . import forms
 
+@csrf_exempt
 def login_page(request):
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)
