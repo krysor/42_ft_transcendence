@@ -17,18 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
-from .views import index, main_js, react_app_view, login
 # from pong import urls
 import api.urls
 from rest_framework.authtoken import views
-from authentication.views import login_page
-from django.conf.urls.static import static
+from authentication.views import log_user
+# from django.conf.urls.static import static
 from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/', react_app_view, name="test"),
-    path('login/', login),
-    path('login_page/', login_page),
+    path('login/', log_user),
     path('api-token-auth/', views.obtain_auth_token),
     # path('42_auth/', include(api.urls)),
 ]

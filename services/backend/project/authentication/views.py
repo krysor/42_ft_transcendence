@@ -1,28 +1,37 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-# Create your views here.
+from django.contrib.auth import authenticate, login
+
+from rest_framework.authtoken.models import Token
+
 from django.http import JsonResponse
 from django.contrib.auth import authenticate
-
+import json
 from . import forms
+from .models import User
 
 @csrf_exempt
-def login_page(request):
+def log_user(request):
     if request.method == 'POST':
-        form = forms.LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                # Authentification réussie
-                return JsonResponse({'success': True})
-            else:
-                # Authentification échouée
-                return JsonResponse({'success': False, 'error': 'Invalid username or password'}, status=400)
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        print(username)
+        print(password)
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            token = Token.objects.get(user=user)
+            user_d = {
+                'pseudo': user.pseudo,
+                'loss': user.loss,
+            }
+            print(token.key)
+            return JsonResponse({
+                'token': token.key,
+                'data': user_d,
+            })
         else:
-            # Formule invalide
-            return JsonResponse({'success': False, 'error': 'Invalid form data'}, status=400)
+            return JsonResponse({'error': 'Invalide login credentials'})
     else:
-        # Requête non valide
-        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
+        return JsonResponse({'error': 'Invalid request method'})

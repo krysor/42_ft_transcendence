@@ -47,20 +47,27 @@ class Login extends React.Component {
         username: formData.get('username'),
         password: formData.get('password')
       };
-      // fetch('http://localhost:8000/api-token-auth/'
-      fetch('http://localhost:8000/login_page/', {
+
+      fetch('http://localhost:8000/login/', {
         method: 'POST',
         headers: {'Content-Type': 'application/json',
                   'X-CSRFToken': csrftoken},
-        body: JSON.stringify(jsonData)
+                  body: JSON.stringify(jsonData)
       })
       .then(response => {
-        if (!response.ok) {throw new Error('Network response was not ok');}
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
 
-        localStorage.setItem('authtoken', response.data.token);
-        this.props.history.push('/');
+        return response.json();
       })
-      .then(data => {console.log(data);})
+      .then(data => {
+        console.log(data);
+        if (data.token) {
+          localStorage.setItem('authtoken', data.token);
+          console.log("token succesfully stored")
+        }
+      })
       .catch(error => {console.error('There was a problem with the fetch operation:', error);});
     }
   
