@@ -35,3 +35,14 @@ def log_user(request):
             return JsonResponse({'error': 'Invalide login credentials'})
     else:
         return JsonResponse({'error': 'Invalid request method'})
+
+def is_auth(request):
+    if request.method == 'GET':
+        data = json.loads(request.body)
+        print(data)
+
+def user_detail(request):
+    if request.method == 'GET':
+        user = request.user
+        print(user)
+        return JsonResponse({'result': 'Bravo :)'});

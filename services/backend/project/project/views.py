@@ -23,4 +23,3 @@ def react_app_view(request, *args, **kwargs):
     data['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE'
     data['Access-Control-Allow-Headers'] = 'Content-Type'
     return data
-

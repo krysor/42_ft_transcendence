@@ -61,43 +61,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // }
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isAuthenticated: false, // Initially set to false
-            isLoading: true
-        };
-    }
-
-    componentDidMount() {
-        // Check authentication status when component mounts
-        this.checkAuthentication();
-    }
-
-    checkAuthentication() {
-        // Send request to Django backend to verify authentication status
-        // Example: Fetch '/api/check-auth' endpoint
-        fetch('/api/check-auth', {
-            method: 'GET',
-            credentials: 'include' // Include credentials for authentication
-        })
-        .then(response => {
-            if (response.ok) {
-                // User is authenticated
-                this.setState({ isAuthenticated: true });
-            }
-        })
-        .catch(error => console.error('Error checking authentication:', error))
-        .finally(() => this.setState({ isLoading: false }));
-    }
 
     render() {
-        const { isAuthenticated, isLoading } = this.state;
-
-        if (isLoading) {
-            return <div>Loading...</div>;
-        }
-
+        
+        const isToken = localStorage.getItem('authtoken')
         return (
             <Router>
                 <h1>ft_transcendence</h1>
@@ -108,7 +75,7 @@ class App extends Component {
                             <Nav.Link as={Link} to="/Game">Game</Nav.Link>
                             <Nav.Link as={Link} to="/about">About</Nav.Link>
                             {/* Conditionally render Login or Profile link */}
-                            {isAuthenticated ? (
+                            {isToken ? (
                                 <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
                             ) : (
                                 <Nav.Link as={Link} to="/login">Login</Nav.Link>

@@ -20,13 +20,16 @@ from django.views.generic import TemplateView
 # from pong import urls
 import api.urls
 from rest_framework.authtoken import views
-from authentication.views import log_user
+from authentication.views import log_user, is_auth, user_detail
+# from .views import user_detail
 # from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', log_user),
+    path('is_auth/', is_auth),
+    path('user/<str:token>/', user_detail),
     path('api-token-auth/', views.obtain_auth_token),
     # path('42_auth/', include(api.urls)),
 ]
