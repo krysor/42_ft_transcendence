@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.contrib.auth import authenticate
 import json
 from . import forms
-from .models import User
+from authentication.models import User
 
 @csrf_exempt
 def log_user(request):
@@ -46,3 +46,22 @@ def user_detail(request):
         user = request.user
         print(user)
         return JsonResponse({'result': 'Bravo :)'});
+
+@csrf_exempt
+def signup(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('password')
+
+        # Vérifiez que l'utilisateur n'existe pas déjà
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'error': 'Username already exists'}, status=400)
+
+        # Créez un nouvel utilisateur
+        user = User.objects.create_user(username=username, email=email, password=password)
+        user.save()
+        return JsonResponse({'message': 'User registered successfully'})
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)

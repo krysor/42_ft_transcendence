@@ -1,37 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-
-// function Login() {
-// 	// useEffect(() => {
-//     //     fetch('http://localhost:8000/login/')
-//     //         .then(response => {
-//     //             if (!response.ok) {
-//     //                 throw new Error('Network response was not ok');
-//     //             }
-//     //             return response.json();
-//     //         })
-//     //         .then(data => console.log(data))
-//     //         .catch(error => console.error('Error:', error));
-//     //     }, []);
-//     fetch('http://localhost:8000/login')
-// }
-
-
-function getCookie(name) {
-  const cookieString = document.cookie;
-  const cookies = cookieString.split(";");
-
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    const [cookieName, cookieValue] = cookie.split("=");
-
-    if (cookieName === name) {
-      return cookieValue;
-    }
-  }
-
-  return null;
-}
+import getCookie from '../utils/getCoockies';
 
 class Login extends React.Component {
     constructor() {
