@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate
 import json
 from . import forms
 from authentication.models import User
+from django.core.serializers import serialize
 
 @csrf_exempt
 def log_user(request):
@@ -21,15 +22,12 @@ def log_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            token = Token.objects.get(user=user)
-            user_d = {
-                'pseudo': user.pseudo,
-                'loss': user.loss,
-            }
-            print(token.key)
+            token, created = Token.objects.get_or_create(user=user)
+            userobj = User.objects.get(username=username)
+            serial_user = serialize('json', [userobj], fields=('username', 'password'))
             return JsonResponse({
                 'token': token.key,
-                'data': user_d,
+                'user': serial_user,
             })
         else:
             return JsonResponse({'error': 'Invalide login credentials'})
@@ -55,13 +53,14 @@ def signup(request):
         email = data.get('email')
         password = data.get('password')
 
-        # Vérifiez que l'utilisateur n'existe pas déjà
         if User.objects.filter(username=username).exists():
             return JsonResponse({'error': 'Username already exists'}, status=400)
 
-        # Créez un nouvel utilisateur
         user = User.objects.create_user(username=username, email=email, password=password)
         user.save()
-        return JsonResponse({'message': 'User registered successfully'})
+
+        serial_user = serialize('json', [user], fields=('username', 'password'))
+        return JsonResponse({'message': 'User registered successfully',
+                            'user': serial_user})
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)

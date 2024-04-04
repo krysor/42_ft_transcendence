@@ -25,7 +25,7 @@ class App extends Component {
 
     render() {
         
-        // const isToken = localStorage.getItem('authtoken')
+        const username = localStorage.getItem('username')
         return (
             <Router>
                 <h1>ft_transcendence</h1>
@@ -35,13 +35,18 @@ class App extends Component {
                         <Nav className="me-auto">
                             <Nav.Link as={Link} to="/Game">Game</Nav.Link>
                             <Nav.Link as={Link} to="/about">About</Nav.Link>
-
-                                <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
-
+                            {username ? (
+                                <>
+                                    <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+                                </>
+                            ) : (
+                                <>
                                     <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                                    <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
-
+                                    <Nav.Link as={Link} to="/signup">signup</Nav.Link>
+                                </>
+                            )}
                         </Nav>
+                            Hello {username} :)
                     </Container>
                 </Navbar>
                 <Routes>

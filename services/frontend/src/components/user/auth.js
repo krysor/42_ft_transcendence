@@ -35,6 +35,11 @@ class Login extends React.Component {
         if (data.token) {
           localStorage.setItem('authtoken', data.token);
           console.log("token succesfully stored")
+          const userData = JSON.parse(data.user)[0].fields;
+          console.log('User data:', userData);
+          localStorage.setItem('username', userData.username);
+          localStorage.setItem('password', userData.password);
+          window.location.href = "/";
         }
       })
       .catch(error => {console.error('There was a problem with the fetch operation:', error);});

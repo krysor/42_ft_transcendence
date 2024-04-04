@@ -1,9 +1,9 @@
 import React from "react";
 
 function About () {
-	console.log(localStorage.getItem('authtoken'))
+	console.log(localStorage.getItem('username'))
 
-	const url = 'http://localhost:8000/user/' + localStorage.getItem('authtoken')
+	const url = 'http://localhost:8000/user/' + localStorage.getItem('username')
 	fetch(url, {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},

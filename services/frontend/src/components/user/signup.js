@@ -8,34 +8,36 @@ function Signup() {
         password: ''
     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (event) => {
+        const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
 		const csrftoken = getCookie('csrftoken');
-        try {
-            const response = await fetch('http://localhost:8000/signup/', {
+        fetch('http://localhost:8000/signup/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json',
 							'X-CSRFToken': csrftoken},
                 body: JSON.stringify(formData)
-            });
-            if (response.ok) {
-                // Inscription réussie
-                console.log('User registered successfully');
-                // Redirigez l'utilisateur vers une page de connexion ou une autre page appropriée
-            } else {
-                // Erreur lors de l'inscription
-                console.error('Failed to register user');
-            }
-        } catch (error) {
-            console.error('Error registering user:', error);
-        }
-    };
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to register new user')
+                }
+                return response.json();
+            })
+            .then(data => {
+                const userData = JSON.parse(data.user)[0].fields;
+                console.log('User data:', userData);
+                localStorage.setItem('username', userData.username);
+                localStorage.setItem('password', userData.password);
+                window.location.href = "/";
+            })
+            .catch(error => {console.error('There was a problem with the fetch operation:', error);});
+    }
 
     return (
         <div>
