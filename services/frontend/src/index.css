@@ -22,10 +22,18 @@ nav > ul > li {
 	margin: auto;
 } */
 
-/* #root {
+#root {
 	background-color: #000000;
 	color: #FFFFFF;
-} */
+}
+
+html, body, #root {
+    height:100%;
+}
+
+#root {
+	padding: 0.1rem;
+}
 
 nav div div a {
 	display: flex;
@@ -37,4 +45,8 @@ nav div div a img {
 	
 	height: auto;
 	margin-right: 1rem;
+}
+
+#hellnawh {
+	margin-bottom: 0rem;
 }
