@@ -12,25 +12,25 @@ import Login from "./components/auth"
 import NotFound from "./components/notfound";
 import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from './components/favicon.ico'
+
+{/* <Navbar bg="dark" variant="dark">
+<Container>
+  <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
+  <Nav className="me-auto">
+	<Nav.Link as={Link} to="/Game">Game</Nav.Link>
+	<Nav.Link as={Link} to="/about">About</Nav.Link>
+	<Nav.Link as={Link} to="/login">Login</Nav.Link>
+  </Nav>
+</Container>
+</Navbar> */}
 
 class App extends Component {
     render() {
         return (
             <Router>
-                <h1>ft_transcendence</h1>
-
-                <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/Game">Game</Nav.Link>
-            <Nav.Link as={Link} to="/about">About</Nav.Link>
-            <Nav.Link as={Link} to="/login">Login</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
+                {/* <h1>ft_transcendence</h1> */}
                 <Routes>
                         <Route
                             path="/"
