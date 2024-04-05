@@ -23,10 +23,12 @@ class App extends Component {
 					<nav id="hellnawh" class="navbar navbar-default">
 						<div class="container-fluid">
 							<div class="navbar-header">
-								<a class="navbar-brand" href="/">
-									<img alt="" src="favicon.ico"></img>
-									ft_transcendence
-								</a>
+								<Nav.Link as={Link} to="/">
+									<a class="navbar-brand">
+										<img alt="" src="favicon.ico"></img>
+										ft_transcendence
+									</a>	
+								</Nav.Link>
 							</div>
 							<ul id="navlist" class="nav navbar-nav navbar-right">
 								<li><Nav.Link as={Link} to="/Home">Home</Nav.Link></li>
