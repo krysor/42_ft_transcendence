@@ -30,7 +30,20 @@ class App extends Component {
     render() {
         return (
             <Router>
-                {/* <h1>ft_transcendence</h1> */}
+                {	<nav id="hellnawh" class="navbar navbar-default">
+					<div class="container-fluid">
+					<div class="navbar-header">
+					<a class="navbar-brand" href="/"><img alt="" src="favicon.ico"></img>
+					ft_transcendence</a>
+					</div>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/">Home</a></li>
+						<li><a href="/Game">Game</a></li>
+						<li><a href="/About">About</a></li>
+						<li><a href="/Login">Login</a></li>
+					</ul>
+					</div>
+					</nav>}
                 <Routes>
                         <Route
                             path="/"
