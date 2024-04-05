@@ -1,27 +1,28 @@
 import React, { useState } from 'react';
 import getCookie from '../utils/getCoockies';
 
-function Signup() {
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: ''
-    });
+class Signup extends React.Component {
+    constructor() {
+        super();
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
-    const handleSubmit = async (event) => {
+    handleSubmit(event) {
         event.preventDefault();
 
 		const csrftoken = getCookie('csrftoken');
+        const formData = new FormData(event.target);
+        const JsonData = {
+            username: formData.get('username'),
+            email: formData.get('email'),
+            password: formData.get('password'),
+        };
+
         fetch('http://localhost:8000/signup/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json',
 							'X-CSRFToken': csrftoken},
-                body: JSON.stringify(formData)
+                            body: JSON.stringify(JsonData)
             })
             .then(response => {
                 if (!response.ok) {
@@ -39,20 +40,23 @@ function Signup() {
             .catch(error => {console.error('There was a problem with the fetch operation:', error);});
     }
 
+    render() {
     return (
-        <div>
-            <h2>Signup</h2>
-            <form onSubmit={handleSubmit}>
-                <label>Username:</label>
-                <input type="text" name="username" value={formData.username} onChange={handleChange} required />
-                <label>Email:</label>
-                <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-                <label>Password:</label>
-                <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-                <button type="submit">Sign Up</button>
+        <form onSubmit={this.handleSubmit}>
+          <label htmlFor="username">Enter username</label>
+          <input id="username" name="username" type="text" />
+          <br></br>
+          <label htmlFor="email">Enter mail</label>
+          <input id="email" name="email" type="mail" />
+          <br></br>
+          <label htmlFor="password">Enter your password</label>
+          <input id="password" name="password" type="password" />
+          <br></br>
+          <button>sign up!</button>
             </form>
-        </div>
+
     );
+    }
 }
 
 export default Signup;

@@ -51,7 +51,7 @@ class Login extends React.Component {
           <label htmlFor="username">Enter username</label>
           <input id="username" name="username" type="text" />
           <br></br>
-          <label htmlFor="email">Enter your password</label>
+          <label htmlFor="password">Enter your password</label>
           <input id="password" name="password" type="password" />
           <br></br>
           <button>Send data!</button>
