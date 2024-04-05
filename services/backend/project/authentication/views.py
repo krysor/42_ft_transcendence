@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
-
+from django.contrib.auth.decorators import login_required
 from rest_framework.authtoken.models import Token
 
 from django.http import JsonResponse
@@ -23,8 +23,8 @@ def log_user(request):
         if user is not None:
             login(request, user)
             token, created = Token.objects.get_or_create(user=user)
-            userobj = User.objects.get(username=username)
-            serial_user = serialize('json', [userobj], fields=('username', 'password'))
+            # userobj = User.objects.get(username=username)
+            # serial_user = serialize('json', [userobj], fields=('username', 'password'))
             return JsonResponse({
                 'token': token.key,
                 'user': serial_user,
@@ -39,11 +39,12 @@ def is_auth(request):
         data = json.loads(request.body)
         print(data)
 
+@login_required
 def user_detail(request):
     if request.method == 'GET':
         user = request.user
         print(user)
-        return JsonResponse({'result': 'Bravo :)'});
+        return JsonResponse({'username': user.username})
 
 @csrf_exempt
 def signup(request):

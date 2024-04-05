@@ -30,7 +30,7 @@ urlpatterns = [
     path('login/', log_user),
     path('is_auth/', is_auth),
     path('signup/', signup),
-    path('user/<str:token>/', user_detail),
+    path('user/', user_detail),
     path('api-token-auth/', views.obtain_auth_token),
     # path('42_auth/', include(api.urls)),
 ]

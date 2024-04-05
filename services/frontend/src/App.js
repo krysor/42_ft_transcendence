@@ -29,7 +29,6 @@ class App extends Component {
       const username = localStorage.getItem('username')
       return (
           <Router>
-              <h1>ft_transcendence</h1>
               <Navbar bg="dark" variant="dark">
                   <Container>
                       <Nav className="me-auto">
@@ -56,7 +55,6 @@ class App extends Component {
                   <Route path="/about" element={<About />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
-                  {/* Route to display profile when authenticated */}
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/*" element={<NotFound />} />
               </Routes>

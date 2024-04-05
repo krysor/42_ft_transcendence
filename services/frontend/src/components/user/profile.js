@@ -1,12 +1,15 @@
 import React from "react";
 
-function About () {
-	console.log(localStorage.getItem('username'))
+function Profile () {
+	const authToken = localStorage.getItem('authToken');
 
-	const url = 'http://localhost:8000/user/' + localStorage.getItem('username')
+	const url = 'http://localhost:8000/user/'
 	fetch(url, {
         method: 'GET',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${authToken}`
+        },
       })
 	  .then (response => {
 			if (response.ok) {
@@ -26,4 +29,4 @@ function About () {
 	);
 }
 
-export default About;
+export default Profile;
