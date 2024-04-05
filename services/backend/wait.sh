@@ -8,7 +8,7 @@ done
 # Check if superuser exists, if not, create it
 if ! python -c "from django.contrib.auth.models import User; \
                 User.objects.filter(username='admin2').exists()"; then
-    python manage.py createsuperuser --username=admin2 --email "" --noinput
+    python manage.py createsuperuser --username=admin --email "" --noinput
 fi
 
 python manage.py makemigrations
