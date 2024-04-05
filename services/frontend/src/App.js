@@ -23,7 +23,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from './components/favicon.ico'
 
 class App extends Component {
-
   render() {
       
       const username = localStorage.getItem('username')
