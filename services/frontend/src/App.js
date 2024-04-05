@@ -29,10 +29,10 @@ class App extends Component {
 								</a>
 							</div>
 							<ul id="navlist" class="nav navbar-nav navbar-right">
-								<li class="btn"><a href="/">Home</a></li>
-								<li class="btn"><a href="/Game">Game</a></li>
-								<li class="btn"><a href="/About">About</a></li>
-								<li class="btn"><a href="/Login">Login</a></li>
+								<li><Nav.Link as={Link} to="/Home">Home</Nav.Link></li>
+								<li><Nav.Link as={Link} to="/Game">Game</Nav.Link></li>
+								<li><Nav.Link as={Link} to="/About">About</Nav.Link></li>
+								<li><Nav.Link as={Link} to="/Login">Login</Nav.Link></li>
 							</ul>
 						</div>
 					</nav>
