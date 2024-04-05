@@ -15,35 +15,28 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from './components/favicon.ico'
 
-{/* <Navbar bg="dark" variant="dark">
-<Container>
-  <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
-  <Nav className="me-auto">
-	<Nav.Link as={Link} to="/Game">Game</Nav.Link>
-	<Nav.Link as={Link} to="/about">About</Nav.Link>
-	<Nav.Link as={Link} to="/login">Login</Nav.Link>
-  </Nav>
-</Container>
-</Navbar> */}
-
 class App extends Component {
     render() {
         return (
             <Router>
-                {	<nav id="hellnawh" class="navbar navbar-default">
-					<div class="container-fluid">
-					<div class="navbar-header">
-					<a class="navbar-brand" href="/"><img alt="" src="favicon.ico"></img>
-					ft_transcendence</a>
-					</div>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/">Home</a></li>
-						<li><a href="/Game">Game</a></li>
-						<li><a href="/About">About</a></li>
-						<li><a href="/Login">Login</a></li>
-					</ul>
-					</div>
-					</nav>}
+                {
+					<nav id="hellnawh" class="navbar navbar-default">
+						<div class="container-fluid">
+							<div class="navbar-header">
+								<a class="navbar-brand" href="/">
+									<img alt="" src="favicon.ico"></img>
+									ft_transcendence
+								</a>
+							</div>
+							<ul id="navlist" class="nav navbar-nav navbar-right">
+								<li class="btn"><a href="/">Home</a></li>
+								<li class="btn"><a href="/Game">Game</a></li>
+								<li class="btn"><a href="/About">About</a></li>
+								<li class="btn"><a href="/Login">Login</a></li>
+							</ul>
+						</div>
+					</nav>
+				}	
                 <Routes>
                         <Route
                             path="/"
