@@ -2,3 +2,57 @@
 	margin: auto;
 	text-align: center;
 }
+
+.board {
+	height: 400px;
+	width:	800px;
+	color: red;
+	margin: auto;
+	margin-top: 40px;
+	position: relative;
+}
+
+.border {
+	height: 10px;
+	width:	800px;
+	background-color: white;
+	position: absolute;
+}
+
+#upper {
+	top: 0;
+}
+
+#lower {
+	bottom: 0;
+}
+
+.pad {
+	width: 10px;
+	height: 50px;
+	background-color: white;
+	position: absolute;
+	top: 165px;
+}
+
+#left {
+	left: 0;
+}
+
+#right {
+	right: 0;
+}
+
+.pause {
+	margin-top: 40px;
+}
+
+.ball {
+	height: 30px;
+	width: 30px;
+	background-color: white;
+	border-radius: 50%;
+	position: absolute;
+	top: 175px;
+	left: 385px;
+}
