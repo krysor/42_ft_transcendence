@@ -35,6 +35,7 @@ class Signup extends React.Component {
                 console.log('User data:', userData);
                 localStorage.setItem('username', userData.username);
                 localStorage.setItem('password', userData.password);
+                localStorage.setItem('authtoken', userData.token);
                 window.location.href = "/";
             })
             .catch(error => {console.error('There was a problem with the fetch operation:', error);});

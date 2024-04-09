@@ -1,18 +1,19 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 
 function Profile () {
-	const authToken = localStorage.getItem('authToken');
+	const authtoken = localStorage.getItem('authtoken');
+	const [username, setUsername] = useState(null)
+	const [profile, setProfile] = useState(null)
 
-	const url = 'http://localhost:8000/user/'
-	fetch(url, {
+	fetch('http://localhost:8000/user/', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Token ${authToken}`
+            'Authorization': `Token ${authtoken}`
         },
       })
 	  .then (response => {
-			if (response.ok) {
+			if (!response.ok) {
 				throw new Error('Network response was not ok');
 			  }
 	  
@@ -20,11 +21,17 @@ function Profile () {
 			})
 			.then(data => {
 			  console.log(data);
+			  setUsername(data.user.username)
+			  setProfile(data.user.profile_pic)
 			})
+
 	return (
 		<div>
 			<h1>Profile page</h1>
-			<p>This i your profile page</p>
+			<p>This is your profile page </p>
+			{username && <p>Username: {username}</p>}
+			{profile && <img src="{profile}"></img>}
+			<p>TEST</p>
 		</div>
 	);
 }

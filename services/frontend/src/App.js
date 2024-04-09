@@ -33,18 +33,10 @@ class App extends Component {
                       <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
                           <Nav.Link as={Link} to="/Game">Game</Nav.Link>
                           <Nav.Link as={Link} to="/about">About</Nav.Link>
-                          {username ? (
-                              <>
-                                  <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
-                              </>
-                          ) : (
-                              <>
-                                  <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                                  <Nav.Link as={Link} to="/signup">signup</Nav.Link>
-                              </>
-                          )}
+                        <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+                        <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                        <Nav.Link as={Link} to="/signup">signup</Nav.Link>
                       </Nav>
-                          Hello {username} :)
                   </Container>
               </Navbar>
               <Routes>

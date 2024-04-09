@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import getCookie from '../utils/getCoockies';
 
@@ -32,13 +32,13 @@ class Login extends React.Component {
       })
       .then(data => {
         console.log(data);
-        if (data.token) {
-          localStorage.setItem('authtoken', data.token);
+        if (data.Token) {
+          localStorage.setItem('authtoken', data.Token);
           console.log("token succesfully stored")
           const userData = JSON.parse(data.user)[0].fields;
-          console.log('User data:', userData);
-          localStorage.setItem('username', userData.username);
-          localStorage.setItem('password', userData.password);
+          // console.log('User data:', userData);
+          // localStorage.setItem('username', userData.username);
+          // localStorage.setItem('password', userData.password);
           window.location.href = "/";
         }
       })
