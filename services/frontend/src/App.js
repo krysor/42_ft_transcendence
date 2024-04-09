@@ -20,7 +20,6 @@ import NotFound from "./components/notfound";
 import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import logo from './components/favicon.ico'
 
 class App extends Component {
   render() {

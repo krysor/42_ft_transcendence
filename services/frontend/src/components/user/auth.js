@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom/client';
+
 import getCookie from '../utils/getCoockies';
 
 class Login extends React.Component {

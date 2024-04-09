@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import getCookie from '../utils/getCoockies';
 
 class Signup extends React.Component {
