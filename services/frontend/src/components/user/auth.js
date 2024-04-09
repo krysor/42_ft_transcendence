@@ -1,23 +1,6 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom/client';
 
-// function Login() {
-// 	// useEffect(() => {
-//     //     fetch('http://localhost:8000/login/')
-//     //         .then(response => {
-//     //             if (!response.ok) {
-//     //                 throw new Error('Network response was not ok');
-//     //             }
-//     //             return response.json();
-//     //         })
-//     //         .then(data => console.log(data))
-//     //         .catch(error => console.error('Error:', error));
-//     //     }, []);
-//     fetch('http://localhost:8000/login')
-// }
-
-
-
+import getCookie from '../utils/getCoockies';
 
 class Login extends React.Component {
     constructor() {
@@ -27,23 +10,38 @@ class Login extends React.Component {
 
     handleSubmit(event) {
       event.preventDefault();
-    
+      const csrftoken = getCookie('csrftoken');
       const formData = new FormData(event.target);
       const jsonData = {
         username: formData.get('username'),
         password: formData.get('password')
       };
-    
-      fetch('http://localhost:8000/api-token-auth/', {
+
+      fetch('http://localhost:8000/login/', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(jsonData)
+        headers: {'Content-Type': 'application/json',
+                  'X-CSRFToken': csrftoken},
+                  body: JSON.stringify(jsonData)
       })
       .then(response => {
-        if (!response.ok) {throw new Error('Network response was not ok');}
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
         return response.json();
       })
-      .then(data => {console.log(data);})
+      .then(data => {
+        console.log(data);
+        if (data.token) {
+          localStorage.setItem('authtoken', data.token);
+          console.log("token succesfully stored")
+          const userData = JSON.parse(data.user)[0].fields;
+          console.log('User data:', userData);
+          localStorage.setItem('username', userData.username);
+          localStorage.setItem('password', userData.password);
+          window.location.href = "/";
+        }
+      })
       .catch(error => {console.error('There was a problem with the fetch operation:', error);});
     }
   
@@ -53,7 +51,7 @@ class Login extends React.Component {
           <label htmlFor="username">Enter username</label>
           <input id="username" name="username" type="text" />
           <br></br>
-          <label htmlFor="email">Enter your password</label>
+          <label htmlFor="password">Enter your password</label>
           <input id="password" name="password" type="password" />
           <br></br>
           <button>Send data!</button>

@@ -16,7 +16,7 @@ RUN apt-get update && \
 
 EXPOSE 8000
 
-HEALTHCHECK --start-period=1m --interval=10s \
+HEALTHCHECK --start-period=1m --interval=100s \
     CMD curl -f http://localhost:8000/admin/ || exit 1
 
 ENTRYPOINT [ "sh", "/tmp/wait.sh" ]
