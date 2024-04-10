@@ -35,8 +35,8 @@ function Profile () {
 
 	return (
 		<div>
+			{profile_pic && <img src={profile_pic} alt="Profile" className="profile_pic" />}
 			{username && <h2>Username: {username}</h2>}
-			{profile_pic && <img src={profile_pic} alt="Profile" />}
 			{game_lost !== null && <h3>game lost: {game_lost}</h3>}
 			{game_win !== null && <h3>game win: {game_win}</h3>}
 		</div>

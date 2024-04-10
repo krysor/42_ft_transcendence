@@ -15,6 +15,7 @@ import Login from "./components/user/login";
 import Profile from "./components/user/profile";
 import Signup from "./components/user/signup";
 import Logout from "./components/user/logout";
+import Community from "./components/user/community"
 
 import NotFound from "./components/notfound";
 
@@ -43,6 +44,7 @@ class App extends Component {
                       <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
                         <Nav.Link as={Link} to="/Game">Game</Nav.Link>
                         <Nav.Link as={Link} to="/about">About</Nav.Link>
+                        <Nav.Link as={Link} to="/community">Community</Nav.Link>
                         {!isLoggedIn && <Nav.Link as={Link} to="/signup">Signup</Nav.Link>}
                         {!isLoggedIn && <Nav.Link as={Link} to="/login">Login</Nav.Link>}
                         {/* {isLoggedIn && <Nav.Link as={Link} to="/profile">Profile</Nav.Link>} */}
@@ -63,6 +65,7 @@ class App extends Component {
                   <Route path="/login" element={<Login />} />
                   <Route path="/logout" element={<Logout />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/community" element={<Community />} />
                   <Route path="/*" element={<NotFound />} />
               </Routes>
           </Router>
