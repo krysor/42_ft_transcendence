@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 
 function Logout () {
-	const authtoken = localStorage.getItem('authtoken');
+	const authtoken = sessionStorage.getItem('authtoken');
 
 	useEffect(() => {
 		fetch('http://localhost:8000/user/logout/', {
@@ -13,19 +13,22 @@ function Logout () {
 		})
 		.then(response => {
 			if (!response.ok) {
-				localStorage.removeItem('authtoken');
+				sessionStorage.removeItem('authtoken');
+				sessionStorage.removeItem('user');
 				window.location.href = "/";
 			}
 			return response.json();
 		})
 		.then(data => {
 			console.log(data);
-			localStorage.removeItem('authtoken');
+			sessionStorage.removeItem('authtoken');
+			sessionStorage.removeItem('user');
 			window.location.href = "/";
 		})
 		.catch(error => {
 			console.error('Error fetching user data:', error);
-			localStorage.removeItem('authtoken');
+			sessionStorage.removeItem('authtoken');
+			sessionStorage.removeItem('user');
 			window.location.href = "/";
 		});
 	}, [authtoken]);

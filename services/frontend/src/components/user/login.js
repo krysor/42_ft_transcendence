@@ -33,12 +33,9 @@ class Login extends React.Component {
       .then(data => {
         console.log(data);
         if (data.Token) {
-          localStorage.setItem('authtoken', data.Token);
+          sessionStorage.setItem('authtoken', data.Token);
+          sessionStorage.setItem('user', JSON.stringify(data.user));
           console.log("token succesfully stored")
-          const userData = JSON.parse(data.user)[0].fields;
-          // console.log('User data:', userData);
-          // localStorage.setItem('username', userData.username);
-          // localStorage.setItem('password', userData.password);
           window.location.href = "/";
         }
       })
@@ -54,7 +51,7 @@ class Login extends React.Component {
           <label htmlFor="password">Enter your password</label>
           <input id="password" name="password" type="password" />
           <br></br>
-          <button>Send data!</button>
+          <button>Login !</button>
         </form>
       );
     }

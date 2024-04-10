@@ -22,13 +22,21 @@ import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 class App extends Component {
   render() {
-      
-      const token = localStorage.getItem('authtoken')
+      const token = sessionStorage.getItem('authtoken')
+      const user = JSON.parse(sessionStorage.getItem('user'))
       const isLoggedIn = !!token;
+
       return (
           <Router>
+            <div class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
+                <div class="bg-dark p-4">
+                    <h5 class="text-body-emphasis h4">Collapsed content</h5>
+                    <span class="text-body-secondary">Toggleable via the navbar brand.</span>
+                </div>
+            </div>
               <Navbar bg="dark" variant="dark">
                   <Container>
                       <Nav className="me-auto">
@@ -37,9 +45,14 @@ class App extends Component {
                         <Nav.Link as={Link} to="/about">About</Nav.Link>
                         {!isLoggedIn && <Nav.Link as={Link} to="/signup">Signup</Nav.Link>}
                         {!isLoggedIn && <Nav.Link as={Link} to="/login">Login</Nav.Link>}
-                        {isLoggedIn && <Nav.Link as={Link} to="/profile">Profile</Nav.Link>}
+                        {/* {isLoggedIn && <Nav.Link as={Link} to="/profile">Profile</Nav.Link>} */}
                         {isLoggedIn && <Nav.Link as={Link} to="/logout">Logout</Nav.Link>}
                       </Nav>
+                        {isLoggedIn && <Nav.Link as={Link} to="/profile">
+                        {user && user.profile_pic &&
+                        <img src={user.profile_pic} alt="Profile Pic" className="profile_pic" />
+                        }
+                        </Nav.Link>}
                   </Container>
               </Navbar>
               <Routes>

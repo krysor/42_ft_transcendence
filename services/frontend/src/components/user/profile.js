@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 
 function Profile () {
-	const authtoken = localStorage.getItem('authtoken');
+	const authtoken = sessionStorage.getItem('authtoken');
 	const [username, setUsername] = useState(null);
 	const [profile_pic, setProfile] = useState(null);
 	const [game_lost, setLost] = useState(null);
