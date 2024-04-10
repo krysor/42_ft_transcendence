@@ -52,8 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'authentication',
     'corsheaders',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -152,6 +152,7 @@ REST_FRAMEWORK = {
 }
 
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
+MEDIA_URL = './'
 
 ASGI_APPLICATION = 'project.asgi.application'
 WSGI_APPLICATION = 'project.wsgi.application'

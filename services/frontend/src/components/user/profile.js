@@ -2,36 +2,43 @@ import React, {useState, useEffect} from "react";
 
 function Profile () {
 	const authtoken = localStorage.getItem('authtoken');
-	const [username, setUsername] = useState(null)
-	const [profile, setProfile] = useState(null)
+	const [username, setUsername] = useState(null);
+	const [profile_pic, setProfile] = useState(null);
+	const [game_lost, setLost] = useState(null);
+	const [game_win, setWin] = useState(null);
 
-	fetch('http://localhost:8000/user/', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${authtoken}`
-        },
-      })
-	  .then (response => {
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			  }
-	  
-			  return response.json();
+	useEffect(() => {
+		fetch('http://localhost:8000/user/', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Token ${authtoken}`
+			},
+		})
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				return response.json();
 			})
 			.then(data => {
-			  console.log(data);
-			  setUsername(data.user.username)
-			  setProfile(data.user.profile_pic)
+				console.log(data);
+				setUsername(data.user.username);
+				setProfile(data.user.profile_pic);
+				setLost(data.user.loss);
+				setWin(data.user.win);
 			})
+			.catch(error => {
+				console.error('Error fetching user data:', error);
+			});
+	}, [authtoken]);
 
 	return (
 		<div>
-			<h1>Profile page</h1>
-			<p>This is your profile page </p>
-			{username && <p>Username: {username}</p>}
-			{profile && <img src="{profile}"></img>}
-			<p>TEST</p>
+			{username && <h2>Username: {username}</h2>}
+			{profile_pic && <img src={profile_pic} alt="Profile" />}
+			{game_lost !== null && <h3>game lost: {game_lost}</h3>}
+			{game_win !== null && <h3>game win: {game_win}</h3>}
 		</div>
 	);
 }
