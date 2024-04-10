@@ -23,8 +23,8 @@ nav > ul > li {
 } */
 
 #root {
-	background-color: #000000;
-	color: #FFFFFF;
+	/* background-color: #000000; */
+	/* color: #FFFFFF; */
 }
 
 html, body, #root {
@@ -33,6 +33,10 @@ html, body, #root {
 
 #root {
 	padding: 0.1rem;
+}
+
+Container{
+	color: #FFFFFF;
 }
 
 nav div div a {

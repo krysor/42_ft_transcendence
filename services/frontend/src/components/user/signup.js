@@ -14,11 +14,10 @@ class Signup extends React.Component {
         const formData = new FormData(event.target);
         const JsonData = {
             username: formData.get('username'),
-            email: formData.get('email'),
             password: formData.get('password'),
         };
 
-        fetch('http://localhost:8000/signup/', {
+        fetch('http://localhost:8000/user/signup/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json',
 							'X-CSRFToken': csrftoken},
@@ -31,10 +30,9 @@ class Signup extends React.Component {
                 return response.json();
             })
             .then(data => {
-                const userData = JSON.parse(data.user)[0].fields;
-                console.log('User data:', userData);
-                localStorage.setItem('username', userData.username);
-                localStorage.setItem('password', userData.password);
+                console.log('User data:', data);
+                sessionStorage.setItem('authtoken', data.Token);
+                sessionStorage.setItem('user', JSON.stringify(data.user));
                 window.location.href = "/";
             })
             .catch(error => {console.error('There was a problem with the fetch operation:', error);});
@@ -45,9 +43,6 @@ class Signup extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="username">Enter username</label>
           <input id="username" name="username" type="text" />
-          <br></br>
-          <label htmlFor="email">Enter mail</label>
-          <input id="email" name="email" type="mail" />
           <br></br>
           <label htmlFor="password">Enter your password</label>
           <input id="password" name="password" type="password" />
