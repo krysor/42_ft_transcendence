@@ -22,6 +22,7 @@ def signup(request):
 
     user = User.objects.create_user(username=request.data['username'], password=request.data['password'])
     token = Token.objects.create(user=user)
+    user.is_online = True
     user.save()
     serialized = UserSerializer(user)
     return JsonResponse({'Token': token.key, 'user': serialized.data})
@@ -42,10 +43,15 @@ def log_user(request):
 
     raise AuthenticationFailed("Username or password is incorrect.")
 
-def is_auth(request):
-    if request.method == 'GET':
-        data = json.loads(request.body)
-        print(data)
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def logout(request):
+    user = request.user
+    user.is_online = False
+    user.saver()
+    serialized = UserSerializer(user)
+    return JsonResponse(serialized)
 
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])

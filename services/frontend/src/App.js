@@ -11,10 +11,10 @@ import About from "./components/about";
 
 import Game from "./components/game/game";
 
-import Login from "./components/user/login"
-import Profile from "./components/user/profile"
+import Login from "./components/user/login";
+import Profile from "./components/user/profile";
 import Signup from "./components/user/signup";
-// import Logout from "./components/user/logout"
+import Logout from "./components/user/logout";
 
 import NotFound from "./components/notfound";
 
@@ -25,7 +25,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 class App extends Component {
   render() {
       
-      const username = localStorage.getItem('username')
+      const token = localStorage.getItem('authtoken')
+      const isLoggedIn = !!token;
       return (
           <Router>
               <Navbar bg="dark" variant="dark">
@@ -34,10 +35,10 @@ class App extends Component {
                       <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
                         <Nav.Link as={Link} to="/Game">Game</Nav.Link>
                         <Nav.Link as={Link} to="/about">About</Nav.Link>
-                        <Nav.Link as={Link} to="/signup">signup</Nav.Link>
-                        <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                        {/* <Nav.Link as={Link} to="/logout">logout</Nav.Link> */}
-                        <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+                        {!isLoggedIn && <Nav.Link as={Link} to="/signup">Signup</Nav.Link>}
+                        {!isLoggedIn && <Nav.Link as={Link} to="/login">Login</Nav.Link>}
+                        {isLoggedIn && <Nav.Link as={Link} to="/profile">Profile</Nav.Link>}
+                        {isLoggedIn && <Nav.Link as={Link} to="/logout">Logout</Nav.Link>}
                       </Nav>
                   </Container>
               </Navbar>
@@ -47,7 +48,7 @@ class App extends Component {
                   <Route path="/about" element={<About />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/login" element={<Login />} />
-                  {/* <Route path="/logout" element={<logout />} /> */}
+                  <Route path="/logout" element={<Logout />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/*" element={<NotFound />} />
               </Routes>

@@ -19,12 +19,9 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 from django.conf import settings
 
-from authentication.views import log_user, is_auth, user_detail, signup
+from authentication.views import log_user, user_detail, signup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', log_user),
-    path('is_auth/', is_auth),
-    path('signup/', signup),
-    path('user/', user_detail),
+    path('user/', include('authentication.urls')),
 ]

@@ -17,7 +17,7 @@ class Signup extends React.Component {
             password: formData.get('password'),
         };
 
-        fetch('http://localhost:8000/signup/', {
+        fetch('http://localhost:8000/user/signup/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json',
 							'X-CSRFToken': csrftoken},

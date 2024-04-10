@@ -8,29 +8,29 @@ function Profile () {
 	const [game_win, setWin] = useState(null);
 
 	useEffect(() => {
-		fetch('http://localhost:8000/user/', {
+		fetch('http://localhost:8000/user/user_detail/', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 				'Authorization': `Token ${authtoken}`
 			},
 		})
-			.then(response => {
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
-				}
-				return response.json();
-			})
-			.then(data => {
-				console.log(data);
-				setUsername(data.user.username);
-				setProfile(data.user.profile_pic);
-				setLost(data.user.loss);
-				setWin(data.user.win);
-			})
-			.catch(error => {
-				console.error('Error fetching user data:', error);
-			});
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		})
+		.then(data => {
+			console.log(data);
+			setUsername(data.user.username);
+			setProfile(data.user.profile_pic);
+			setLost(data.user.loss);
+			setWin(data.user.win);
+		})
+		.catch(error => {
+			console.error('Error fetching user data:', error);
+		});
 	}, [authtoken]);
 
 	return (
