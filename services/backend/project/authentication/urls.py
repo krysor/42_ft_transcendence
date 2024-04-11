@@ -3,10 +3,11 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 from django.conf import settings
 
-from .views import log_user, user_detail, signup
+from .views import log_user, user_detail, signup, logout
 
 urlpatterns = [
     path('login/', log_user),
     path('signup/', signup),
     path('user_detail/', user_detail),
+    path('logout/', logout),
 ]

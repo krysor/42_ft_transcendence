@@ -49,9 +49,9 @@ def log_user(request):
 def logout(request):
     user = request.user
     user.is_online = False
-    user.saver()
+    user.save()
     serialized = UserSerializer(user)
-    return JsonResponse(serialized)
+    return JsonResponse({'user': serialized.data})
 
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
