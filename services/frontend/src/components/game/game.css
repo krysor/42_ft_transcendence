@@ -4,8 +4,6 @@
 }
 
 .board {
-	height: 400px;
-	width:	800px;
 	color: red;
 	margin: auto;
 	margin-top: 40px;
@@ -14,7 +12,7 @@
 
 .border {
 	height: 10px;
-	width:	800px;
+	/* width:	widthBoard; */
 	background-color: white;
 	position: absolute;
 }
@@ -47,12 +45,8 @@
 	margin-top: 40px;
 }
 
-.ball {
-	height: 30px;
-	width: 30px;
+#ball {
 	background-color: white;
 	border-radius: 50%;
 	position: absolute;
-	top: 175px;
-	left: 385px;
 }
