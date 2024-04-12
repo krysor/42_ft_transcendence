@@ -44,7 +44,7 @@ class App extends Component {
                       <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
                         <Nav.Link as={Link} to="/Game">Game</Nav.Link>
                         <Nav.Link as={Link} to="/about">About</Nav.Link>
-                        <Nav.Link as={Link} to="/community">Community</Nav.Link>
+                        {isLoggedIn &&<Nav.Link as={Link} to="/community">Community</Nav.Link>}
                         {!isLoggedIn && <Nav.Link as={Link} to="/signup">Signup</Nav.Link>}
                         {!isLoggedIn && <Nav.Link as={Link} to="/login">Login</Nav.Link>}
                         {/* {isLoggedIn && <Nav.Link as={Link} to="/profile">Profile</Nav.Link>} */}
