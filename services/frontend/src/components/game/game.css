@@ -11,7 +11,7 @@
 }
 
 .border {
-	height: 10px;
+	/* height: 10px; */
 	/* width:	widthBoard; */
 	background-color: white;
 	position: absolute;
@@ -27,7 +27,7 @@
 
 .pad {
 	width: 10px;
-	height: 50px;
+	/* height: 50px; */
 	background-color: white;
 	position: absolute;
 	top: 165px;
