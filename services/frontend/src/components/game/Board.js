@@ -1,69 +1,68 @@
-import React from "react";
+import React from 'react';
 
 const 	widthBoard		= 800;
 const 	heightBoard		= 400;
 const	heightPad		= 50;
+const	widthPad		= 10;
 const	heightBorder	= 10;
 const 	radiusBall		= 30;
 
+const Border = (posY) => {
+	return (<div className="border"
+				 style={{'width' 	: widthBoard,
+						 'height'	: heightBorder,
+						 'top'	 	: posY}}></div>)
+}
 
+const Pad = (posX, posY) => {
+	return (<div className="pad"
+				 style={{'width'	: widthPad,
+						 'height'	: heightPad, 
+				 		 'left'	  	: posX,		 
+				 		 'top'	  	: posY}}></div>)
+}
+
+const Ball = (posX, posY) => {
+	return (<div id='ball'
+				 style={{'width'	: radiusBall,
+				 		 'height'	: radiusBall,
+						 'left'		: Math.round(posX),
+						 'top'		: Math.round(posY)}}></div>)
+}
+
+//my idea, trigger rending on delta vBallX
 const Board = () => {
-	// const [paused, setPaused] = React.useState(false)
-	const [xBall, setXBall] = React.useState((widthBoard - radiusBall)/2);
-	const [yBall, setYBall] = React.useState((heightBoard - radiusBall)/2);
-	const [vBallX, setVBallX] = React.useState(1);
-	const [vBallY, setVBallY] = React.useState(1);
-	const [yPadLeft, setYPadLeft] = React.useState((heightBoard - heightPad)/2);
-	const [yPadRight, setYPadRight] = React.useState((heightBoard - heightPad)/2);
-	
+	//this one incorrect
+	const padY = (heightBoard - heightPad)/2;
+
+	const [ball, setBall] = React.useState({
+		posX : (widthBoard - radiusBall)/2,
+		posY : (heightBoard - radiusBall)/2
+	});
+	const vXBall = React.useRef(1);
+	const vYBall = React.useRef(1);
+
 	React.useEffect(() => {
 		let frameId
 		const animate = time => {
-			// if (paused === true)
-			// 	return ;
-			
-			console.log("yBall:");
-			console.log({yBall});
-
-			if (yBall <= heightBorder || yBall >= heightBoard - heightBorder)
-				setVBallY(prevVBallY => -prevVBallY);
-
-			console.log("yBall before:");
-			console.log({yBall});
-
-			setXBall(prevXBall => prevXBall + vBallX);
-			setYBall(prevYBall => prevYBall + vBallY);
-
-			console.log("yBall after:");
-			console.log({yBall});
-
-
+			if (ball.posY <= heightBorder || ball.posY >= heightBoard - heightBorder)
+				vYBall.current = vYBall.current * -1;	
+			setBall(prevBall => ({posX: prevBall.posX + vXBall.current, posY: prevBall.posY + vYBall.current}));
+			// setBall((prevaBll, vBallY) => {return { posX: prevBall.posX + vX, posY: prevBall.posY + vBallY});
 			frameId = requestAnimationFrame(animate);
 		}
 		requestAnimationFrame(animate);
 		return () => cancelAnimationFrame(frameId);
 	  }, []);
 
-	
-	return (<div className='board'
-				 style={{'width':widthBoard, 'height':heightBoard}}>
-				<div id="upper" className="border"
-								style={{'width':widthBoard,
-										'height':heightBorder}}></div>
-				<div id="lower" className="border"
-								style={{'width':widthBoard,
-								'height':heightBorder}}></div>
-				<div id='ball'
-					style={{'left':Math.round(xBall),
-					'top':Math.round(yBall),
-					'height':radiusBall,
-					'width':radiusBall}}></div>
-				<div id="left" className="pad"
-							style={{'height':heightPad, 
-									'top':yPadLeft}}></div>
-				<div id="right" className="pad"
-							style={{'height':heightPad, 
-							'top':yPadRight}}></div>
+
+	return (<div className='board' style={{'width':widthBoard,
+										   'height':heightBoard}}>
+				{Border(0)}
+				{Border(heightBoard - heightBorder)}
+				{Ball(ball.posX, ball.posY)}
+				{Pad(0, padY)}
+				{Pad(widthBoard - widthPad, padY)}
 			</div>)
 }
 

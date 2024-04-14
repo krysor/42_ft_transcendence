@@ -4,41 +4,21 @@
 }
 
 .board {
-	color: red;
+	/* color: red; */
 	margin: auto;
 	margin-top: 40px;
 	position: relative;
+	/* background-color: blue; */
 }
 
 .border {
-	/* height: 10px; */
-	/* width:	widthBoard; */
 	background-color: white;
 	position: absolute;
-}
-
-#upper {
-	top: 0;
-}
-
-#lower {
-	bottom: 0;
 }
 
 .pad {
-	width: 10px;
-	/* height: 50px; */
 	background-color: white;
 	position: absolute;
-	top: 165px;
-}
-
-#left {
-	left: 0;
-}
-
-#right {
-	right: 0;
 }
 
 .pause {
