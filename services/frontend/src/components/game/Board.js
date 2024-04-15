@@ -2,7 +2,8 @@ import React from 'react';
 
 const 	widthBoard		= 800;
 const 	heightBoard		= 400;
-const	heightPad		= 50;
+// 50 before
+const	heightPad		= 100;
 const	widthPad		= 10;
 const	heightBorder	= 10;
 const 	radiusBall		= 30;
@@ -30,37 +31,37 @@ const Ball = (posX, posY) => {
 						 'top'		: Math.round(posY)}}></div>)
 }
 
-//my idea, trigger rending on delta vBallX
-const Board = () => {
-	//this one incorrect
+const Board = (paused) => {
 	const padY = (heightBoard - heightPad)/2;
+	const [posX, setPosX] = React.useState((widthBoard - radiusBall)/2);
+	const [posY, setPosY] = React.useState((heightBoard - radiusBall)/2);
+	const vXBall = React.useRef(5);
+	const vYBall = React.useRef(5);
+	const frameId = React.useRef(0);
+	
+	const animate = time => {
+		if (posY <= heightBorder || posY >= heightBoard - heightBorder - radiusBall)
+			vYBall.current = vYBall.current * -1;
+		setPosX(posX + vXBall.current);
+		setPosY(posY + vYBall.current);
+		frameId.current = requestAnimationFrame(animate);
+	}
 
-	const [ball, setBall] = React.useState({
-		posX : (widthBoard - radiusBall)/2,
-		posY : (heightBoard - radiusBall)/2
-	});
-	const vXBall = React.useRef(1);
-	const vYBall = React.useRef(1);
 
 	React.useEffect(() => {
-		let frameId
-		const animate = time => {
-			if (ball.posY <= heightBorder || ball.posY >= heightBoard - heightBorder)
-				vYBall.current = vYBall.current * -1;	
-			setBall(prevBall => ({posX: prevBall.posX + vXBall.current, posY: prevBall.posY + vYBall.current}));
-			// setBall((prevaBll, vBallY) => {return { posX: prevBall.posX + vX, posY: prevBall.posY + vBallY});
-			frameId = requestAnimationFrame(animate);
-		}
-		requestAnimationFrame(animate);
+		if (!paused)
+			frameId.current = requestAnimationFrame(animate);
+		else
+			cancelAnimationFrame(frameId.current);
 		return () => cancelAnimationFrame(frameId);
-	  }, []);
+	  }, [paused, posX, posY]);
 
 
 	return (<div className='board' style={{'width':widthBoard,
 										   'height':heightBoard}}>
 				{Border(0)}
 				{Border(heightBoard - heightBorder)}
-				{Ball(ball.posX, ball.posY)}
+				{Ball(posX, posY)}
 				{Pad(0, padY)}
 				{Pad(widthBoard - widthPad, padY)}
 			</div>)

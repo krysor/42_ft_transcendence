@@ -1,18 +1,21 @@
 import './game.css'
 import Board from './Board.js'
+import React from 'react';
+
+
 
 function Game() {
+	const [paused, setPaused] = React.useState(true);
 	return (
 		<div className='container'>
 			<h1>Ping pong game</h1>
 
-			<Board />
-			{/* <button onClick={paused ? play : pause}>
+			{Board(paused)}
+			{/* <Board /> */}
+			<button id="gameButton" onClick={() => setPaused(!paused)}>
 				{paused ? "Play" : "Pause"}
-			</button> */}
+			</button>
 
-			<button className="pause">Start</button>
-			<button className="pause">Pause</button>
 		</div>
 	);
 }

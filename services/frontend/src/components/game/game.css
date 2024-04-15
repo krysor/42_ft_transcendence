@@ -21,8 +21,8 @@
 	position: absolute;
 }
 
-.pause {
-	margin-top: 40px;
+#gameButton {
+	margin-top: 20px;
 }
 
 #ball {
