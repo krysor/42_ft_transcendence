@@ -55,6 +55,7 @@ const Board = (paused) => {
 	const ballSpeedY = React.useRef(5);
 	const frameId 	 = React.useRef(0);
 
+	
 	const padLeftPosY = (boardHeight - padHeight)/2;
 	const padRightPosY = (boardHeight - padHeight)/2;
 
