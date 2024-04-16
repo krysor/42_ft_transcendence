@@ -3,7 +3,7 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 from django.conf import settings
 
-from .views import log_user, user_detail, signup, logout, all_users, add_friend
+from .views import log_user, user_detail, signup, logout, all_users, add_friend, edit_profile
 
 urlpatterns = [
     path('login/', log_user),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('logout/', logout),
     path('all/', all_users),
     path('add_friend/<int:friend_id>/', add_friend, name='add_friend'),
+    path('edit_profile/', edit_profile),
 ]

@@ -92,3 +92,26 @@ def add_friend(request, friend_id):
 
     except User.DoesNotExist:
         return JsonResponse({'error': 'Friend user not found.'}, status=404)
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def edit_profile(request):
+    user = request.user
+    new_username = request.data.get('username')
+    if new_username:
+        user.username = new_username
+    
+    new_password = request.data.get('password')
+    if new_password:
+        user.password = new_password
+    
+    new_profile_pic = request.FILES.get('profile_pic')
+    if new_profile_pic:
+        user.profile_pic.save(new_profile_pic.name, new_profile_pic)
+
+    user.save()
+    serialized = UserSerializer(user)
+    return JsonResponse({'user': serialized.data})
+    
+

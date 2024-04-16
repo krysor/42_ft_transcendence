@@ -1,46 +1,34 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import getUserData from "./getUserData";
 
-function Profile () {
-	const authtoken = sessionStorage.getItem('authtoken');
-	const [username, setUsername] = useState(null);
-	const [profile_pic, setProfile] = useState(null);
-	const [game_lost, setLost] = useState(null);
-	const [game_win, setWin] = useState(null);
+function Profile() {
+    const authtoken = sessionStorage.getItem('authtoken');
+    const [userData, setUserData] = useState(null);
 
-	useEffect(() => {
-		fetch('http://localhost:8000/user/user_detail/', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Token ${authtoken}`
-			},
-		})
-		.then(response => {
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			return response.json();
-		})
-		.then(data => {
-			console.log(data);
-			setUsername(data.user.username);
-			setProfile(data.user.profile_pic);
-			setLost(data.user.loss);
-			setWin(data.user.win);
-		})
-		.catch(error => {
-			console.error('Error fetching user data:', error);
-		});
-	}, [authtoken]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const user = await getUserData();
+            setUserData(user);
+        };
+        fetchData();
+    }, [authtoken]);
 
-	return (
-		<div>
-			{profile_pic && <img src={profile_pic} alt="Profile" className="profile_pic" />}
-			{username && <h2>Username: {username}</h2>}
-			{game_lost !== null && <h3>game lost: {game_lost}</h3>}
-			{game_win !== null && <h3>game win: {game_win}</h3>}
-		</div>
-	);
+    if (!userData) {
+        return <div>Loading...</div>;
+    }
+
+    const { username, profile_pic, loss, win } = userData;
+
+    return (
+        <div>
+            {profile_pic && <img src={profile_pic} alt="Profile" className="profile_pic" />}
+            {username && <h2>Username: {username}</h2>}
+            {loss !== null && <h3>game lost: {loss}</h3>}
+            {win !== null && <h3>game win: {win}</h3>}
+            <NavLink to="/edit_profile">Edit Profile</NavLink>
+        </div>
+    );
 }
 
 export default Profile;
