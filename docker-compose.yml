@@ -46,8 +46,6 @@ services:
       - 3000
     networks:
       - default-n
-    depends_on:
-      - backend
     restart: unless-stopped
 
 volumes:

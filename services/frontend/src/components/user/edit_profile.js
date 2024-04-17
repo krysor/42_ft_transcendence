@@ -23,7 +23,7 @@ function EditProfile () {
             if (newProfilePic) {
                 formData.append('profile_pic', newProfilePic);
             }
-            const response = await fetch('http://localhost:8000/user/edit_profile/', {
+            fetch('http://localhost:8000/user/edit_profile/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Token ${authtoken}`
@@ -62,7 +62,7 @@ function EditProfile () {
         return <div>Loading...</div>;
     }
 
-    const { username, profile_pic, loss, win } = userData;
+    const { username, profile_pic } = userData;
 
     return (
         <div>
