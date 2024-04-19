@@ -53,7 +53,7 @@ class App extends Component {
                       </Nav>
                         {isLoggedIn && <Nav.Link as={Link} to="/profile">
                         {user && user.profile_pic &&
-                        <ProfilePic />
+                        <ProfilePic filename={user.profile_pic} />
                         }
                         </Nav.Link>}
                   </Container>

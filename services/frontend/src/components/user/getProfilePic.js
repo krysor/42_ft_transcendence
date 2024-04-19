@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-function ProfilePic() {
-	const user = JSON.parse(sessionStorage.getItem('user'));
+function ProfilePic({filename, online}) {
+	// const user = JSON.parse(sessionStorage.getItem('user'));
     const [profilePicUrl, setProfilePicUrl] = useState('');
-	const url = 'http://localhost:8000/user/profile_pic' + user.profile_pic
+	const url_request = 'http://localhost:8000/user/profile_pic' + filename
     useEffect(() => {
-        fetch(url)
+        fetch(url_request)
             .then(response => {
                 if (response.ok) {
                     return response.blob();
@@ -21,11 +21,18 @@ function ProfilePic() {
             });
     }, []);
 
+	if (!profilePicUrl)
+	{
+		return (
+			<img src='loading.gif' width="50" style={{ borderRadius: '50%' }} />
+		)
+	}
     return (
-        <div>
-            <img src={profilePicUrl} alt="Profile Picture" className="profile_pic" />
-        </div>
-    );
+        <div className="profile_pic">
+			<img src={profilePicUrl} alt="Profile Picture" width="50" style={{ borderRadius: '50%' }} />
+			{online && <div className="online_indicator" />}
+    	</div>
+  	);
 }
 
 export default ProfilePic;

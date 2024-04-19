@@ -2,4 +2,16 @@
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
+	position: relative;
+}
+
+.online_indicator {
+	position: absolute;
+	width: 6px;
+	height: 6px;
+	background-color: green;
+	border-radius: 50%;
+	bottom: 0;
+	right: 0;
+	border: 1px solid #fff;
 }

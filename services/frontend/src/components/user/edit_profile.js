@@ -62,18 +62,15 @@ function EditProfile () {
         return <div>Loading...</div>;
     }
 
-    const { username, profile_pic } = userData;
-
     return (
         <div>
-            {profile_pic && <img src={profile_pic} alt="Profile" className="profile_pic" />}
-            {username && <h2>Username: {username}</h2>}
-            <p>This is the edit page</p>
+            <h1>Edit profile</h1>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
-                <label htmlFor="username">Edit username: </label>
+                <label htmlFor="username">New username: </label>
                 <input id="username" name="username" type="text" value={newUsername} onChange={handleChangeUsername} />
                 <br />
-                <label htmlFor="profile_pic">Upload profile picture: </label>
+                <br />
+                <label htmlFor="profile_pic">Upload new profile picture: </label>
                 <input id="profile_pic" name="profile_pic" type="file" onChange={handleFileChange} />
                 <br />
                 <button type="submit">Save</button>

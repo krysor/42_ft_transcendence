@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import ProfilePic from "./getProfilePic";
 import getUserData from "./getUserData";
 
 function Profile() {
@@ -22,7 +23,8 @@ function Profile() {
 
     return (
         <div>
-            {profile_pic && <img src={profile_pic} alt="Profile" className="profile_pic" />}
+            {profile_pic && <ProfilePic filename={profile_pic} online="" />}
+            <br/>
             {username && <h2>Username: {username}</h2>}
             {loss !== null && <h3>game lost: {loss}</h3>}
             {win !== null && <h3>game win: {win}</h3>}
