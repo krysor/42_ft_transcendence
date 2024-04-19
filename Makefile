@@ -1,11 +1,11 @@
 all:
 	mkdir -p ./services/postgreSQL
-	docker-compose -f docker-compose.yml up --build
+	docker compose -f docker-compose.yml up --build
 
 re: clean all
 
 down:
-	docker-compose -f docker-compose.yml down
+	docker compose -f docker-compose.yml down
 
 # linux
 # clean: down

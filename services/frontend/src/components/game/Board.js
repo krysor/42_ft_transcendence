@@ -7,6 +7,14 @@ const	padHeight		= 100;
 const	padWidth		= 10;
 const 	ballDiameter	= 30;
 
+const	ballPosYMin		= borderHeight;
+const 	ballPosYMax 	= boardHeight - borderHeight - ballDiameter;
+const	ballPosXMin		= padWidth;
+const	ballPosXMax		= boardWidth - padWidth - ballDiameter;
+
+const	ballVXStart		= 0;
+const	ballVYStart		= 5;
+
 const Border = (posY) => {
 	return (<div className="border"
 				 style={{'width' 	: boardWidth,
@@ -31,42 +39,69 @@ const Ball = (posX, posY) => {
 }
 
 const BallHitHorizontalBorder = (ballPosY) => {
-	const borderUpper = borderHeight;
-	const borderLower = boardHeight - borderHeight - ballDiameter;
-	
-	if (ballPosY <= borderUpper
-		|| ballPosY >= borderLower)
+	if (ballPosY <= ballPosYMin
+		|| ballPosY >= ballPosYMax)
 		return (true);
 	return (false);
 }
 
 const BallHitPad = (ballPosX, ballPosY, padLeftPosY, padRightPosY) => {
-	
-	if ((ballPosX <= padWidth && ballPosY + ballDiameter >= padLeftPosY && ballPosY <= padLeftPosY + padHeight)
-		|| (ballPosX >= boardWidth - padWidth - ballDiameter && ballPosY + ballDiameter >= padRightPosY && ballPosY <= padRightPosY + padHeight))
+	if ((ballPosX <= ballPosXMin && ballPosY + ballDiameter >= padLeftPosY && ballPosY <= padLeftPosY + padHeight)
+		|| (ballPosX >= ballPosXMax && ballPosY + ballDiameter >= padRightPosY && ballPosY <= padRightPosY + padHeight))
 		return (true);
 	return (false);
 }
 
+//this one to score the points / displace the ball from side back to the game
+// const BallHitPad = (ballPosX, ballPosY, padLeftPosY, padRightPosY) => {
+// 	if ((ballPosX <= padLeft && ballPosY + ballDiameter >= padLeftPosY && ballPosY <= padLeftPosY + padHeight)
+// 		|| (ballPosX >= padRight && ballPosY + ballDiameter >= padRightPosY && ballPosY <= padRightPosY + padHeight))
+// 		return (true);
+// 	return (false);
+// }
+
+
 const Board = (paused) => {
 	const [ballPosX, setBallPosX] = React.useState((boardWidth - ballDiameter)/2);
 	const [ballPosY, setBallPosY] = React.useState((boardHeight - ballDiameter)/2);
-	const ballSpeedX = React.useRef(-5);
-	const ballSpeedY = React.useRef(5);
+	const ballSpeedX = React.useRef(ballVXStart);
+	const ballSpeedY = React.useRef(ballVYStart);
 	const frameId 	 = React.useRef(0);
 
-	
+
 	const padLeftPosY = (boardHeight - padHeight)/2;
 	const padRightPosY = (boardHeight - padHeight)/2;
+
+	const getNewBallPos = (ballPos, ballSpeed, min, max) => {
+		const newBallPos = ballPos + ballSpeed;
+		
+		if (newBallPos < min)
+			return (min);
+		if (newBallPos > max)
+			return (max);
+		return (newBallPos);
+	}
+
+	const UpdateBall = (ballPosX, ballPosY, ballSpeedX, ballSpeedY) => {
+		setBallPosX(ballPosX + ballSpeedX.current);
+		
+		// console.log("getNewBallPos: ");
+		// console.log(getNewBallPos(ballPosY, ballSpeedY.current));
+
+		// console.log("newBallPos: ", ballPosY + ballSpeedY.current);
+		//console.log(getNewBallPos(ballPosY, ballSpeedY.current));
+
+		// setBallPosY(getNewBallPos(ballPosY, ballSpeedY.current));
+		setBallPosY(ballPosY + ballSpeedY.current);
+	}
+	
 
 	const animate = () => {
 		if (BallHitHorizontalBorder(ballPosY))
 			ballSpeedY.current = ballSpeedY.current * -1;
 		if (BallHitPad(ballPosX, ballPosY, padLeftPosY, padRightPosY))
 			ballSpeedX.current = ballSpeedX.current * -1;		
-		setBallPosX(ballPosX + ballSpeedX.current);
-		setBallPosY(ballPosY + ballSpeedY.current);
-
+		UpdateBall(ballPosX, ballPosY, ballSpeedX, ballSpeedY);
 		frameId.current = requestAnimationFrame(animate);
 	}
 	React.useEffect(() => {
