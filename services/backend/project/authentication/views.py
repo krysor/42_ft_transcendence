@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core.serializers import serialize
 
 from rest_framework.authtoken.models import Token
@@ -14,6 +14,9 @@ from rest_framework.response import Response
 from rest_framework import status
 
 import json
+
+from django.conf import settings
+import os
 
 from .serializers import UserSerializer
 from authentication.models import User
@@ -113,5 +116,15 @@ def edit_profile(request):
     user.save()
     serialized = UserSerializer(user)
     return JsonResponse({'user': serialized.data})
-    
 
+@api_view(['GET'])  
+def profile_pic(request, filename):
+    img_path = os.path.join(settings.MEDIA_ROOT, filename)
+
+    try:
+        with open(img_path, 'rb') as f:
+            img_data = f.read()
+
+        return HttpResponse(img_data, content_type='image/jpeg')
+    except FileNotFoundError:
+        return HttpResponse(status=404)

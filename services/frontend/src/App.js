@@ -22,6 +22,7 @@ import NotFound from "./components/notfound";
 import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ProfilePic from "./components/user/getProfilePic";
 
 
 class App extends Component {
@@ -52,7 +53,7 @@ class App extends Component {
                       </Nav>
                         {isLoggedIn && <Nav.Link as={Link} to="/profile">
                         {user && user.profile_pic &&
-                        <img src={user.profile_pic} alt="Profile Pic" className="profile_pic" />
+                        <ProfilePic />
                         }
                         </Nav.Link>}
                   </Container>
