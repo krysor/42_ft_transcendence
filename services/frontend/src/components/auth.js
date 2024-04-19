@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom/client';
+// import ReactDOM from 'react-dom/client';
 
 // function Login() {
 // 	// useEffect(() => {
@@ -15,9 +15,6 @@ import ReactDOM from 'react-dom/client';
 //     //     }, []);
 //     fetch('http://localhost:8000/login')
 // }
-
-
-
 
 class Login extends React.Component {
     constructor() {
@@ -61,7 +58,5 @@ class Login extends React.Component {
       );
     }
   }
-
-
 
 export default Login;

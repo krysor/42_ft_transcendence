@@ -68,6 +68,12 @@ const Board = (paused) => {
 	const ballSpeedY = React.useRef(ballVYStart);
 	const frameId 	 = React.useRef(0);
 
+	// class ballSpeed {
+	// 	constructor() {
+	// 		this.X = React.useRef(ballVXStart);
+	// 		this.Y = React.useRef(ballVYStart);
+	// 	}
+	// }
 
 	const padLeftPosY = (boardHeight - padHeight)/2;
 	const padRightPosY = (boardHeight - padHeight)/2;
@@ -83,8 +89,6 @@ const Board = (paused) => {
 	}
 
 	const UpdateBall = (ballPosX, ballPosY, ballSpeedX, ballSpeedY) => {
-		setBallPosX(ballPosX + ballSpeedX.current);
-		
 		// console.log("getNewBallPos: ");
 		// console.log(getNewBallPos(ballPosY, ballSpeedY.current));
 
@@ -92,6 +96,8 @@ const Board = (paused) => {
 		//console.log(getNewBallPos(ballPosY, ballSpeedY.current));
 
 		// setBallPosY(getNewBallPos(ballPosY, ballSpeedY.current));
+
+		setBallPosX(ballPosX + ballSpeedX.current);
 		setBallPosY(ballPosY + ballSpeedY.current);
 	}
 	

@@ -3,7 +3,7 @@ import { Nav } from "react-bootstrap";
 
 function NavBar() {
 	return (
-		<nav id="hellnawh" class="navbar navbar-default">
+		<nav id="navbar" class="navbar navbar-default">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<Nav.Link as={Link} to="/">
