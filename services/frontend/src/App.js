@@ -26,11 +26,10 @@ import ProfilePic from "./components/user/getProfilePic";
 import UserPage from "./components/user/userPage";
 
 
-class App extends Component {
-  render() {
-      const token = sessionStorage.getItem('authtoken')
-      const user = JSON.parse(sessionStorage.getItem('user'))
-      const isLoggedIn = !!token;
+function App () {
+        const token = sessionStorage.getItem('authtoken')
+        const user = JSON.parse(sessionStorage.getItem('user'))
+        const isLoggedIn = !!token;
 
       return (
           <Router>
@@ -72,7 +71,6 @@ class App extends Component {
               </Routes>
           </Router>
       );
-  }
 }
 
 export default App;

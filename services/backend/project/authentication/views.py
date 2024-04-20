@@ -94,13 +94,12 @@ def all_users(request):
 @api_view(['POST'])
 def add_friend(request, friend_id):
     user = request.user
-
     try:
         friend = User.objects.get(pk=friend_id)
         user.friends.add(friend)
         user.save()
-        return JsonResponse({'message': f'{friend.username} added as a friend.'})
-
+        serialized = UserSerializer(user)
+        return JsonResponse({'user': serialized.data})
     except User.DoesNotExist:
         return JsonResponse({'error': 'Friend user not found.'}, status=404)
 

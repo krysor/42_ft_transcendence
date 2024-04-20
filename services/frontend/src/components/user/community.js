@@ -26,6 +26,10 @@ function Community() {
       if (!response.ok) {
         throw new Error('Failed to add friend');
       }
+      return response.json();
+    })
+    .then(data => {
+      sessionStorage.setItem('user', JSON.stringify(data.user));
     })
     .catch(error => console.error('Error adding friend:', error));
   }

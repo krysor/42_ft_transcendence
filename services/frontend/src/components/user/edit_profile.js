@@ -41,7 +41,7 @@ function EditProfile () {
 			.then(data => {
 				console.log(data);
 				sessionStorage.setItem('user', JSON.stringify(data.user));
-				window.location.href = "/";
+				window.location.href = "/profile";
 			  })
 			
             console.log('Profile updated successfully');
