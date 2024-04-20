@@ -48,13 +48,11 @@ class App extends Component {
                         {isLoggedIn &&<Nav.Link as={Link} to="/community">Community</Nav.Link>}
                         {!isLoggedIn && <Nav.Link as={Link} to="/signup">Signup</Nav.Link>}
                         {!isLoggedIn && <Nav.Link as={Link} to="/login">Login</Nav.Link>}
-                        {/* {isLoggedIn && <Nav.Link as={Link} to="/profile">Profile</Nav.Link>} */}
                         {isLoggedIn && <Nav.Link as={Link} to="/logout">Logout</Nav.Link>}
                       </Nav>
-                        {isLoggedIn && <Nav.Link as={Link} to="/profile">
-                        {user && user.profile_pic &&
-                        <ProfilePic filename={user.profile_pic} />
-                        }
+                        {isLoggedIn &&
+                        <Nav.Link as={Link} to="/profile">
+                            {user && user.profile_pic && <ProfilePic filename={user.profile_pic} />}
                         </Nav.Link>}
                   </Container>
               </Navbar>

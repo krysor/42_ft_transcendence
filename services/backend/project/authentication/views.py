@@ -75,6 +75,15 @@ def user_detail(request):
     return JsonResponse({'user': serialized.data})
 
 @api_view(['GET'])
+def get_user_by_id(request, user_id):
+    try:
+        user = User.objects.get(pk=user_id)
+        serialized = UserSerializer(user)
+        return Response(serialized.data)
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User user not found.'}, status=404)
+
+@api_view(['GET'])
 def all_users(request):
     users = User.objects.all()
     serialized = UserSerializer(users, many=True)
@@ -84,7 +93,6 @@ def all_users(request):
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def add_friend(request, friend_id):
-    print(friend_id)
     user = request.user
 
     try:
