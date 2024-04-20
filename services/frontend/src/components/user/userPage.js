@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import ProfilePic from "./getProfilePic";
-import getUserData from "./getUserData";
+import { useParams } from 'react-router-dom';
 
-function UserPage({user_id}) {
-    const authtoken = sessionStorage.getItem('authtoken');
+function UserPage() {
+    // const authtoken = sessionStorage.getItem('authtoken');
+	const { user_id } = useParams();
     const [userData, setUserData] = useState(null);
 	const url_request = 'http://localhost:8000/user/get_user_by_id/' + user_id
         useEffect(() => {
@@ -12,8 +12,7 @@ function UserPage({user_id}) {
 				.then(response => response.json())
 				.then(data => setUserData(data))
 				.catch(error => console.error('Error fetching users:', error));
-			}, []);
-        };
+		}, []);
 
     if (!userData) {
         return <div>Loading...</div>;

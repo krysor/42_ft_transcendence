@@ -23,6 +23,7 @@ import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ProfilePic from "./components/user/getProfilePic";
+import UserPage from "./components/user/userPage";
 
 
 class App extends Component {
@@ -64,6 +65,7 @@ class App extends Component {
                   <Route path="/login" element={<Login />} />
                   <Route path="/logout" element={<Logout />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/user_profile/:user_id" element={<UserPage />} />
                   <Route path="/community" element={<Community />} />
                   <Route path="/edit_profile" element={<EditProfile />} />
                   <Route path="/*" element={<NotFound />} />

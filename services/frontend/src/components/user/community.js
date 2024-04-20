@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import ProfilePic from './getProfilePic';
 
 function Community() {
@@ -35,7 +36,9 @@ function Community() {
       <ul>
         {users.map(user => (
           <li key={user.id} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <ProfilePic filename={user.profile_pic} online={user.is_online} />
+            <Link to={`/user_profile/${user.id}`} style={{ marginRight: '10px' }}>
+              <ProfilePic filename={user.profile_pic} online={user.is_online} />
+            </Link>
             <span style={{ marginLeft: '2em' , marginRight: '2em', fontWeight: 'bold' }}>{user.username}</span>
             {current_user.id !== user.id && (
               <button onClick={() => handleAddFriend(user.id)}>Add friend</button>
