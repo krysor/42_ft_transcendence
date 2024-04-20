@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -14,20 +13,19 @@ import NotFound from "./components/notfound";
 
 import "./App.css";
 
-class App extends Component {
-    render() {
-        return (
-            <Router>
-                {NavBar()}
-                <Routes>
-					<Route path="/"		 element={<Home />}></Route>
-					<Route path="/home"	 element={<Home />}></Route>
-					<Route path="/game"	 element={<Game />}></Route>
-					<Route path="/about" element={<About />}></Route>
-					<Route path="/login" element={<Login />}></Route>
-					<Route path="/*" 	 element={<NotFound />}></Route>
-                </Routes>
-            </Router>
-);}}
+function App() {
+	return (
+		<Router>
+			<NavBar />
+			<Routes>
+				<Route path="/"		 element={<Home />}></Route>
+				<Route path="/home"	 element={<Home />}></Route>
+				<Route path="/game"	 element={<Game />}></Route>
+				<Route path="/about" element={<About />}></Route>
+				<Route path="/login" element={<Login />}></Route>
+				<Route path="/*" 	 element={<NotFound />}></Route>
+			</Routes>
+		</Router>)
+}
 
 export default App;

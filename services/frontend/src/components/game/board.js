@@ -1,11 +1,11 @@
 import React from 'react';
 
+import { ballDiameter, Ball }		from './ball'
+import { padHeight, padWidth, Pad }	from './pad'
+import { borderHeight, Border }		from './border'
+
 const 	boardWidth		= 800;
 const 	boardHeight		= 400;
-const	borderHeight	= 10;
-const	padHeight		= 100;
-const	padWidth		= 10;
-const 	ballDiameter	= 30;
 
 const	ballPosYMin		= borderHeight;
 const 	ballPosYMax 	= boardHeight - borderHeight - ballDiameter;
@@ -13,30 +13,7 @@ const	ballPosXMin		= padWidth;
 const	ballPosXMax		= boardWidth - padWidth - ballDiameter;
 
 const	ballVXStart		= 0;
-const	ballVYStart		= 5;
-
-const Border = (posY) => {
-	return (<div className="border"
-				 style={{'width' 	: boardWidth,
-						 'height'	: borderHeight,
-						 'top'	 	: posY}}></div>)
-}
-
-const Pad = (posX, posY) => {
-	return (<div className="pad"
-				 style={{'width'	: padWidth,
-						 'height'	: padHeight, 
-				 		 'left'	  	: posX,		 
-				 		 'top'	  	: posY}}></div>)
-}
-
-const Ball = (posX, posY) => {
-	return (<div id='ball'
-				 style={{'width'	: ballDiameter,
-				 		 'height'	: ballDiameter,
-						 'left'		: Math.round(posX),
-						 'top'		: Math.round(posY)}}></div>)
-}
+const	ballVYStart		= 5; 
 
 const BallHitHorizontalBorder = (ballPosY) => {
 	if (ballPosY <= ballPosYMin
@@ -61,7 +38,7 @@ const BallHitPad = (ballPosX, ballPosY, padLeftPosY, padRightPosY) => {
 // }
 
 
-const Board = (paused) => {
+function Board(props) {
 	const [ballPosX, setBallPosX] = React.useState((boardWidth - ballDiameter)/2);
 	const [ballPosY, setBallPosY] = React.useState((boardHeight - ballDiameter)/2);
 	const ballSpeedX = React.useRef(ballVXStart);
@@ -89,14 +66,6 @@ const Board = (paused) => {
 	}
 
 	const UpdateBall = (ballPosX, ballPosY, ballSpeedX, ballSpeedY) => {
-		// console.log("getNewBallPos: ");
-		// console.log(getNewBallPos(ballPosY, ballSpeedY.current));
-
-		// console.log("newBallPos: ", ballPosY + ballSpeedY.current);
-		//console.log(getNewBallPos(ballPosY, ballSpeedY.current));
-
-		// setBallPosY(getNewBallPos(ballPosY, ballSpeedY.current));
-
 		setBallPosX(ballPosX + ballSpeedX.current);
 		setBallPosY(ballPosY + ballSpeedY.current);
 	}
@@ -111,22 +80,22 @@ const Board = (paused) => {
 		frameId.current = requestAnimationFrame(animate);
 	}
 	React.useEffect(() => {
-		if (!paused)
+		if (!props.paused)
 			frameId.current = requestAnimationFrame(animate);
 		else
 			cancelAnimationFrame(frameId.current);
 		return () => cancelAnimationFrame(frameId);
-	  }, [paused, ballPosX, ballPosY]);
+	  }, [props.paused, ballPosX, ballPosY]);
 
 
 	return (<div className='board' style={{'width':boardWidth,
 										   'height':boardHeight}}>
-				{Border(0)}
-				{Border(boardHeight - borderHeight)}
-				{Ball(ballPosX, ballPosY)}
-				{Pad(0, padLeftPosY)}
-				{Pad(boardWidth - padWidth, padRightPosY)}
+				<Border posY={0}/>
+				<Border posY={boardHeight - borderHeight}/>
+				<Ball	posX={ballPosX} posY={ballPosY}/>
+				<Pad	posX={0} posY={padLeftPosY}/>
+				<Pad	posX={boardWidth - padWidth} posY={padRightPosY}/>
 			</div>)
 }
 
-export default Board
+export { Board, boardWidth }
