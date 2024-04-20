@@ -114,12 +114,14 @@ def edit_profile(request):
     
     new_password = request.data.get('password')
     if new_password:
-        user.password = new_password
+        user.set_password(new_password)
     
     new_profile_pic = request.FILES.get('profile_pic')
     if new_profile_pic:
         user.profile_pic.save(new_profile_pic.name, new_profile_pic)
 
+    print(new_username)
+    print(new_password)
     user.save()
     serialized = UserSerializer(user)
     return JsonResponse({'user': serialized.data})
