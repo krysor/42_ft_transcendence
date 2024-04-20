@@ -82,10 +82,10 @@ function Game() {
 	return (
 		<div className='container'>
 			<h1>Ping pong game</h1>
-			<Board	ballPosX={ballPosX}
-					ballPosY={ballPosY}
-					padLeftPosY={padLeftPosY}
-					padRightPosY={padRightPosY}/>
+			<Board	ballPositionX={Math.round(ballPosX)}
+					ballPositionY={Math.round(ballPosY)}
+					padLeftPositionY={padLeftPosY}
+					padRightPositionY={padRightPosY}/>
 			<button id="gameButton"
 				onClick={() => setPaused(!paused)}>
 				{paused ? "Play" : "Pause"}

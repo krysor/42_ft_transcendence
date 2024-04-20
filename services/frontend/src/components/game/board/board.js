@@ -1,21 +1,21 @@
-import { Border, borderHeight } from './border';
 import { Ball } from './ball';
+import { Border, borderHeight } from './border';
 import { Pad, padWidth } from './pad';
 
-const 	boardWidth		= 800;
-const 	boardHeight		= 400;
+const 		boardWidth	= 800;
+const 		boardHeight	= 400;
 
-function Board(props) {
-	return (<div className='board' style={{'width':boardWidth,
+function	Board(props) {
+	return (<div className='board' style={{'width' :boardWidth,
 										   'height':boardHeight}}>
-				<Border posY={0}/>
-				<Border posY={boardHeight - borderHeight}/>
-				<Ball	posX={props.ballPosX} 
-						posY={props.ballPosY}/>
-				<Pad	posX={0}
-						posY={props.padLeftPosY}/>
-				<Pad	posX={boardWidth - padWidth}
-						posY={props.padRightPosY}/>
+				<Border positionY={0}/>
+				<Border positionY={boardHeight - borderHeight}/>
+				<Ball	positionX={props.ballPositionX} 
+						positionY={props.ballPositionY}/>
+				<Pad	positionX={0}
+						positionY={props.padLeftPositionY}/>
+				<Pad	positionX={boardWidth - padWidth}
+						positionY={props.padRightPositionY}/>
 			</div>)
 }
 
