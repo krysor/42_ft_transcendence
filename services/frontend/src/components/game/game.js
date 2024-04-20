@@ -1,10 +1,10 @@
 import './game.css';
 import React from 'react';
 
-import { ballDiameter }				from './ball';
-import { padHeight, padWidth }			from './pad';
-import { borderHeight }				from './border';
-import { boardWidth, boardHeight, Board }	from './board';
+import { ballDiameter }						from './board/ball';
+import { padHeight, padWidth }				from './board/pad';
+import { borderHeight }						from './board/border';
+import { boardWidth, boardHeight, Board }	from './board/board';
 
 const	ballPosYMin		= borderHeight;
 const 	ballPosYMax 	= boardHeight - borderHeight - ballDiameter;
