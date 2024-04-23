@@ -1,11 +1,10 @@
-import React, { Component } from "react";
 import {
     BrowserRouter as Router,
     Routes,
-    Route,
-    Link,
+    Route
 } from "react-router-dom";
 
+import NavBar from "./components/navbar"
 import Home from "./components/home";
 import About from "./components/about";
 
@@ -19,10 +18,8 @@ import Community from "./components/user/community"
 import EditProfile from "./components/user/edit_profile"
 import NotFound from "./components/notfound";
 
-import "./App.css";
-import { Navbar, Container, Nav } from "react-bootstrap";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
+import "./App.css";
 
 class App extends Component {
   render() {
