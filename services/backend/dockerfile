@@ -7,14 +7,18 @@ RUN apt-get update -y && apt-get install -y postgresql-client
 
 WORKDIR /code/project/
 
-EXPOSE 8000
-
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
 COPY wait.sh /tmp
 
-ENTRYPOINT [ "sh", "/tmp/wait.sh" ]
+RUN chmod +x /tmp/wait.sh
 
-CMD python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000
-# CMD python manage.py makemigrations && python manage.py migrate && python manage.py createsuperuser --username=admin2 --email "" --noinput && python manage.py runserver 0.0.0.0:8000
+RUN apt-get update && \
+    apt-get install -y postgresql-client && \
+    pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 8000
+
+HEALTHCHECK --start-period=1m --interval=100s \
+    CMD curl -f http://localhost:8000/admin/ || exit 1
+
+ENTRYPOINT [ "sh", "/tmp/wait.sh" ]

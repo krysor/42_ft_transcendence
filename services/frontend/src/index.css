@@ -1,6 +1,6 @@
 #root {
-	background-color: #000000;
-	color: #FFFFFF;
+	/* background-color: #000000; */
+	/* color: #FFFFFF; */
 }
 
 button {
@@ -13,6 +13,10 @@ html, body, #root {
 
 #root {
 	padding: 0.1rem;
+}
+
+Container{
+	color: #FFFFFF;
 }
 
 nav div div a {

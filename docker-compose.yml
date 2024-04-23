@@ -3,35 +3,40 @@ version: '3.8'
 services:
 
   db:
-    image: postgres:latest
     container_name: db
+    image: postgres:latest
+    env_file: ./.env
+    volumes:
+      - db-v:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     expose:
       - 5432
     networks:
       - default-n
-    env_file: ./.env
-    volumes:
-      - db-vo:/var/lib/postgresql/data
     restart: unless-stopped
 
   backend:
+    container_name: backend
     build: ./services/backend
+    image: backend_image
+    env_file: ./.env
+    volumes:
+      - backend-v:/code
     ports:
       - "8000:8000"
     expose:
       - 8000
     networks:
       - default-n
-    env_file: ./.env
-    volumes:
-      - backend-v:/code
     depends_on:
       - db
+    restart: unless-stopped
 
   frontend:
+    container_name: frontend
     build: ./services/frontend
+    image: frontend_image
     env_file: ./.env
     volumes:
       - frontend-v:/usr/src/app
@@ -41,9 +46,7 @@ services:
       - 3000
     networks:
       - default-n
-    restart: always
-    depends_on:
-      - backend
+    restart: unless-stopped
 
 volumes:
 
@@ -61,7 +64,7 @@ volumes:
       o: 'bind'
       device: "${PWD}/services/backend"
 
-  db-vo:
+  db-v:
     driver: local
     driver_opts:
       type: 'none'
