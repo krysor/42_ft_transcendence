@@ -14,8 +14,8 @@ function EditProfile () {
             formData.append('username', newUsername);
 
         const newPassword = formData.get('password');
-            if (newPassword)
-                formData.append('password', newPassword);
+        if (newPassword)
+            formData.append('password', newPassword);
 
         const profilePicFile = formData.get('profile_pic');
         if (profilePicFile) {
