@@ -18,14 +18,18 @@ import Community from "./components/user/community"
 import EditProfile from "./components/user/edit_profile"
 import NotFound from "./components/notfound";
 
+import "./App.css";
+import { Navbar, Container, Nav } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import ProfilePic from "./components/user/getProfilePic";
+import UserPage from "./components/user/userPage";
 
 import "./App.css";
 
-class App extends Component {
-  render() {
-      const token = sessionStorage.getItem('authtoken')
-      const user = JSON.parse(sessionStorage.getItem('user'))
-      const isLoggedIn = !!token;
+function App () {
+        const token = sessionStorage.getItem('authtoken')
+        const user = JSON.parse(sessionStorage.getItem('user'))
+        const isLoggedIn = !!token;
 
       return (
           <Router>
@@ -44,13 +48,11 @@ class App extends Component {
                         {isLoggedIn &&<Nav.Link as={Link} to="/community">Community</Nav.Link>}
                         {!isLoggedIn && <Nav.Link as={Link} to="/signup">Signup</Nav.Link>}
                         {!isLoggedIn && <Nav.Link as={Link} to="/login">Login</Nav.Link>}
-                        {/* {isLoggedIn && <Nav.Link as={Link} to="/profile">Profile</Nav.Link>} */}
                         {isLoggedIn && <Nav.Link as={Link} to="/logout">Logout</Nav.Link>}
                       </Nav>
-                        {isLoggedIn && <Nav.Link as={Link} to="/profile">
-                        {user && user.profile_pic &&
-                        <img src={user.profile_pic} alt="Profile Pic" className="profile_pic" />
-                        }
+                        {isLoggedIn &&
+                        <Nav.Link as={Link} to="/profile">
+                            {user && user.profile_pic && <ProfilePic filename={user.profile_pic} />}
                         </Nav.Link>}
                   </Container>
               </Navbar>
@@ -62,13 +64,13 @@ class App extends Component {
                   <Route path="/login" element={<Login />} />
                   <Route path="/logout" element={<Logout />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/user_profile/:user_id" element={<UserPage />} />
                   <Route path="/community" element={<Community />} />
                   <Route path="/edit_profile" element={<EditProfile />} />
                   <Route path="/*" element={<NotFound />} />
               </Routes>
           </Router>
       );
-  }
 }
 
 export default App;

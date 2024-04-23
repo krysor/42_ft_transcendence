@@ -2,4 +2,24 @@
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
+	position: relative;
+	position: relative;
+}
+
+.profile_pic img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+    object-position: center;
+}
+
+.online_indicator {
+	position: absolute;
+	width: 6px;
+	height: 6px;
+	background-color: green;
+	border-radius: 50%;
+	bottom: 0;
+	right: 0;
+	border: 1px solid #fff;
 }

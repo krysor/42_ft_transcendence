@@ -1,3 +1,6 @@
 .env
 services/postgreSQL/*
 !services/postgreSQL/
+
+services/backend/media/*
+!services/postgreSQL/default_pp.jpeg

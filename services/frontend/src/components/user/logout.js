@@ -31,7 +31,7 @@ function Logout () {
 			sessionStorage.removeItem('user');
 			window.location.href = "/";
 		});
-	}, [authtoken]);
+	});
 
 	return (
 	<h3>login out...</h3>
