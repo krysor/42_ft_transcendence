@@ -1,7 +1,8 @@
 import {
     BrowserRouter as Router,
     Routes,
-    Route
+    Route,
+    Link
 } from "react-router-dom";
 
 import NavBar from "./components/navbar"
