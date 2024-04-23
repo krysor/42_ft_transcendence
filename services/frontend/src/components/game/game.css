@@ -12,12 +12,12 @@
 }
 
 .border {
-	background-color: white;
+	background-color: black;
 	position: absolute;
 }
 
 .pad {
-	background-color: white;
+	background-color: black;
 	position: absolute;
 }
 
@@ -26,7 +26,7 @@
 }
 
 #ball {
-	background-color: white;
+	background-color: black;
 	border-radius: 50%;
 	position: absolute;
 }
