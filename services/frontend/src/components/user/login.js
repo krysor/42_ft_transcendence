@@ -44,7 +44,6 @@ class Login extends React.Component {
       .then(response => {
         if (!response.ok) {
           this.setState({ loginError: 'Invalid username or password.' });
-          throw new Error('Network response was not ok');
         }
 
         return response.json();
@@ -54,7 +53,6 @@ class Login extends React.Component {
         if (data.Token) {
           sessionStorage.setItem('authtoken', data.Token);
           sessionStorage.setItem('user', JSON.stringify(data.user));
-          console.log("token succesfully stored")
           window.location.href = "/";
         }
         else {
@@ -67,11 +65,11 @@ class Login extends React.Component {
     render() {
       return (
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor="username">Enter username</label>
+          <label htmlFor="username">Enter username: </label>
           <input id="username" name="username" type="text" />
           {this.state.usernameError && <div>{this.state.usernameError}</div>}
           <br />
-          <label htmlFor="password">Enter your password</label>
+          <label htmlFor="password">Enter your password: </label>
           <input id="password" name="password" type="password" />
           {this.state.passwordError && <div>{this.state.passwordError}</div>}
           {this.state.loginError && <div>{this.state.loginError}</div>}

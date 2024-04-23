@@ -25,8 +25,12 @@ from authentication.models import User
 def signup(request):
     if User.objects.filter(username=request.data['username']).exists():
         raise ValidationError({'error': 'Username is already taken'})
+
+    if len(request.data.get('username', '')) < 0 or len(request.data.get('username', '')) > 20:
+            raise ValidationError({'error': 'username must be at least 1 and less than 20 characters long'})
     if len(request.data.get('password', '')) < 8:
             raise ValidationError({'error': 'Password must be at least 8 characters long'})
+
     request.data['username'] = request.data.get('username', '').strip()
     serialized = UserSerializer(data=request.data)
     if serialized.is_valid():
@@ -108,20 +112,25 @@ def add_friend(request, friend_id):
 @api_view(['POST'])
 def edit_profile(request):
     user = request.user
-    new_username = request.data.get('username')
-    if new_username:
-        user.username = new_username
     
-    new_password = request.data.get('password')
-    if new_password:
-        user.set_password(new_password)
+    if request.data.get('username') and User.objects.filter(username=request.data['username']).exists():
+        raise ValidationError({'error': 'Username is already taken'})
+
+    if request.data.get('username') and len(request.data.get('username', '')) > 20:
+            raise ValidationError({'error': 'username must be at least 1 and less than 20 characters long'})
+    if request.data.get('password') and len(request.data.get('password', '')) < 8 and len(request.data.get('password', '')) != 0:
+            raise ValidationError({'error': 'Password must be at least 8 characters long'})
+
+    if request.data.get('username'):
+        user.username = request.data.get('username')
+
+    if request.data.get('password'):
+        user.set_password(request.data.get('password'))
     
     new_profile_pic = request.FILES.get('profile_pic')
     if new_profile_pic:
         user.profile_pic.save(new_profile_pic.name, new_profile_pic)
 
-    print(new_username)
-    print(new_password)
     user.save()
     serialized = UserSerializer(user)
     return JsonResponse({'user': serialized.data})

@@ -1,100 +1,64 @@
-import React, { useState, useEffect } from "react";
-import getUserData from "./getUserData";
+import React, { useState } from "react";
 
 function EditProfile () {
     const authtoken = sessionStorage.getItem('authtoken');
-    const [userData, setUserData] = useState(null);
-    const [newProfilePic, setNewProfilePic] = useState(null);
-    const [newUsername, setNewUsername] = useState('');
-    const [newPassword, setnewPassword] = useState('');
-    const [usernameError, setUsernameError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const user = await getUserData();
-            setUserData(user);
-        };
-        fetchData();
-    }, [authtoken]);
+    const [error, setError] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (newUsername.length > 20) {
-            setUsernameError('Username must be 20 characters or less')
-            return;
-        }
+        const formData = new FormData(event.target);
 
-        if (newPassword.length < 6 && newPassword.length > 0) {
-            setPasswordError('Password must be at least 6 characters long')
-            return;
-        }
-
-        try {
-            const formData = new FormData();
+        const newUsername = formData.get('username');
+        if (newUsername)
             formData.append('username', newUsername);
-            formData.append('password', newPassword);
-            if (newProfilePic) {
-                formData.append('profile_pic', newProfilePic);
-            }
-            fetch('http://localhost:8000/user/edit_profile/', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Token ${authtoken}`
-                },
-                body: formData
-            })
-            .then(response => {
-				if (!response.ok) {
-				  this.setState({ loginError: 'Invalid username or password.' });
-				  throw new Error('Network response was not ok');
-				}
-		
-				return response.json();
-			  })
-			.then(data => {
-				console.log(data);
-				sessionStorage.setItem('user', JSON.stringify(data.user));
-				window.location.href = "/profile";
-			  })
-			
-            console.log('Profile updated successfully');
-        } catch (error) {
-            console.error('Error updating profile:', error);
+
+        const newPassword = formData.get('password');
+            if (newPassword)
+                formData.append('password', newPassword);
+
+        const profilePicFile = formData.get('profile_pic');
+        if (profilePicFile) {
+            formData.append('profile_pic', profilePicFile);
         }
-    };
 
-    const handleChangeUsername = (event) => {
-        setNewUsername(event.target.value);
+        fetch('http://localhost:8000/user/edit_profile/', {
+            method: 'POST',
+            headers: { 'Authorization': `Token ${authtoken}` },
+            body: formData
+        })
+        .then(response => { return response.json(); })
+        .then(data => {
+            console.log(data);
+            if (data.user)
+            {
+                sessionStorage.setItem('user', JSON.stringify(data.user));
+                window.location.href = "/profile";
+            }
+            else if (data.error){
+                setError(data.error);
+            }
+            else{
+                throw new Error('Failed to register new user')
+            }
+            })
+        
+        console.log('Profile updated successfully');
     };
-
-    const handleChangePassword = (event) => {
-        setnewPassword(event.target.value);
-    };
-
-    const handleFileChange = (event) => {
-        setNewProfilePic(event.target.files[0]);
-    };
-
-    if (!userData) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div>
             <h1>Edit profile</h1>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <label htmlFor="username">New username: </label>
-                <input id="username" name="username" type="text" value={newUsername} onChange={handleChangeUsername} />
-                {usernameError && <div>{usernameError}</div>}
+                <input id="username" name="username" type="text" />
                 <br />
                 <label htmlFor="password">New password: </label>
-                <input id="password" name="password" type="text" value={newPassword} onChange={handleChangePassword} />
-                {passwordError && <div>{passwordError}</div>}
+                <input id="password" name="password" type="text" />
                 <br />
                 <label htmlFor="profile_pic">Upload new profile picture: </label>
-                <input id="profile_pic" name="profile_pic" type="file" onChange={handleFileChange} />
+                <input id="profile_pic" name="profile_pic" type="file" />
+                {error && <div>Error: {error}</div>}
                 <br />
                 <button type="submit">Save</button>
             </form>
