@@ -3,6 +3,8 @@ FROM python:3
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+RUN apt-get update -y && apt-get install -y postgresql-client
+
 WORKDIR /code/project/
 
 COPY requirements.txt .

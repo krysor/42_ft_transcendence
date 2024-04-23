@@ -1,11 +1,10 @@
-import React, { Component } from "react";
 import {
     BrowserRouter as Router,
     Routes,
-    Route,
-    Link,
+    Route
 } from "react-router-dom";
 
+import NavBar from "./components/navbar"
 import Home from "./components/home";
 import About from "./components/about";
 
@@ -25,6 +24,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ProfilePic from "./components/user/getProfilePic";
 import UserPage from "./components/user/userPage";
 
+import "./App.css";
 
 function App () {
         const token = sessionStorage.getItem('authtoken')

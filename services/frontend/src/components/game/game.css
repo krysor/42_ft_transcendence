@@ -1,0 +1,32 @@
+.container {
+	margin: auto;
+	text-align: center;
+}
+
+.board {
+	/* color: red; */
+	margin: auto;
+	margin-top: 40px;
+	position: relative;
+	/* background-color: blue; */
+}
+
+.border {
+	background-color: white;
+	position: absolute;
+}
+
+.pad {
+	background-color: white;
+	position: absolute;
+}
+
+#gameButton {
+	margin-top: 20px;
+}
+
+#ball {
+	background-color: white;
+	border-radius: 50%;
+	position: absolute;
+}
