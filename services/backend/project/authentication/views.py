@@ -49,7 +49,7 @@ def log_user(request):
     try:
         user = User.objects.get(username=request.data['username'])
     except User.DoesNotExist:
-        raise AuthenticationFailed("Username or password is incorrect.")
+        raise AuthenticationFailed({'error': 'Username is incorrect.'})
 
     if user.check_password(request.data['password']):
         token, created = Token.objects.get_or_create(user=user)
@@ -58,7 +58,7 @@ def log_user(request):
         serialized = UserSerializer(user)
         return JsonResponse({'Token': token.key, 'user': serialized.data})
 
-    raise AuthenticationFailed("Username or password is incorrect.")
+    raise AuthenticationFailed({'error': 'password is incorrect.'})
 
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])

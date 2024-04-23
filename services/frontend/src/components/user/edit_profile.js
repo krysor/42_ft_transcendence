@@ -42,8 +42,6 @@ function EditProfile () {
                 throw new Error('Failed to register new user')
             }
             })
-        
-        console.log('Profile updated successfully');
     };
 
     return (
