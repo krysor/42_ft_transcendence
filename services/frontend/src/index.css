@@ -6,6 +6,21 @@
 	filter: invert(1);
 }
 
-.profile_pic {
+#navBar {
+	/* to grow Nav to completely fill the Container inside Navbar */
+	flex-grow: 1;
+}
+
+a.nav-link:last-child {
+	/* to push username and profilepic to the right */
+	margin-left: auto;
+}
+
+a.nav-link:last-of-type {
+	/* to display username next to profile pic */
 	display: flex;
+}
+
+.profile_pic {
+	margin-left: 0.5rem;
 }

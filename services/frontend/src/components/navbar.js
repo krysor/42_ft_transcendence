@@ -13,7 +13,7 @@ function NavBar(props) {
 				<Navbar.Brand as={Link} to="/">
 					<img id="logo" alt="" src="favicon.ico"></img>Home
 				</Navbar.Brand>
-				<Nav id="test" className="me-auto">
+				<Nav id="navBar" className="me-auto">
 					{/* <Navbar.Brand as={Link} to="/">Home</Navbar.Brand> */}
 					<Nav.Link as={Link} to="/Game">Game</Nav.Link>
 					<Nav.Link as={Link} to="/about">About</Nav.Link>
