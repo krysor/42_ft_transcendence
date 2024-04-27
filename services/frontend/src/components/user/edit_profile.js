@@ -22,7 +22,7 @@ function EditProfile () {
             formData.append('profile_pic', profilePicFile);
         }
 
-        fetch('http://localhost:8000/user/edit_profile/', {
+        fetch('http://' + window.location.host.split(':')[0] + ':8000/user/edit_profile/', {
             method: 'POST',
             headers: { 'Authorization': `Token ${authtoken}` },
             body: formData

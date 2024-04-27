@@ -1,7 +1,7 @@
 const getUserData = async () => {
     const authtoken = sessionStorage.getItem('authtoken');
     try {
-        const response = await fetch('http://localhost:8000/user/user_detail/', {
+        const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/user/user_detail/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -8,14 +8,14 @@ function Community() {
   const current_user = JSON.parse(sessionStorage.getItem('user'));
 
   useEffect(() => {
-    fetch('http://localhost:8000/user/all/')
+    fetch('http://' + window.location.host.split(':')[0] + ':8000/user/all/')
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error fetching users:', error));
   }, []);
 
   const handleAddFriend = (userId) => {
-    fetch(`http://localhost:8000/user/add_friend/${userId}/`, {
+    fetch(`http://' + window.location.host.split(':')[0] + ':8000/user/add_friend/${userId}/`, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',

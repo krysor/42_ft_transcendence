@@ -11,8 +11,7 @@ function Signup () {
             username: formData.get('username'),
             password: formData.get('password'),
         };
-
-        fetch('http://localhost:8000/user/signup/', {
+        fetch('http://' + window.location.host.split(':')[0] + ':8000/user/signup/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(JsonData)

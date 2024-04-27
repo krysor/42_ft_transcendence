@@ -14,7 +14,7 @@ function Login () {
 				password: formData.get('password')
 			};
 
-			fetch('http://localhost:8000/user/login/', {
+			fetch('http://' + window.location.host.split(':')[0] + ':8000/user/login/', {
 				method: 'POST',
 				headers: {'Content-Type': 'application/json' },
 									body: JSON.stringify(jsonData)
