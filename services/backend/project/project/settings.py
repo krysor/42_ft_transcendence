@@ -30,15 +30,15 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # allow the frontend to send request
-CSRF_COOKIE_NAME = 'csrftoken'
-CRSF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    ('http://localhost:8000'),
-]
+# CSRF_COOKIE_NAME = 'csrftoken'
+# CRSF_TRUSTED_ORIGINS = [
+#     'http://localhost:3000',
+#     'http://localhost:8000',
+# ]
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000',
+# ]
 
 # Application definition
 
