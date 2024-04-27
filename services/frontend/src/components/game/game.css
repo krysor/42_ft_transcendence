@@ -3,30 +3,21 @@
 	text-align: center;
 }
 
-.board {
-	/* color: red; */
+#board {
 	margin: auto;
 	margin-top: 40px;
 	position: relative;
-	/* background-color: blue; */
 }
 
-.border {
+.boardElement {
 	background-color: black;
 	position: absolute;
 }
 
-.pad {
-	background-color: black;
-	position: absolute;
+#ball {
+	border-radius: 50%;
 }
 
 #gameButton {
 	margin-top: 20px;
-}
-
-#ball {
-	background-color: black;
-	border-radius: 50%;
-	position: absolute;
 }

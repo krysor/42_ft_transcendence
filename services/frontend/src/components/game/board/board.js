@@ -6,8 +6,11 @@ const 		boardWidth	= 800;
 const 		boardHeight	= 400;
 
 function	Board(props) {
-	return (<div className='board' style={{'width' :boardWidth,
-										   'height':boardHeight}}>
+	const boardStyle = {
+		'width' :boardWidth,
+		'height':boardHeight
+	};
+	return (<div id='board' style={boardStyle}>
 				<Border positionY={0}/>
 				<Border positionY={boardHeight - borderHeight}/>
 				<Ball	positionX={props.ballPositionX} 

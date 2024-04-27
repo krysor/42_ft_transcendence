@@ -1,12 +1,13 @@
 const		ballDiameter = 30;
 
 function	Ball(props) {
-	return (<div id='ball'
-				 style={{'width' : ballDiameter,
-				 		 'height': ballDiameter,
-						 'left'	 : props.positionX,
-						 'top'	 : props.positionY}}>
-			</div>)
+	const ballStyle = {
+		'width' : ballDiameter,
+		'height': ballDiameter,
+		'left'	: props.positionX,
+		'top'	: props.positionY
+	};
+	return (<div id='ball' class="boardElement" style={ballStyle}></div>)
 }
 
 export { ballDiameter, Ball }
