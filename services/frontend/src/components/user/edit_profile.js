@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+
 function EditProfile () {
     const authtoken = sessionStorage.getItem('authtoken');
     const [error, setError] = useState('');
@@ -22,7 +24,7 @@ function EditProfile () {
             formData.append('profile_pic', profilePicFile);
         }
 
-        fetch('http://localhost:8000/user/edit_profile/', {
+        fetch(backendHost + '/user/edit_profile/', {
             method: 'POST',
             headers: { 'Authorization': `Token ${authtoken}` },
             body: formData

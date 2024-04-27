@@ -1,7 +1,9 @@
+const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+
 const getUserData = async () => {
     const authtoken = sessionStorage.getItem('authtoken');
     try {
-        const response = await fetch('http://localhost:8000/user/user_detail/', {
+        const response = await fetch(backendHost + '/user/user_detail/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

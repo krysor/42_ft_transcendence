@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+
 function Login () {
 		const [error, setError] = useState('');
 
@@ -14,7 +16,7 @@ function Login () {
 				password: formData.get('password')
 			};
 
-			fetch('http://localhost:8000/user/login/', {
+			fetch(backendHost + '/user/login/', {
 				method: 'POST',
 				headers: {'Content-Type': 'application/json' },
 									body: JSON.stringify(jsonData)

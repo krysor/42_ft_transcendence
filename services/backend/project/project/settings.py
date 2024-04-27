@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ["*"]
 CSRF_COOKIE_NAME = 'csrftoken'
 CRSF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
-    'http://localhost:8000',
+    ('http://localhost:8000'),
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
