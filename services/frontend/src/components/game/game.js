@@ -6,6 +6,8 @@ import { padHeight, padWidth }				from './board/pad';
 import { borderHeight }						from './board/border';
 import { boardWidth, boardHeight, Board }	from './board/board';
 
+import animate from './threejs.js';
+
 const	ballPosYMin		= borderHeight;
 const 	ballPosYMax 	= boardHeight - borderHeight - ballDiameter;
 const	ballPosXMin		= padWidth;
@@ -27,6 +29,7 @@ const BallHitPad = (ballPosX, ballPosY, padLeftPosY, padRightPosY) => {
 		return (true);
 	return (false);
 }
+
 
 function Game() {
 	const [paused, setPaused] = React.useState(true);
@@ -87,11 +90,14 @@ function Game() {
 					padLeftPositionY={padLeftPosY}
 					padRightPositionY={padRightPosY}/>
 			<button id="gameButton"
-				onClick={() => setPaused(!paused)}>
-				{paused ? "Play" : "Pause"}
+				onClick={() => animate()}>
 			</button>
 		</div>
 	);
+
+	// return (
+	// 	<div id="scene-box"></div>
+	// );
 }
 
 export default Game;
