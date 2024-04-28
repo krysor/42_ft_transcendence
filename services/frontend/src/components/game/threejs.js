@@ -76,7 +76,88 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
 ambientLight.position.set(camera.position.x, camera.position.y, camera.position.z);
 scene.add(ambientLight);
 
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+directionalLight.position.set(1, 2, 3);
+
 // ---------------------------------------------------------------------------------- //
+
+function loadShapes()
+{
+	// Players --------------------------------
+	let player1 = new THREE.Mesh(
+		new THREE.BoxGeometry(0.2, 0.5, 3),
+		new THREE.MeshPhongMaterial({
+			color: 0x5f005f,
+			side: THREE.DoubleSide
+		})
+	);
+	player1.name = "player 1";
+	player1.position.x = -9.9;
+	player1.position.y = 0;
+	player1.position.z = 0; //playerpos
+	UsersGroup.add(player1);
+	
+	
+	let player2 = new THREE.Mesh(
+		new THREE.BoxGeometry(0.2, 0.5, 3),
+		new THREE.MeshPhongMaterial({
+			color: 0x5f005f,
+			side: THREE.DoubleSide
+		})
+	);
+	player2.name =  "player 2";
+	player2.position.x = 9.9
+	player2.position.y = 0;
+	player2.position.z = 0; //playerpos
+	UsersGroup.add(player2);
+	scene.add(UsersGroup);
+	// ---------------------------------------
+	
+	// Borders --------------------------------
+	let bordeurUp = new THREE.Mesh(
+		new THREE.BoxGeometry(20, 0.5, 0.1),
+		new THREE.MeshPhongMaterial({
+			color: 0x9f9f9f,
+			side: THREE.DoubleSide
+		})
+		);
+		bordeurUp.name = "borderUp";
+		bordeurUp.position.x = 0;
+		bordeurUp.position.y = 0;
+		bordeurUp.position.z = 7.2;
+		scene.add(bordeurUp);
+		
+		
+		let borderDown = new THREE.Mesh(
+			new THREE.BoxGeometry(20, 0.5, 0.1),
+			new THREE.MeshPhongMaterial({
+				color: 0x9f9f9f,
+				side: THREE.DoubleSide
+			})
+		);
+		borderDown.name = "borderDown";
+		borderDown.position.x = 0;
+		borderDown.position.y = 0;
+		borderDown.position.z = -7.2;
+		scene.add(borderDown);
+		// ---------------------------------------
+		
+		// Ball
+		
+		let ball = new THREE.Mesh(
+			new THREE.SphereGeometry(0.2),
+			new THREE.MeshPhongMaterial({
+				color: 0x9f9f00,
+				side: THREE.DoubleSide
+			})
+		);
+		ball.name = "ball";
+		ball.position.x = 0; //ballpos
+		ball.position.y = 0;
+		ball.position.z = 0; //ballpos
+		scene.add(ball);
+		// ---------------------------------------
+}
 
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 
