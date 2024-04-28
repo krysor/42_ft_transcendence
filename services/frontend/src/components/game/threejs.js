@@ -1,5 +1,5 @@
 // import * as THREE from './threejs/src/Three.js';
-import threeGltfLoader from 'https://cdn.skypack.dev/pin/three-gltf-loader@v1.111.0-nljU36r8PRJpg81IWD7g/mode=imports/optimized/three-gltf-loader.js';
+// import threeGltfLoader from 'https://cdn.skypack.dev/pin/three-gltf-loader@v1.111.0-nljU36r8PRJpg81IWD7g/mode=imports/optimized/three-gltf-loader.js';
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.module.js';
 import UsersGroup from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.module.js';
 
@@ -13,7 +13,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 
-let i = 0;
+// let i = 0;
 
 // camera.position.x = Math.cos(angle * Math.PI / 180) * radius;
 // camera.position.z = Math.sin(angle * Math.PI / 180) * radius;
@@ -162,31 +162,33 @@ function loadShapes()
 		// ---------------------------------------
 }
 
+loadShapes();
+
 let playerKeys = {};
 function initKeys() {
 
 	playerKeys[player1_name] = {
-		ArrowLeft: false,
-		ArrowRight: false
+		ArrowUp: false,
+		ArrowDown: false
 	};
 
 	playerKeys[player2_name] = {
-		ArrowLeft: false,
-		ArrowRight: false
+		ArrowUp: false,
+		ArrowDown: false
 	};
 }
 
 initKeys();
 
 function handleKeyDown(event) {
-	if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-		playerKeys[player2_name][event.key] = true;
+	if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+		playerKeys[player1_name][event.key] = true;
 	}
 }
 
 function handleKeyUp(event) {
-	if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-		playerKeys[player2_name][event.key] = false;
+	if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+		playerKeys[player1_name][event.key] = false;
 	}
 }
 
@@ -202,7 +204,7 @@ let paddleDepth = 0.5;
 let ballVelocity = { x: 0.02, y: 0, z: 0 };
 
 const animate = () => {
-	let it = 0;
+	// let it = 0;
 	
 	// Gameloop
 	// UsersGroup.children.forEach((elem) => {
@@ -230,16 +232,17 @@ const animate = () => {
 			player1.position.z += 0.1;
 	}
 
-	if (playerKeys[player2_name].ArrowUp)
-	{
-		if (player2.position.z > -5.6)
-			player2.position.z -= 0.1;
-	}
-	if (playerKeys[player2_name].ArrowDown)
-	{
-		if (player2.position.z < 5.6)
-			player2.position.z += 0.1;
-	}
+	// if (playerKeys[player2_name].ArrowUp)
+	// {
+	// 	if (player2.position.z > -5.6)
+	// 		player2.position.z -= 0.1;
+	// }
+	// if (playerKeys[player2_name].ArrowDown)
+	// {
+	// 	if (player2.position.z < 5.6)
+	// 		player2.position.z += 0.1;
+	// }
+
 	// if (playerKeys[user].ArrowUp)
 	// {
 	// 	if (player.position.z > -5.6)
@@ -254,6 +257,8 @@ const animate = () => {
 	ball.position.x += ballVelocity.x;
 	ball.position.y += ballVelocity.y;
 	ball.position.z += ballVelocity.z;
+
+	player2.position.z = ball.position.z;
 
 				// Check for collision with the game area's top and bottom boundaries
 	if (ball.position.z > 7.1 || ball.position.z < -7.1) {
@@ -282,3 +287,5 @@ const animate = () => {
 }
 
 animate();
+
+export default animate;
