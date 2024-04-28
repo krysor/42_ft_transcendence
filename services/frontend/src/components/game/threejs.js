@@ -81,6 +81,9 @@ directionalLight.position.set(1, 2, 3);
 
 // ---------------------------------------------------------------------------------- //
 
+let player1_name = "player 1";
+let player2_name = "player 2";
+
 function loadShapes()
 {
 	// Players --------------------------------
@@ -91,7 +94,7 @@ function loadShapes()
 			side: THREE.DoubleSide
 		})
 	);
-	player1.name = "player 1";
+	player1.name = player1_name;
 	player1.position.x = -9.9;
 	player1.position.y = 0;
 	player1.position.z = 0; //playerpos
@@ -105,7 +108,7 @@ function loadShapes()
 			side: THREE.DoubleSide
 		})
 	);
-	player2.name =  "player 2";
+	player2.name =  player2_name;
 	player2.position.x = 9.9
 	player2.position.y = 0;
 	player2.position.z = 0; //playerpos
@@ -159,9 +162,44 @@ function loadShapes()
 		// ---------------------------------------
 }
 
+let playerKeys = {};
+function initKeys() {
+
+	playerKeys[player1_name] = {
+		ArrowLeft: false,
+		ArrowRight: false
+	};
+
+	playerKeys[player2_name] = {
+		ArrowLeft: false,
+		ArrowRight: false
+	};
+}
+
+initKeys();
+
+function handleKeyDown(event) {
+	if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+		playerKeys[player2_name][event.key] = true;
+	}
+}
+
+function handleKeyUp(event) {
+	if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+		playerKeys[player2_name][event.key] = false;
+	}
+}
+
+document.addEventListener('keydown', handleKeyDown);
+document.addEventListener('keyup', handleKeyUp);
+
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-let offsetX = 0;
+let player1 = UsersGroup.getObjectByName(player1_name);
+let player2 = UsersGroup.getObjectByName(player2_name);
+let ball = scene.getObjectByName("ball");
+let paddleDepth = 0.5;
+let ballVelocity = { x: 0.02, y: 0, z: 0 };
 
 const animate = () => {
 	let it = 0;
@@ -179,6 +217,65 @@ const animate = () => {
 
 
 	// camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+	if (playerKeys[player1_name].ArrowUp)
+	{
+		if (player1.position.z > -5.6)
+			player1.position.z -= 0.1;
+	}
+
+	if (playerKeys[player1_name].ArrowDown)
+	{
+		if (player1.position.z < 5.6)
+			player1.position.z += 0.1;
+	}
+
+	if (playerKeys[player2_name].ArrowUp)
+	{
+		if (player2.position.z > -5.6)
+			player2.position.z -= 0.1;
+	}
+	if (playerKeys[player2_name].ArrowDown)
+	{
+		if (player2.position.z < 5.6)
+			player2.position.z += 0.1;
+	}
+	// if (playerKeys[user].ArrowUp)
+	// {
+	// 	if (player.position.z > -5.6)
+	// 		player.position.z -= 0.1;
+	// }
+	// if (playerKeys[user].ArrowDown)
+	// {
+	// 	if (player.position.z < 5.6)
+	// 		player.position.z += 0.1;
+	// }
+
+	ball.position.x += ballVelocity.x;
+	ball.position.y += ballVelocity.y;
+	ball.position.z += ballVelocity.z;
+
+				// Check for collision with the game area's top and bottom boundaries
+	if (ball.position.z > 7.1 || ball.position.z < -7.1) {
+		ballVelocity.z *= -1; // Reverse the ball's Z-velocity
+	}
+
+
+	if (ball.position.x < player1.position.x + paddleDepth && ball.position.x > player1.position.x - paddleDepth) {
+		if (ball.position.z < player1.position.z + 1.5 && ball.position.z > player1.position.z - 1.5) {
+		ballVelocity.x *= -1; // Reverse the ball's X-velocity
+		let hitPosZ = ball.position.z - player1.position.z; // Collision point
+		ballVelocity.z += hitPosZ * 0.05; // This factor controls the influence of hit position on velocity
+		}
+	}
+
+	if (ball.position.x < player2.position.x + paddleDepth && ball.position.x > player2.position.x - paddleDepth && ballVelocity.x > 0) {
+		if (ball.position.z < player2.position.z + 1.5 && ball.position.z > player2.position.z - 1.5) {
+		ballVelocity.x *= -1; // Reverse the ball's X-velocity
+		let hitPosZ = ball.position.z - player2.position.z; // Collision point
+		ballVelocity.z += hitPosZ * 0.05; // This factor controls the influence of hit position on velocity
+		}
+	}
 
 	renderer.render(scene, camera);
 	requestAnimationFrame(animate);
