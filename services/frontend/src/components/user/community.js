@@ -54,6 +54,28 @@ function Community() {
     .catch(error => console.error('Error adding friend:', error));
   }
 
+  const handleRemoveFriend = (userId) => {
+    fetch(backendHost + `/user/remove_friend/${userId}/`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${authtoken}`
+      },
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to remove friend');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const updatedFriends = friends.filter(friend => friend.id !== userId);
+      setFriends(updatedFriends);
+      sessionStorage.setItem('user', JSON.stringify(data.user));
+    })
+    .catch(error => console.error('Error removing friend:', error));
+  }
+
   return (
     <div>
       <h1>Community</h1>
@@ -87,6 +109,7 @@ function Community() {
                 </Link>
                 <span style={{ marginRight: '1em', fontWeight: 'bold' }}>{friend.username}</span>
                 <span>{friend.is_online ? 'Online' : 'Offline'}</span>
+                <button onClick={() => handleRemoveFriend(friend.id)}>Remove</button>
               </li>
             ))}
           </ul>
