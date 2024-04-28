@@ -108,7 +108,6 @@ function Community() {
                   <ProfilePic filename={friend.profile_pic} online={friend.is_online} />
                 </Link>
                 <span style={{ marginRight: '1em', fontWeight: 'bold' }}>{friend.username}</span>
-                <span>{friend.is_online ? 'Online' : 'Offline'}</span>
                 <button onClick={() => handleRemoveFriend(friend.id)}>Remove</button>
               </li>
             ))}
