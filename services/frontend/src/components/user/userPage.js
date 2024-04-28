@@ -6,7 +6,7 @@ function UserPage() {
     // const authtoken = sessionStorage.getItem('authtoken');
 	const { user_id } = useParams();
     const [userData, setUserData] = useState(null);
-	const url_request = 'http://localhost:8000/user/get_user_by_id/' + user_id
+	const url_request = 'http://' + window.location.host.split(':')[0] + ':8000/user/get_user_by_id/' + user_id
         useEffect(() => {
 			fetch(url_request)
 				.then(response => response.json())

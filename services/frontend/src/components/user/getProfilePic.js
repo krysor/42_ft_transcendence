@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 function ProfilePic({filename, online}) {
 	// const user = JSON.parse(sessionStorage.getItem('user'));
     const [profilePicUrl, setProfilePicUrl] = useState('');
-	const url_request = 'http://localhost:8000/user/profile_pic' + filename
+	const url_request = 'http://' + window.location.host.split(':')[0] + ':8000/user/profile_pic' + filename
     useEffect(() => {
         fetch(url_request)
             .then(response => {

@@ -4,7 +4,7 @@ function Logout () {
 	const authtoken = sessionStorage.getItem('authtoken');
 
 	useEffect(() => {
-		fetch('http://localhost:8000/user/logout/', {
+		fetch('http://' + window.location.host.split(':')[0] + ':8000/user/logout/', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
