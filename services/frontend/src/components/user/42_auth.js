@@ -8,7 +8,7 @@ const Ft_auth = () => {
 
         // Send a POST request to your Django backend with the code
         if (code) {
-            fetch('http://localhost:8000/42_auth/?code=' + code, {
+            fetch('http://localhost:8000/user/42_auth/?code=' + code, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -19,6 +19,12 @@ const Ft_auth = () => {
             })
 			.then(data => {
 				console.log(data)
+                if (data.Token) {
+
+                    sessionStorage.setItem('authtoken', data.Token);
+                    sessionStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = "/";
+                }
 			})
             .catch(error => {
                 console.error('Error:', error);
