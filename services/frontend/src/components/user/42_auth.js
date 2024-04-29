@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 
 const Ft_auth = () => {
     useEffect(() => {
-        // Extract the code parameter from the URL
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
 
-        // Send a POST request to your Django backend with the code
         if (code) {
             fetch('http://localhost:8000/user/42_auth/?code=' + code, {
                 method: 'POST',
@@ -30,7 +28,7 @@ const Ft_auth = () => {
                 console.error('Error:', error);
             });
         }
-    }, []); // Empty dependency array ensures the effect runs only once when the component mounts
+    }, []);
 
     return (
         <div>

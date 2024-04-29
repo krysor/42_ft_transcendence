@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse, HttpResponse
 from django.core.serializers import serialize
 from django.conf import settings
+from django.core.files.base import ContentFile
 
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -197,10 +198,22 @@ def ft_login(request):
 
                 if user_response.status_code == 200:
                     user_data = user_response.json()
+                    print(user_data)
                     username = user_data.get('login')
                     user, created = User.objects.get_or_create(username=username)
-                    if created:
-                        user.save()
+                    # if created:
+                    profile_pic_data = user_data.get('image')
+                print("profile_pic_data:")
+                print(profile_pic_data)
+                if profile_pic_data:
+                    profile_pic_url = profile_pic_data.get('link')
+                    print("profile_pic_url:")
+                    print(profile_pic_url)
+                    if profile_pic_url:
+                        response = requests.get(profile_pic_url)
+                        if response.status_code == 200:
+                            user.profile_pic.save(f'{username}_profile_pic.jpg', ContentFile(response.content))
+                    user.save()
                     token, created = Token.objects.get_or_create(user=user)
                     user.is_online = True
                     serialized = UserSerializer(user)
