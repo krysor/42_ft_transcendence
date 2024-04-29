@@ -20,7 +20,7 @@ import os
 
 from .serializers import UserSerializer
 from authentication.models import User
-
+import requests 
 @api_view(['POST'])
 def signup(request):
     if User.objects.filter(username=request.data['username']).exists():

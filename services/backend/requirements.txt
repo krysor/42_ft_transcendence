@@ -4,3 +4,4 @@ daphne
 django-cors-headers
 djangorestframework
 pillow
+requests

@@ -24,8 +24,8 @@ function NavBar(props) {
 												&& <>{props.user.username}
 													 <ProfilePic filename={props.user.profile_pic} /></>}
 										  </Nav.Link></>
-									  : <><Nav.Link as={Link} to="/signup">Signup</Nav.Link>
-									  	  <Nav.Link as={Link} to="/login">Login</Nav.Link></>}
+									  : <><Nav.Link as={Link} to="/login">Login</Nav.Link><Nav.Link as={Link} to="/signup">Signup</Nav.Link>
+									  	  </>}
 				</Nav>
 				{/* {props.isLoggedIn && <Nav.Link as={Link} to="/profile">
 					{props.user

@@ -15,6 +15,7 @@ import Signup from "./components/user/signup";
 import Logout from "./components/user/logout";
 import Community from "./components/user/community"
 import EditProfile from "./components/user/edit_profile"
+import Ft_auth from "./components/user/42_auth";
 
 import NotFound from "./components/notfound";
 
@@ -42,6 +43,7 @@ function App () {
 				<Route path="/about" element={<About />} />
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/login" element={<Login />} />
+				<Route path="/42_auth" element={<Ft_auth />} />
 				<Route path="/logout" element={<Logout />} />
 				<Route path="/profile" element={<Profile />} />
 				<Route path="/user_profile/:user_id" element={<UserPage />} />
