@@ -185,13 +185,10 @@ def ft_login(request):
             'redirect_uri': 'http://localhost:3000/42_auth/'
         }
         response = requests.post(url, data=data)
-        print("response 1 =")
-        print(response.text)
-    
+
     if response.status_code == 200:
             token = response.json().get('access_token')
             if token:
-                # Use the token to fetch user information
                 user_response = requests.get('https://api.intra.42.fr/v2/me', headers={
                     'Authorization': f'Bearer {token}'
                 })
@@ -201,19 +198,15 @@ def ft_login(request):
                     print(user_data)
                     username = user_data.get('login')
                     user, created = User.objects.get_or_create(username=username)
-                    # if created:
-                    profile_pic_data = user_data.get('image')
-                print("profile_pic_data:")
-                print(profile_pic_data)
-                if profile_pic_data:
-                    profile_pic_url = profile_pic_data.get('link')
-                    print("profile_pic_url:")
-                    print(profile_pic_url)
-                    if profile_pic_url:
-                        response = requests.get(profile_pic_url)
-                        if response.status_code == 200:
-                            user.profile_pic.save(f'{username}_profile_pic.jpg', ContentFile(response.content))
-                    user.save()
+                    if created:
+                        profile_pic_data = user_data.get('image')
+                        if profile_pic_data:
+                            profile_pic_url = profile_pic_data.get('link')
+                            if profile_pic_url:
+                                response = requests.get(profile_pic_url)
+                                if response.status_code == 200:
+                                    user.profile_pic.save(f'{username}_profile_pic.jpg', ContentFile(response.content))
+                        user.save()
                     token, created = Token.objects.get_or_create(user=user)
                     user.is_online = True
                     serialized = UserSerializer(user)
