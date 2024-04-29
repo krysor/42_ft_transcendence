@@ -6,14 +6,14 @@ import { padHeight, padWidth }				from './board/pad';
 import { borderHeight }						from './board/border';
 import { boardWidth, boardHeight, Board }	from './board/board';
 
-import animate from './threejs.js';
+// import animate from './threejs.js';
 
 const	ballPosYMin		= borderHeight;
 const 	ballPosYMax 	= boardHeight - borderHeight - ballDiameter;
 const	ballPosXMin		= padWidth;
 const	ballPosXMax		= boardWidth - padWidth - ballDiameter;
 
-const	ballVXStart		= 0;
+const	ballVXStart		= 5;
 const	ballVYStart		= 5;
 
 const BallHitHorizontalBorder = (ballPosY) => {
@@ -81,8 +81,12 @@ function Game() {
 					padLeftPositionY={padLeftPosY}
 					padRightPositionY={padRightPosY}/>
 			<button id="gameButton"
-				onClick={() => animate()}>
+				onClick={() => setPaused(!paused)}>
+				{paused ? "Play" : "Pause"}
 			</button>
+			{/* <button id="gameButton"
+				onClick={() => animate()}>
+			</button> */}
 		</div>
 	);
 
