@@ -2,16 +2,17 @@ import './game.css';
 import React from 'react';
 
 import { ballDiameter }						from './board/ball';
-import { padHeight, padWidth }				from './board/pad';
-import { borderHeight }						from './board/border';
+import { padHeight }						from './board/pad';
+// import { borderHeight }						from './board/border';
 import { boardWidth, boardHeight, Board }	from './board/board';
 
-import { BallHitHorizontalBorder, BallHitPad } from './logic/collision'
+import { BallHitHorizontalBorder, BallHitPad }	from './logic/collision'
+// import { updatePosition, updatePaused }			from './logic/update'
 
 // import animate from './threejs.js';
 
-const	ballVXStart		= 5;
-const	ballVYStart		= 5;
+const	ballSpeedStartX	= 5;
+const	ballSpeedStartY	= 5;
 
 // let playerKeys = {};
 // function initKeys() {
@@ -56,54 +57,54 @@ function Game() {
 			right: { Y: (boardHeight - padHeight)/2 }
 		}
 	});
+	const ballSpeed = React.useRef({
+		X: ballSpeedStartX,
+		Y: ballSpeedStartY
+	});
 
-	const ballSpeedX = React.useRef(ballVXStart);
-	const ballSpeedY = React.useRef(ballVYStart);
-	const frameId 	 = React.useRef(0);
-
-	const UpdatePosition = (ballSpeedX, ballSpeedY) => {
+	const updatePosition = (ballSpeed) => {
 		const ball = {
-			X: state.ball.X + ballSpeedX.current,
-			Y: state.ball.Y + ballSpeedY.current
+			X: state.ball.X + ballSpeed.current.X,
+			Y: state.ball.Y + ballSpeed.current.Y
 		}
 		setState( previousState => {
 			return { ...previousState, ball}
 		});
 	}
 	
-	const animate = () => {
-		if (BallHitHorizontalBorder(state.ball.Y))
-			ballSpeedY.current *= -1;
-		if (BallHitPad(state.ball.X, state.ball.Y, state.pad.left.Y, state.pad.right.Y))
-			ballSpeedX.current *= -1;				
-			UpdatePosition(ballSpeedX, ballSpeedY);
-		// frameId.current = requestAnimationFrame(animate);
-	}
-
-	React.useEffect(() => {
-		if (state.paused)
-			cancelAnimationFrame(frameId.current);
-		else
-			frameId.current = requestAnimationFrame(animate);		
-		return () => cancelAnimationFrame(frameId);
-	  }, [state]);
-
-	const changePaused = () => {
+	const updatePaused = () => {
 		const paused = !state.paused;
 		setState( previousState => {
 			return { ...previousState, paused}
 		});
 	}
 
+	const animate = () => {
+		if (BallHitHorizontalBorder(state.ball.Y))
+			ballSpeed.current.Y *= -1;
+		if (BallHitPad(state.ball.X, state.ball.Y, state.pad.left.Y, state.pad.right.Y))
+			ballSpeed.current.X *= -1;				
+		updatePosition(ballSpeed);
+		// frameId.current = requestAnimationFrame(animate);
+	}
+
+	React.useEffect(() => {
+		let frameID = 0;
+		if (state.paused == false)
+			frameID = requestAnimationFrame(animate);		
+		return () => cancelAnimationFrame(frameID);
+	}, [state]);
+
+
 	return (
-		<div className='container'>
+		<div className='gameWindow'>
 			<h1>Ping pong game</h1>
 			<Board	ballPositionX={state.ball.X}
 					ballPositionY={state.ball.Y}
 					padLeftPositionY={state.pad.left.Y}
 					padRightPositionY={state.pad.right.Y}/>
 			<button id="gameButton"
-				onClick={() => changePaused()}>
+				onClick={() => updatePaused()}>
 				{state.paused ? "Play" : "Pause"}
 			</button>
 			{/* <button id="gameButton"
@@ -116,4 +117,5 @@ function Game() {
 	// );
 }
 
-export default Game;
+export default Game
+// export { Game, state, setState }
