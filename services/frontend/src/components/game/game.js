@@ -27,6 +27,10 @@ function Game() {
 		pad: {
 			left : { Y: (boardHeight - padHeight)/2 },
 			right: { Y: (boardHeight - padHeight)/2 }
+		},
+		points: {
+			left :	0,
+			right:	0
 		}
 	});
 	const ballSpeed = React.useRef({
@@ -90,6 +94,7 @@ function Game() {
 	return (
 		<div className='gameWindow'>
 			<h1>Ping pong game</h1>
+			<h3>{state.points.left}:{state.points.right}</h3>
 			<Board	ballPositionX={state.ball.X}
 					ballPositionY={state.ball.Y}
 					padLeftPositionY={state.pad.left.Y}
