@@ -6,30 +6,43 @@ import { padHeight, padWidth }				from './board/pad';
 import { borderHeight }						from './board/border';
 import { boardWidth, boardHeight, Board }	from './board/board';
 
-import animate from './threejs.js';
+import { BallHitHorizontalBorder, BallHitPad } from './logic/collision'
 
-const	ballPosYMin		= borderHeight;
-const 	ballPosYMax 	= boardHeight - borderHeight - ballDiameter;
-const	ballPosXMin		= padWidth;
-const	ballPosXMax		= boardWidth - padWidth - ballDiameter;
+// import animate from './threejs.js';
 
 const	ballVXStart		= 5;
 const	ballVYStart		= 5;
 
-const BallHitHorizontalBorder = (ballPosY) => {
-	if (ballPosY <= ballPosYMin
-		|| ballPosY >= ballPosYMax)
-		return (true);
-	return (false);
-}
+// let playerKeys = {};
+// function initKeys() {
 
-const BallHitPad = (ballPosX, ballPosY, padLeftPosY, padRightPosY) => {
-	if ((ballPosX <= ballPosXMin && ballPosY + ballDiameter >= padLeftPosY && ballPosY <= padLeftPosY + padHeight)
-		|| (ballPosX >= ballPosXMax && ballPosY + ballDiameter >= padRightPosY && ballPosY <= padRightPosY + padHeight))
-		return (true);
-	return (false);
-}
+// 	playerKeys[player1_name] = {
+// 		ArrowUp: false,		
+// 		ArrowDown: false
+// 	};
 
+// 	playerKeys[player2_name] = {
+// 		ArrowUp: false,
+// 		ArrowDown: false
+// 	};
+// }
+
+// initKeys();
+
+// function handleKeyDown(event) {
+// 	if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+// 		playerKeys[player1_name][event.key] = true;
+// 	}
+// }
+
+// function handleKeyUp(event) {
+// 	if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+// 		playerKeys[player1_name][event.key] = false;
+// 	}
+// }
+
+// document.addEventListener('keydown', handleKeyDown);
+// document.addEventListener('keyup', handleKeyUp);
 
 function Game() {
 	const [paused, setPaused] = React.useState(true);
@@ -80,13 +93,13 @@ function Game() {
 					ballPositionY={ballPosition.Y}
 					padLeftPositionY={padLeftPosY}
 					padRightPositionY={padRightPosY}/>
-			{/* <button id="gameButton"
+			<button id="gameButton"
 				onClick={() => setPaused(!paused)}>
 				{paused ? "Play" : "Pause"}
-			</button> */}
-			<button id="gameButton"
-				onClick={() => animate()}>
 			</button>
+			{/* <button id="gameButton"
+				onClick={() => animate()}>
+			</button> */}
 		</div>
 	);
 
