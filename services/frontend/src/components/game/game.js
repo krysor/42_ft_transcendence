@@ -9,41 +9,13 @@ import { boardWidth, boardHeight, Board }	from './board/board';
 import { BallHitHorizontalBorder, BallHitPad }	from './logic/collision'
 // import { updatePosition, updatePaused }			from './logic/update'
 
+import { playerKeys } from './logic/keys'; 
+
 // import animate from './threejs.js';
 
 const	ballSpeedStartX	= 5;
 const	ballSpeedStartY	= 5;
-
-// let playerKeys = {};
-// function initKeys() {
-
-// 	playerKeys[player1_name] = {
-// 		ArrowUp: false,		
-// 		ArrowDown: false
-// 	};
-
-// 	playerKeys[player2_name] = {
-// 		ArrowUp: false,
-// 		ArrowDown: false
-// 	};
-// }
-
-// initKeys();
-
-// function handleKeyDown(event) {
-// 	if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-// 		playerKeys[player1_name][event.key] = true;
-// 	}
-// }
-
-// function handleKeyUp(event) {
-// 	if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-// 		playerKeys[player1_name][event.key] = false;
-// 	}
-// }
-
-// document.addEventListener('keydown', handleKeyDown);
-// document.addEventListener('keyup', handleKeyUp);
+const	padSpeed		= 5;
 
 function Game() {
 	const [state, setState] = React.useState({
@@ -62,20 +34,32 @@ function Game() {
 		Y: ballSpeedStartY
 	});
 
-	const updatePosition = (ballSpeed) => {
-		const ball = {
+	const updateBall = (ballSpeed) => {
+		return {
 			X: state.ball.X + ballSpeed.current.X,
 			Y: state.ball.Y + ballSpeed.current.Y
 		}
-		setState( previousState => {
-			return { ...previousState, ball}
-		});
 	}
-	
-	const updatePaused = () => {
-		const paused = !state.paused;
+	const updateSinglePad = (player, oldY) => {
+		if (playerKeys[player]["upperKey"] && !playerKeys[player]["lowerKey"])
+			return { Y: oldY - padSpeed }
+		if (playerKeys[player]["lowerKey"] && !playerKeys[player]["upperKey"])
+			return { Y: oldY + padSpeed }
+		return { Y: oldY }
+	}
+	const updatePad = () => {
+		const newLeft = updateSinglePad("left", state.pad.left.Y);
+		const newRight = updateSinglePad("right", state.pad.right.Y);
+		return {
+			left: newLeft,
+			right: newRight
+		}
+	}
+	const updatePosition = (ballSpeed) => {
+		const ball = updateBall(ballSpeed);
+		const pad = updatePad();
 		setState( previousState => {
-			return { ...previousState, paused}
+			return { ...previousState, ball, pad}
 		});
 	}
 
@@ -94,6 +78,13 @@ function Game() {
 			frameID = requestAnimationFrame(animate);		
 		return () => cancelAnimationFrame(frameID);
 	}, [state]);
+
+	const updatePaused = () => {
+		const paused = !state.paused;
+		setState( previousState => {
+			return { ...previousState, paused}
+		});
+	}
 
 
 	return (
