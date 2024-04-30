@@ -22,4 +22,10 @@ const BallHitPad = (ballPosX, ballPosY, padLeftPosY, padRightPosY) => {
 	return (false);
 }
 
-export { BallHitHorizontalBorder, BallHitPad }
+const BallLeftBoard = (XBall) => {
+	if (XBall < -ballDiameter || XBall > boardWidth)
+		return (true);
+	return (false);
+}
+
+export { BallHitHorizontalBorder, BallHitPad, BallLeftBoard }

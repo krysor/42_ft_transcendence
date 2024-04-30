@@ -14,7 +14,9 @@ function initKeys() {
 		lowerKey: false
 	};
 }
+
 initKeys();
+
 function handleKeyDown(event) {
 	if (event.key === playerLeftKeyUpper)
 		playerKeys["left"]["upperKey"] = true;
@@ -25,6 +27,7 @@ function handleKeyDown(event) {
 	if (event.key === playerRightKeyLower)
 		playerKeys["right"]["lowerKey"] = true;
 }
+
 function handleKeyUp(event) {
 	if (event.key === playerLeftKeyUpper)
 		playerKeys["left"]["upperKey"] = false;
@@ -35,6 +38,7 @@ function handleKeyUp(event) {
 	if (event.key === playerRightKeyLower)
 		playerKeys["right"]["lowerKey"] = false;
 }
+
 document.addEventListener('keydown', handleKeyDown);
 document.addEventListener('keyup', handleKeyUp);
 
