@@ -47,52 +47,83 @@ const	ballVYStart		= 5;
 function Game() {
 	const [paused, setPaused] = React.useState(true);
 
-	const [ballPosition, setBallPosition] = React.useState({
-		X: (boardWidth - ballDiameter)/2,
-		Y: (boardHeight - ballDiameter)/2
+	const [position, setPosition] = React.useState({
+		ball: {
+			X: (boardWidth - ballDiameter)/2,
+			Y: (boardHeight - ballDiameter)/2
+		},
+		padLeft: {
+			Y: (boardHeight - padHeight)/2
+		},
+		padRight: {
+			Y: (boardHeight - padHeight)/2
+		}
 	});
+	// const [ballPosition, setBallPosition] = React.useState({
+	// 	X: (boardWidth - ballDiameter)/2,
+	// 	Y: (boardHeight - ballDiameter)/2
+	// });
+	// const [padPositionY, setPadPositionY] = React.useState({
+	// 	left : (boardHeight - padHeight)/2,
+	// 	right: (boardHeight - padHeight)/2
+	// })
 
 	const ballSpeedX = React.useRef(ballVXStart);
 	const ballSpeedY = React.useRef(ballVYStart);
-
 	const frameId 	 = React.useRef(0);
 
-	const padLeftPosY = (boardHeight - padHeight)/2;
-	const padRightPosY = (boardHeight - padHeight)/2;
-
-	const UpdateBall = (ballSpeedX, ballSpeedY) => {
-		const newBallPosition = {
-			X: ballPosition.X + ballSpeedX.current,
-			Y: ballPosition.Y + ballSpeedY.current
+	const UpdatePosition = (ballSpeedX, ballSpeedY) => {
+		const ball = {
+			X: position.ball.X + ballSpeedX.current,
+			Y: position.ball.Y + ballSpeedY.current
 		}
-		setBallPosition(newBallPosition);
+		setPosition( previousPosition => {
+			return { ...previousPosition, ball}
+		});
 	}
+	// const UpdateBall = (ballSpeedX, ballSpeedY) => {
+	// 	const newBallPosition = {
+	// 		X: ballPosition.X + ballSpeedX.current,
+	// 		Y: ballPosition.Y + ballSpeedY.current
+	// 	}
+	// 	setBallPosition(newBallPosition);
+	// }
 	
-
 	const animate = () => {
-		if (BallHitHorizontalBorder(ballPosition.Y))
+		if (BallHitHorizontalBorder(position.ball.Y))
 			ballSpeedY.current *= -1;
-		if (BallHitPad(ballPosition.X, ballPosition.Y, padLeftPosY, padRightPosY))
+		if (BallHitPad(position.ball.X, position.ball.Y, position.padLeft.Y, position.padRight.Y))
 			ballSpeedX.current *= -1;				
-		UpdateBall(ballSpeedX, ballSpeedY);
+			UpdatePosition(ballSpeedX, ballSpeedY);
+		// if (BallHitHorizontalBorder(position.ball.Y))
+		// 	ballSpeedY.current *= -1;
+		// if (BallHitPad(ballPosition.X, ballPosition.Y, padPositionY.left, padPositionY.right))
+		// 	ballSpeedX.current *= -1;				
+		// 	UpdatePosition(ballSpeedX, ballSpeedY);
+
 		// frameId.current = requestAnimationFrame(animate);
 	}
 
 	React.useEffect(() => {
-		if (!paused)
-			frameId.current = requestAnimationFrame(animate);
-		else
+		if (paused)
 			cancelAnimationFrame(frameId.current);
+		else
+			frameId.current = requestAnimationFrame(animate);		
 		return () => cancelAnimationFrame(frameId);
-	  }, [ballPosition, paused]);
+	  }, [position, paused]);
+	//   }, [ballPosition, paused]);
 
 	return (
 		<div className='container'>
 			<h1>Ping pong game</h1>
-			<Board	ballPositionX={ballPosition.X}
+			<Board	ballPositionX={position.ball.X}
+					ballPositionY={position.ball.Y}
+					padLeftPositionY={position.padLeft.Y}
+					padRightPositionY={position.padLeft.Y}/>
+			{/* <Board	ballPositionX={ballPosition.X}
 					ballPositionY={ballPosition.Y}
-					padLeftPositionY={padLeftPosY}
-					padRightPositionY={padRightPosY}/>
+					padLeftPositionY={padPositionY.left}
+					padRightPositionY={padPositionY.right}/> */}
 			<button id="gameButton"
 				onClick={() => setPaused(!paused)}>
 				{paused ? "Play" : "Pause"}
@@ -102,77 +133,9 @@ function Game() {
 			</button> */}
 		</div>
 	);
-
 	// return (
 	// 	<div id="scene-box"></div>
 	// );
 }
 
 export default Game;
-
-
-// function Game() {
-// 	const [paused, setPaused] = React.useState(true);
-
-// 	const [ballPosition, setBallPosition] = React.useState({
-// 		X: (boardWidth - ballDiameter)/2,
-// 		Y: (boardHeight - ballDiameter)/2
-// 	});
-
-// 	const ballSpeedX = React.useRef(ballVXStart);
-// 	const ballSpeedY = React.useRef(ballVYStart);
-// 	const frameId 	 = React.useRef(0);
-
-// 	const padLeftPosY = (boardHeight - padHeight)/2;
-// 	const padRightPosY = (boardHeight - padHeight)/2;
-
-// 	const getNewBallPos = (ballPos, ballSpeed, min, max) => {
-// 		const newBallPos = ballPos + ballSpeed;
-		
-// 		if (newBallPos < min)
-// 			return (min);
-// 		if (newBallPos > max)
-// 			return (max);
-// 		return (newBallPos);
-// 	}
-
-// 	const UpdateBall = (ballSpeedX, ballSpeedY) => {
-// 		const newBallPosition = {
-// 			X: ballPosition.X + ballSpeedX.current,
-// 			Y: ballPosition.Y + ballSpeedY.current
-// 		}
-// 		setBallPosition(newBallPosition);
-// 	}
-	
-
-// 	const animate = () => {
-// 		if (BallHitHorizontalBorder(ballPosition.Y))
-// 			ballSpeedY.current = ballSpeedY.current * -1;
-// 		if (BallHitPad(ballPosition.X, ballPosition.Y, padLeftPosY, padRightPosY))
-// 			ballSpeedX.current = ballSpeedX.current * -1;		
-// 		if (!paused)		
-// 			UpdateBall(ballSpeedX, ballSpeedY);
-// 		frameId.current = requestAnimationFrame(animate);
-// 	}
-// 	React.useEffect(() => {
-// 		if (!paused)
-// 			frameId.current = requestAnimationFrame(animate);
-// 		else
-// 			cancelAnimationFrame(frameId.current);
-// 		return () => cancelAnimationFrame(frameId);
-// 	  }, [paused, ballPosition]);
-
-// 	return (
-// 		<div className='container'>
-// 			<h1>Ping pong game</h1>
-// 			<Board	ballPositionX={ballPosition.X}
-// 					ballPositionY={ballPosition.Y}
-// 					padLeftPositionY={padLeftPosY}
-// 					padRightPositionY={padRightPosY}/>
-// 			<button id="gameButton"
-// 				onClick={() => setPaused(!paused)}>
-// 				{paused ? "Play" : "Pause"}
-// 			</button>
-// 		</div>
-// 	);
-// }
