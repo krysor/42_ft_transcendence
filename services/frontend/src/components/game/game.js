@@ -52,11 +52,9 @@ function Game() {
 			X: (boardWidth - ballDiameter)/2,
 			Y: (boardHeight - ballDiameter)/2
 		},
-		padLeft: {
-			Y: (boardHeight - padHeight)/2
-		},
-		padRight: {
-			Y: (boardHeight - padHeight)/2
+		pad: {
+			left : { Y: (boardHeight - padHeight)/2 },
+			right: { Y: (boardHeight - padHeight)/2 }
 		}
 	});
 	// const [ballPosition, setBallPosition] = React.useState({
@@ -92,7 +90,7 @@ function Game() {
 	const animate = () => {
 		if (BallHitHorizontalBorder(position.ball.Y))
 			ballSpeedY.current *= -1;
-		if (BallHitPad(position.ball.X, position.ball.Y, position.padLeft.Y, position.padRight.Y))
+		if (BallHitPad(position.ball.X, position.ball.Y, position.pad.left.Y, position.pad.right.Y))
 			ballSpeedX.current *= -1;				
 			UpdatePosition(ballSpeedX, ballSpeedY);
 		// if (BallHitHorizontalBorder(position.ball.Y))
@@ -118,8 +116,8 @@ function Game() {
 			<h1>Ping pong game</h1>
 			<Board	ballPositionX={position.ball.X}
 					ballPositionY={position.ball.Y}
-					padLeftPositionY={position.padLeft.Y}
-					padRightPositionY={position.padLeft.Y}/>
+					padLeftPositionY={position.pad.left.Y}
+					padRightPositionY={position.pad.right.Y}/>
 			{/* <Board	ballPositionX={ballPosition.X}
 					ballPositionY={ballPosition.Y}
 					padLeftPositionY={padPositionY.left}
