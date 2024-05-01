@@ -11,6 +11,7 @@ import { BallHitHorizontalBorder, BallHitPad, BallLeftBoard }	from './logic/coll
 
 import { playerKeys } from './logic/keys'; 
 
+// UNCOMMENT FOR THREEJS
 // import animate from './threejs.js';
 
 const	ballSpeedStartX	= 5;
@@ -124,10 +125,12 @@ function Game() {
 					ballPositionY={state.ball.Y}
 					padLeftPositionY={state.pad.left.Y}
 					padRightPositionY={state.pad.right.Y}/>
+			{/* COMMENT the gameButton under to display the threejs  */}
 			<button id="gameButton"
 				onClick={() => updatePaused()}>
 				{state.paused ? "Play" : "Pause"}
 			</button>
+			{/* UNCOMMENT the gameButton under to display the threejs */}
 			{/* <button id="gameButton"
 				onClick={() => animate()}>
 			</button> */}
