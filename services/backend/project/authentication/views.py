@@ -174,7 +174,6 @@ def profile_pic(request, filename):
     except FileNotFoundError:
         return HttpResponse(status=404)
 
-# 42 authenticationfunction, ft for fort two
 @api_view(['POST', 'GET'])
 def ft_login(request):
     code = request.GET.get('code')

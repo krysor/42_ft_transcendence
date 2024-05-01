@@ -58,10 +58,3 @@ function Signup () {
 }
 
 export default Signup;
-
-// curl -F grant_type=authorization_code \
-// -F client_id=u-s4t2ud-ffe04edf766f8a757aae8abe9604a7fa4465cae87ce61cccaa1562056de8bef5 \
-// -F client_secret=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 \
-// -F code=bf65ee1b19407987c88e71c1f10490c2342735b5dae293328de6e6c356250c1f \
-// -F redirect_uri=http://localhost:8000/42_auth \
-// -X POST https://api.intra.42.fr/oauth/token
