@@ -172,6 +172,7 @@ def profile_pic(request, filename):
     except FileNotFoundError:
         return HttpResponse(status=404)
 
+# 42 authenticationfunction, ft for fort two
 @api_view(['POST', 'GET'])
 def ft_login(request):
     code = request.GET.get('code')
@@ -197,8 +198,10 @@ def ft_login(request):
                     user_data = user_response.json()
                     print(user_data)
                     username = user_data.get('login')
-                    user, created = User.objects.get_or_create(username=username)
+                    email = user_data.get('email')
+                    user, created = User.objects.get_or_create(email=email, defaults={'username': username})
                     if created:
+                        user.username = username
                         profile_pic_data = user_data.get('image')
                         if profile_pic_data:
                             profile_pic_url = profile_pic_data.get('link')
@@ -206,7 +209,10 @@ def ft_login(request):
                                 response = requests.get(profile_pic_url)
                                 if response.status_code == 200:
                                     user.profile_pic.save(f'{username}_profile_pic.jpg', ContentFile(response.content))
+                        user.is_student = True
                         user.save()
+                    elif user.is_student == False:
+                        raise AuthenticationFailed({'error': 'This username is not registered as a 42 student'})
                     token, created = Token.objects.get_or_create(user=user)
                     user.is_online = True
                     serialized = UserSerializer(user)
