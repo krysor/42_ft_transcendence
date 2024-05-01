@@ -51,6 +51,8 @@ def log_user(request):
     except User.DoesNotExist:
         raise AuthenticationFailed({'error': 'Username is incorrect.'})
 
+    if user.is_student == True:
+        raise AuthenticationFailed({'error': 'Please use 42 authentication to log as this user'})
     if user.check_password(request.data['password']):
         token, created = Token.objects.get_or_create(user=user)
         user.is_online = True
