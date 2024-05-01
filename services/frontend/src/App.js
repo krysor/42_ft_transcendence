@@ -7,6 +7,9 @@ import {
 import NavBar from "./components/navbar"
 import Home from "./components/home";
 import Game from "./components/game/game";
+
+import ThreejsGame from "./components/game/threejs";
+
 import About from "./components/about";
 
 import Login from "./components/user/login";
@@ -39,6 +42,7 @@ function App () {
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/Game" element={<Game />} />
+				<Route path="/ThreeGame" element={<ThreejsGame />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/login" element={<Login />} />

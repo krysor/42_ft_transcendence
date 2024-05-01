@@ -16,6 +16,7 @@ function NavBar(props) {
 				<Nav id="navBar" className="me-auto">
 					{/* <Navbar.Brand as={Link} to="/">Home</Navbar.Brand> */}
 					<Nav.Link as={Link} to="/Game">Game</Nav.Link>
+					<Nav.Link as={Link} to="/ThreeGame">ThreeGame</Nav.Link>
 					<Nav.Link as={Link} to="/about">About</Nav.Link>
 					{props.isLoggedIn ? <><Nav.Link as={Link} to="/community">Community</Nav.Link>
 										  <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
