@@ -41,6 +41,9 @@ const Ft_auth = () => {
                 There was a problem while trying to authenticate.
                 <br />
                 {error && <div>{error}</div>}
+                <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code">
+					Want to try again ?
+				</a>
             </div>
         );
     }
