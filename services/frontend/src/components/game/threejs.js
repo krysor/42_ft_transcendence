@@ -252,11 +252,11 @@ const ThreejsGame = () => {
 
 	return (
 		<div>
-<div style={{ textAlign: 'center', marginBottom: '20px' }}>
-    <p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>Player 1 Score: {scoreP1}</p>
-    <p style={{ fontWeight: 'bold', fontSize: '18px' }}>Player 2 Score: {scoreP2}</p>
-</div>
-<canvas ref={refContainer} />
+			<div style={{ textAlign: 'center', marginBottom: '20px' }}>
+				<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>Player 1 Score: {scoreP1}</p>
+				<p style={{ fontWeight: 'bold', fontSize: '18px' }}>Player 2 Score: {scoreP2}</p>
+			</div>
+			<canvas ref={refContainer} />
 
 		</div>
 	);
