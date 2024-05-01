@@ -95,6 +95,15 @@ def all_users(request):
 
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def friend_list(request):
+    user = request.user
+    friends = user.friends.all()
+    serialized = UserSerializer(friends, many=True)
+    return Response(serialized.data)
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def add_friend(request, friend_id):
     user = request.user
@@ -102,8 +111,24 @@ def add_friend(request, friend_id):
         friend = User.objects.get(pk=friend_id)
         user.friends.add(friend)
         user.save()
-        serialized = UserSerializer(user)
-        return JsonResponse({'user': serialized.data})
+        serialized_user = UserSerializer(user)
+        serialized_friend = UserSerializer(friend)
+        return JsonResponse({'user': serialized_user.data, 'friend': serialized_friend.data})
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'Friend user not found.'}, status=404)
+    
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def remove_friend(request, friend_id):
+    user = request.user
+    try:
+        friend = User.objects.get(pk=friend_id)
+        user.friends.remove(friend)
+        user.save()
+        serialized_user = UserSerializer(user)
+        serialized_friend = UserSerializer(friend)
+        return JsonResponse({'user': serialized_user.data, 'friend': serialized_friend.data})
     except User.DoesNotExist:
         return JsonResponse({'error': 'Friend user not found.'}, status=404)
 

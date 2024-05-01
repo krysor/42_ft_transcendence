@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+
 function Signup () {
     const [error, setError] = useState('');
  
@@ -11,7 +13,8 @@ function Signup () {
             username: formData.get('username'),
             password: formData.get('password'),
         };
-        fetch('http://' + window.location.host.split(':')[0] + ':8000/user/signup/', {
+
+        fetch(backendHost + '/user/signup/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(JsonData)

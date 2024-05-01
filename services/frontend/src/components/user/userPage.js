@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import ProfilePic from "./getProfilePic";
 import { useParams } from 'react-router-dom';
 
+const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+
 function UserPage() {
     // const authtoken = sessionStorage.getItem('authtoken');
 	const { user_id } = useParams();
     const [userData, setUserData] = useState(null);
-	const url_request = 'http://' + window.location.host.split(':')[0] + ':8000/user/get_user_by_id/' + user_id
+	const url_request = backendHost + '/user/get_user_by_id/' + user_id
         useEffect(() => {
 			fetch(url_request)
 				.then(response => response.json())
