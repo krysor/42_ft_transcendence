@@ -1,342 +1,265 @@
-import React, { useRef, useEffect} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.module.js';
 
-function ThreejsGame() {
-	const canvasRef = useRef();
+const ThreejsGame = () => {
+	const scene = useRef(null);
+	const camera = useRef(null);
+	const renderer = useRef(null);
+	const player1 = useRef(null);
+	const player2 = useRef(null);
+	const ball = useRef(null);
+	const playerKeys = useRef({});
+	const paddleDepth = useRef(0.5);
+	const ballVelocity = useRef({ x: 0.1, y: 0, z: 0 });
+	const refContainer = useRef();
+
+	// State for displaying scores
+	const [scoreP1, setScoreP1] = useState(0);
+	const [scoreP2, setScoreP2] = useState(0);
 
 	useEffect(() => {
-		let pointP1 = 0;
-		let pointP2 = 0;
-		// Mise en place three.js
+		// Initialize Three.js scene, camera, and renderer
+		const initScene = () => {
+			scene.current = new THREE.Scene();
 
-		const scene = new THREE.Scene();
+			camera.current = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+			camera.current.position.x = 0;
+			camera.current.position.y = 12;
+			camera.current.position.z = 1;
+			camera.current.lookAt(0, 0, 0);
 
-		// const camera = new THREE.PerspectiveCamera(75, 800/400, 0.1, 1000);
-		const camera = new THREE.PerspectiveCamera(50, (window.innerWidth / window.innerHeight), 0.1, 1000);
-		
-		camera.position.y = 9;
-		camera.position.z = 15;
+			renderer.current = new THREE.WebGLRenderer({ antialias: true, canvas: refContainer.current });
+			renderer.current.setSize(window.innerWidth, window.innerHeight - 143);
 
-		// ---------------------------------------------------------------------------------- //
+			let skyboxMaterial = [];
+			// load static image/img...
+			let texture_ft = new THREE.TextureLoader().load('objects/mystic_ft.jpg');
+			let texture_bk = new THREE.TextureLoader().load('objects/mystic_bk.jpg');
+			let texture_up = new THREE.TextureLoader().load('objects/mystic_up.jpg');
+			let texture_dn = new THREE.TextureLoader().load('objects/mystic_dn.jpg');
+			let texture_rt = new THREE.TextureLoader().load('objects/mystic_rt.jpg');
+			let texture_lf = new THREE.TextureLoader().load('objects/mystic_lf.jpg');
 
-		// Utilisation of webgl
-		const renderer = new THREE.WebGLRenderer({antialias: true, canvas: canvasRef.current});
+			skyboxMaterial.push(new THREE.MeshBasicMaterial({ map: texture_ft }));
+			skyboxMaterial.push(new THREE.MeshBasicMaterial({ map: texture_bk }));
+			skyboxMaterial.push(new THREE.MeshBasicMaterial({ map: texture_up }));
+			skyboxMaterial.push(new THREE.MeshBasicMaterial({ map: texture_dn }));
+			skyboxMaterial.push(new THREE.MeshBasicMaterial({ map: texture_rt }));
+			skyboxMaterial.push(new THREE.MeshBasicMaterial({ map: texture_lf }));
 
-		// window size
-		renderer.setSize(window.innerWidth, window.innerHeight - 64);
-		// THREE.shadowMap.enabled = true;
-		// THREE.shadowMap.type = THREE.PCFSoftShadowMap;
+			for (let i = 0; i < 6; i++)
+				skyboxMaterial[i].side = THREE.BackSide;
 
-		// ---------------------------------------------------------------------------------- //
+			let skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000);
+			let skybox = new THREE.Mesh(skyboxGeo, skyboxMaterial);
+			scene.current.add(skybox);
 
-		// --------------- Load skybox ------------------------------------------------------ //
+			// creation of the plane for floor
+			const planeGeometry = new THREE.PlaneGeometry(22, 15);
 
-		let skyboxMaterial = [];
-		// load static image/img...
-		let texture_ft = new THREE.TextureLoader().load('skybox/mystic_ft.jpg');
-		let texture_bk = new THREE.TextureLoader().load('skybox/mystic_bk.jpg');
-		let texture_up = new THREE.TextureLoader().load('skybox/mystic_up.jpg');
-		let texture_dn = new THREE.TextureLoader().load('skybox/mystic_dn.jpg');
-		let texture_rt = new THREE.TextureLoader().load('skybox/mystic_rt.jpg');
-		let texture_lf = new THREE.TextureLoader().load('skybox/mystic_lf.jpg');
+			const planeMaterial = new THREE.MeshPhongMaterial({ color: 0x5f5f5f });
+			const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+			plane.position.y = -0.3;
+			plane.rotation.x = -Math.PI / 2;
+			scene.current.add(plane);
 
-		skyboxMaterial.push(new THREE.MeshBasicMaterial({map: texture_ft}));
-		skyboxMaterial.push(new THREE.MeshBasicMaterial({map: texture_bk}));
-		skyboxMaterial.push(new THREE.MeshBasicMaterial({map: texture_up}));
-		skyboxMaterial.push(new THREE.MeshBasicMaterial({map: texture_dn}));
-		skyboxMaterial.push(new THREE.MeshBasicMaterial({map: texture_rt}));
-		skyboxMaterial.push(new THREE.MeshBasicMaterial({map: texture_lf}));
+			// ---------------------------------------------------------------------------------- //
 
-		for (let i = 0; i < 6; i++)
-		skyboxMaterial[i].side = THREE.BackSide;
+			// Light
+			const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+			ambientLight.position.set(0, 10, 0);
+			// ambientLight.castShadow = true;
+			scene.current.add(ambientLight);
 
-		let skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000);
-		let skybox = new THREE.Mesh(skyboxGeo, skyboxMaterial);
-		scene.add(skybox);
+			loadShapes();
+			initKeys();
+			animate();
+		};
 
-		// ---------------------------------------------------------------------------------- //
+		// Load shapes and add to the scene
+		const loadShapes = () => {
 
-		// creation of the plane for floor
-		const planeGeometry = new THREE.PlaneGeometry(22, 15);
+			// Load players
+			player1.current = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.5, 3), new THREE.MeshPhongMaterial({ color: 0x5f005f, side: THREE.DoubleSide }));
+			player1.current.position.set(-8, 0, 0);
+			scene.current.add(player1.current);
+			//   setPlayer1(player1.current);
 
-		const planeMaterial = new THREE.MeshPhongMaterial({color: 0x5f5f5f});
-		const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-		plane.position.y = -0.3;
-		plane.rotation.x = -Math.PI / 2;
-		scene.add(plane);
+			player2.current = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.5, 3), new THREE.MeshPhongMaterial({ color: 0x5f005f, side: THREE.DoubleSide }));
+			player2.current.position.set(8, 0, 0);
+			scene.current.add(player2.current);
+			//   setPlayer2(player2.current);
 
-		// ---------------------------------------------------------------------------------- //
-
-		// Light
-		const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
-		ambientLight.position.set(0, 10, 0);
-		// ambientLight.castShadow = true;
-		scene.add(ambientLight);
-
-		// const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-		// directionalLight.position.set(1, 2, 3);
-
-		// ---------------------------------------------------------------------------------- //
-
-		const UsersGroup = new THREE.Group();
-
-		let player1_name = "player 1";
-		let player2_name = "player 2";
-
-		function loadShapes()
-		{
-			// Players --------------------------------
-			let player1 = new THREE.Mesh(
-				new THREE.BoxGeometry(0.2, 0.5, 3),
-				new THREE.MeshPhongMaterial({
-					color: 0x5f005f,
-					side: THREE.DoubleSide
-				})
-			);
-			player1.name = player1_name;
-			player1.position.x = -8;
-			player1.position.y = 0;
-			player1.position.z = 0; //playerpos
-			UsersGroup.add(player1);
-			
-			
-			let player2 = new THREE.Mesh(
-				new THREE.BoxGeometry(0.2, 0.5, 3),
-				new THREE.MeshPhongMaterial({
-					color: 0x5f005f,
-					side: THREE.DoubleSide
-				})
-			);
-			player2.name =  player2_name;
-			// player2.position.x = 9.9
-			player2.position.x = 8
-			player2.position.y = 0;
-			player2.position.z = 0; //playerpos
-			UsersGroup.add(player2);
-			scene.add(UsersGroup);
-			// ---------------------------------------
-			
-			// Borders --------------------------------
 			let bordeurUp = new THREE.Mesh(
 				new THREE.BoxGeometry(20, 0.5, 0.1),
 				new THREE.MeshPhongMaterial({
 					color: 0x9f9f9f,
 					side: THREE.DoubleSide
 				})
-				);
-				bordeurUp.name = "borderUp";
-				bordeurUp.position.x = 0;
-				bordeurUp.position.y = 0;
-				bordeurUp.position.z = 7.2;
-				scene.add(bordeurUp);
-				
-				
-				let borderDown = new THREE.Mesh(
-					new THREE.BoxGeometry(20, 0.5, 0.1),
-					new THREE.MeshPhongMaterial({
-						color: 0x9f9f9f,
-						side: THREE.DoubleSide
-					})
-				);
-				borderDown.name = "borderDown";
-				borderDown.position.x = 0;
-				borderDown.position.y = 0;
-				borderDown.position.z = -7.2;
-				scene.add(borderDown);
-				// ---------------------------------------
-				
-				// Ball
-				
-				let ball = new THREE.Mesh(
-					new THREE.SphereGeometry(0.2),
-					new THREE.MeshPhongMaterial({
-						color: 0x9f9f00,
-						side: THREE.DoubleSide
-					})
-				);
-				ball.name = "ball";
-				ball.position.x = 0; //ballpos
-				ball.position.y = 0;
-				ball.position.z = 0; //ballpos
-				scene.add(ball);
-				// ---------------------------------------
-		}
+			);
+			bordeurUp.name = "borderUp";
+			bordeurUp.position.x = 0;
+			bordeurUp.position.y = 0;
+			bordeurUp.position.z = 7.2;
+			scene.current.add(bordeurUp);
 
-		loadShapes();
 
-		let playerKeys = {};
-		function initKeys() {
+			let borderDown = new THREE.Mesh(
+				new THREE.BoxGeometry(20, 0.5, 0.1),
+				new THREE.MeshPhongMaterial({
+					color: 0x9f9f9f,
+					side: THREE.DoubleSide
+				})
+			);
+			borderDown.name = "borderDown";
+			borderDown.position.x = 0;
+			borderDown.position.y = 0;
+			borderDown.position.z = -7.2;
+			scene.current.add(borderDown);
 
-			playerKeys[player1_name] = {
-				ArrowUp: false,
-				ArrowDown: false
+			// Load ball
+			ball.current = new THREE.Mesh(new THREE.SphereGeometry(0.2), new THREE.MeshPhongMaterial({ color: 0x9f9f00, side: THREE.DoubleSide }));
+			ball.current.name = "ball";
+			ball.current.position.x = 0; //ballpos
+			ball.current.position.y = 0;
+			ball.current.position.z = 0; //ballpos
+			scene.current.add(ball.current);
+		};
+
+		// Initialize key state
+		const initKeys = () => {
+			playerKeys.current = {
+				player1: { ArrowUp: false, ArrowDown: false },
+				player2: { ArrowUp: false, ArrowDown: false },
 			};
 
-			playerKeys[player2_name] = {
-				ArrowUp: false,
-				ArrowDown: false
+			document.addEventListener('keydown', handleKeyDown);
+			document.addEventListener('keyup', handleKeyUp);
+		};
+
+		// Handle key down events
+		const handleKeyDown = (event) => {
+			const key = event.key;
+			playerKeys.current = {
+				...playerKeys.current,
+				player1: { ...playerKeys.current.player1, [key]: true },
+				player2: { ...playerKeys.current.player2, [key]: true },
 			};
-		}
+		};
 
-		initKeys();
+		// Handle key up events
+		const handleKeyUp = (event) => {
+			const key = event.key;
+			playerKeys.current = {
+				...playerKeys.current,
+				player1: { ...playerKeys.current.player1, [key]: false },
+				player2: { ...playerKeys.current.player2, [key]: false },
+			};
+		};
 
-		function handleKeyDown(event) {
-			if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-				playerKeys[player1_name][event.key] = true;
-			}
-		}
-
-		function handleKeyUp(event) {
-			if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-				playerKeys[player1_name][event.key] = false;
-			}
-		}
-
-		document.addEventListener('keydown', handleKeyDown);
-		document.addEventListener('keyup', handleKeyUp);
-
-		camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-		let player1 = UsersGroup.getObjectByName(player1_name);
-		let player2 = UsersGroup.getObjectByName(player2_name);
-		let ball = scene.getObjectByName("ball");
-		let paddleDepth = 0.5;
-		let ballVelocity = { x: 0.2, y: 0, z: 0 };
 
 		function resetPositions() {
-			player1.position.z = 0;
-			player2.position.z = 0;
-			ball.position.x = 0;
-			ball.position.y = 0;
-			ball.position.z = 0;
-			ballVelocity = { x: 0.2, y: 0, z: 0 };
+			player1.current.position.z = 0;
+			player2.current.position.z = 0;
+			ball.current.position.x = 0;
+			ball.current.position.y = 0;
+			ball.current.position.z = 0;
+			ballVelocity.current = { x: 0.1, y: 0, z: 0 };
 		}
 
+		// Animate the scene
+		// Animate the scene
 		const animate = () => {
-			// let it = 0;
-			
-			// Gameloop
-			// UsersGroup.children.forEach((elem) => {
+			if (!scene.current || !camera.current || !renderer.current || !player1.current || !player2.current || !ball.current) return;
 
-				// EXAMPLES:
-					// if (keys.left && offsetX < (16 - parseInt(mapSetting.nbPlayer) + 2))
-					// 	offsetX += 3 / radius;
-					// else if (keys.right && offsetX > (-16 + parseInt(mapSetting.nbPlayer) - 2))
-					// 	offsetX -= 3 / radius;
-					// elem.lookAt(new THREE.Vector3(0, 0, 0));
-			// });
-
-
-			// camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-			if (playerKeys[player1_name].ArrowUp)
-			{
-				if (player1.position.z > -5.6)
-					player1.position.z -= 0.1;
+			if (playerKeys.current.player1.ArrowUp) {
+				if (player1.current.position.z > -5.6) player1.current.position.z -= 0.1;
 			}
 
-			if (playerKeys[player1_name].ArrowDown)
-			{
-				if (player1.position.z < 5.6)
-					player1.position.z += 0.1;
+			if (playerKeys.current.player1.ArrowDown) {
+				if (player1.current.position.z < 5.6) player1.current.position.z += 0.1;
 			}
 
-			// if (playerKeys[player2_name].ArrowUp)
-			// {
-			// 	if (player2.position.z > -5.6)
-			// 		player2.position.z -= 0.1;
-			// }
-			// if (playerKeys[player2_name].ArrowDown)
-			// {
-			// 	if (player2.position.z < 5.6)
-			// 		player2.position.z += 0.1;
-			// }
+			ball.current.position.x += ballVelocity.current.x;
+			ball.current.position.y += ballVelocity.current.y;
+			ball.current.position.z += ballVelocity.current.z;
 
-			// if (playerKeys[user].ArrowUp)
-			// {
-			// 	if (player.position.z > -5.6)
-			// 		player.position.z -= 0.1;
-			// }
-			// if (playerKeys[user].ArrowDown)
-			// {
-			// 	if (player.position.z < 5.6)
-			// 		player.position.z += 0.1;
-			// }
+			console.log(ballVelocity.current.x);
 
-			ball.position.x += ballVelocity.x;
-			ball.position.y += ballVelocity.y;
-			ball.position.z += ballVelocity.z;
+			player2.current.position.z = ball.current.position.z;
 
-			player2.position.z = ball.position.z;
-
-						// Check for collision with the game area's top and bottom boundaries
-			if (ball.position.z > 7.1 || ball.position.z < -7.1) {
-				ballVelocity.z *= -1; // Reverse the ball's Z-velocity
+			// Check for collision with the game area's top and bottom boundaries
+			if (ball.current.position.z > 7.1 || ball.current.position.z < -7.1) {
+				ballVelocity.current.z *= -1; // Reverse the ball's Z-velocity
 			}
 
-
-			if (ball.position.x < player1.position.x + paddleDepth && ball.position.x > player1.position.x - paddleDepth) {
-				if (ball.position.z < player1.position.z + 1.5 && ball.position.z > player1.position.z - 1.5) {
-					ballVelocity.x *= -1; // Reverse the ball's X-velocity
-					let hitPosZ = ball.position.z - player1.position.z; // Collision point
-					ballVelocity.z += hitPosZ * 0.05; // This factor controls the influence of hit position on velocity
+			// Check for collision with player paddles
+			if (
+				ball.current.position.x < player1.current.position.x + paddleDepth.current &&
+				ball.current.position.x > player1.current.position.x - paddleDepth.current
+			) {
+				if (
+					ball.current.position.z < player1.current.position.z + 1.5 &&
+					ball.current.position.z > player1.current.position.z - 1.5
+				) {
+					ballVelocity.current.x *= -1; // Reverse the ball's X-velocity
+					let hitPosZ = ball.current.position.z - player1.current.position.z; // Collision point
+					ballVelocity.current.z = hitPosZ * 0.04; // This factor controls the influence of hit position on velocity
 				}
 			}
-			
-			if (ball.position.x < player2.position.x + paddleDepth && ball.position.x > player2.position.x - paddleDepth && ballVelocity.x > 0) {
-				if (ball.position.z < player2.position.z + 1.5 && ball.position.z > player2.position.z - 1.5) {
-					ballVelocity.x *= -1; // Reverse the ball's X-velocity
-					let hitPosZ = ball.position.z - player2.position.z; // Collision point
-					ballVelocity.z += hitPosZ * 0.05; // This factor controls the influence of hit position on velocity
+
+			if (
+				ball.current.position.x < player2.current.position.x + paddleDepth.current &&
+				ball.current.position.x > player2.current.position.x - paddleDepth.current &&
+				ballVelocity.current.x > 0
+			) {
+				if (
+					ball.current.position.z < player2.current.position.z + 1.5 &&
+					ball.current.position.z > player2.current.position.z - 1.5
+				) {
+					ballVelocity.current.x *= -1; // Reverse the ball's X-velocity
+					let hitPosZ = ball.current.position.z - player2.current.position.z; // Collision point
+					ballVelocity.current.z = hitPosZ * 0.04; // This factor controls the influence of hit position on velocity
 				}
 			}
 
 			// DETECTION OF MISSED BALL
 			// PointP1 and PointP2 are declared at the beginning of the file (8-9 lines)
 
-			if (ball.position.x < -12)
-			{
-				pointP2++;
-				console.log("missed1", pointP2);
+			if (ball.current.position.x < -12) {
+				setScoreP2(scoreP2 + 1);
 				resetPositions();
 			}
-			else if (ball.position.x > 12)
-			{
-				pointP1++;
-				console.log("missed2", pointP1);
+			else if (ball.current.position.x > 12) {
+				setScoreP1(scoreP2 + 1);
 				resetPositions();
 			}
 
-			// ----------------------------
-
-			renderer.render(scene, camera);
+			renderer.current.render(scene.current, camera.current);
 			requestAnimationFrame(animate);
-		}
-		
+		};
 
 
-		animate();
+		initScene();
 
 		return () => {
-			// Clean up Three.js resources
-			plane.geometry.dispose();
-			plane.material.dispose();
-			ball.geometry.dispose();
-			ball.material.dispose();
-			player1.geometry.dispose();
-			player1.material.dispose();
-			player2.geometry.dispose();
-			player2.material.dispose();
-			ambientLight.dispose();
 			// directionalLight.dispose();
 			document.removeEventListener('keydown', handleKeyDown);
 			document.removeEventListener('keyup', handleKeyUp);
-			renderer.dispose();
-		}
-	}, []);
+			cancelAnimationFrame(animate);
+		};
+	}, [scoreP1, scoreP2]);
+
 	return (
-		<canvas ref={canvasRef} />
+		<div>
+<div style={{ textAlign: 'center', marginBottom: '20px' }}>
+    <p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>Player 1 Score: {scoreP1}</p>
+    <p style={{ fontWeight: 'bold', fontSize: '18px' }}>Player 2 Score: {scoreP2}</p>
+</div>
+<canvas ref={refContainer} />
+
+		</div>
 	);
-}
+};
 
 export default ThreejsGame;
