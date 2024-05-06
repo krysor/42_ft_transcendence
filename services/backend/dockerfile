@@ -16,9 +16,11 @@ RUN apt-get update && \
     apt-get install -y postgresql-client && \
     pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8000
+EXPOSE 8080
 
 HEALTHCHECK --start-period=1m --interval=100s \
     CMD curl -f "http://"$SERVER_NAME":8000/admin/" || exit 1
 
 ENTRYPOINT [ "sh", "/tmp/wait.sh" ]
+
+CMD python manage.py makemigrations && python manage.py migrate && daphne -e ssl:8000:privateKey=/ssl/key.key:certKey=/ssl/cert.crt project.asgi:application
