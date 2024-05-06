@@ -33,9 +33,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(staticDir, 'index.html'));
 });
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(staticDir, 'index.html'));
-});
 
 app.use(express.static('./build', {
     setHeaders: (res, path, stat) => {
@@ -45,6 +42,9 @@ app.use(express.static('./build', {
     }
 }));
 
+app.get('*', (req, res) => {
+    res.sendFile(path.join(staticDir, 'index.html'));
+});
 // Écoutez les connexions sur le port 443 avec HTTPS
 server.listen(3000, () => {
     console.log('Server running on https://localhost:3000');
