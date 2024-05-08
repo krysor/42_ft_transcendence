@@ -11,15 +11,14 @@
 	flex-grow: 1;
 }
 
-a.nav-link:last-child {
-	/* to push username and profilepic to the right */
+/* a.nav-link:last-child {
 	margin-left: auto;
-}
+} */
 
-a.nav-link:last-of-type {
-	/* to display username next to profile pic */
+/* a.nav-link:last-of-type {
+	to display username next to profile pic
 	display: flex;
-}
+} */
 
 .profile_pic {
 	margin-left: 0.5rem;
