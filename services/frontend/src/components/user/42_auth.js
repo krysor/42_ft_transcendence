@@ -8,8 +8,8 @@ const Ft_auth = () => {
 
         if (code) {
 
-            // fetch('http://localhost:8000/user/42_auth/?code=' + code, {
-            fetch('https://localhost:8000/user/42_auth/?code=' + code, {
+            // fetch('https://localhost:8000/user/42_auth/?code=' + code, {
+            fetch('http://localhost:8000/user/42_auth/?code=' + code, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
