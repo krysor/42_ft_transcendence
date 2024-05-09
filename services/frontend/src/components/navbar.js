@@ -17,6 +17,7 @@ function NavBar(props) {
 					{/* <Navbar.Brand as={Link} to="/">Home</Navbar.Brand> */}
 					<Nav.Link as={Link} to="/Game">Game</Nav.Link>
 					<Nav.Link as={Link} to="/ThreejsGame">ThreeGame</Nav.Link>
+					<Nav.Link as={Link} to="/Morpion">Morpion</Nav.Link>
 					<Nav.Link as={Link} to="/about">About</Nav.Link>
 					{props.isLoggedIn ? <><Nav.Link as={Link} to="/community">Community</Nav.Link>
 										  <Nav.Link as={Link} to="/logout">Logout</Nav.Link>

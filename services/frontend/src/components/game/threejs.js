@@ -25,7 +25,7 @@ const ThreejsGame = () => {
 			camera.current = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 			camera.current.position.x = 0;
 			camera.current.position.y = 12;
-			camera.current.position.z = 1;
+			camera.current.position.z = 5;
 			camera.current.lookAt(0, 0, 0);
 
 			renderer.current = new THREE.WebGLRenderer({ antialias: true, canvas: refContainer.current });

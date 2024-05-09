@@ -19,7 +19,7 @@ from django.conf import settings
 import os
 
 from .serializers import UserSerializer
-from authentication.models import User
+from authentication.models import User, Score
 
 @api_view(['POST'])
 def signup(request):
@@ -146,3 +146,25 @@ def profile_pic(request, filename):
         return HttpResponse(img_data, content_type='image/jpeg')
     except FileNotFoundError:
         return HttpResponse(status=404)
+
+# create a database entry for the user's score
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def update_score(request):
+    user = request.user
+    user.score = request.data.get('score')
+    user.save()
+    serialized = UserSerializer(user)
+    return JsonResponse({'user': serialized.data})
+
+# add score to the user's score
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def add_score(request):
+    user = request.user
+    user.score += request.data.get('score')
+    user.save()
+    serialized = UserSerializer(user)
+    return JsonResponse({'user': serialized.data})

@@ -13,3 +13,7 @@ class Match(models.Model):
 	oponent = models.CharField(max_length=20, verbose_name='oponent')
 	date = models.DateField(verbose_name='date of the match')
 	winner = models.BooleanField(default=True)
+
+class Score(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='score')
+	score = models.IntegerField(null=False, default=0, verbose_name='score')
