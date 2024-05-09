@@ -248,7 +248,7 @@ const ThreejsGame = () => {
 			document.removeEventListener('keyup', handleKeyUp);
 			cancelAnimationFrame(animate);
 		};
-	}, [scoreP1, scoreP2]);
+	}, []);
 
 	return (
 		<div>
