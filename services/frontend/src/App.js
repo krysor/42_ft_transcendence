@@ -7,6 +7,7 @@ import {
 import NavBar from "./components/navbar"
 import Home from "./components/home";
 import Game from "./components/game/game";
+import Tournament from "./components/tournament/tournament";
 import About from "./components/about";
 
 import Login from "./components/user/login";
@@ -22,6 +23,8 @@ import NotFound from "./components/notfound";
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserPage from "./components/user/userPage";
+import PlayerSelection from "./components/tournament/playerSelection";
+import IdentificatePlayers from "./components/tournament/identificatePlayers";
 
 function App () {
 	const token = sessionStorage.getItem('authtoken')
@@ -40,6 +43,9 @@ function App () {
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/Game" element={<Game />} />
+				<Route path="/tournament" element={<Tournament />} />
+				<Route path="/tournament/player_select" element={<PlayerSelection />} />
+				<Route path="/tournament/register/:numberOfPlayers" element={<IdentificatePlayers />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/login" element={<Login />} />
