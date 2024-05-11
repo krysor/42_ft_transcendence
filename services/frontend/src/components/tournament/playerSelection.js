@@ -2,38 +2,61 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const PlayerSelection = () => {
-  const [numberOfPlayers, setNumberOfPlayers] = useState(2);
   const navigate = useNavigate();
-
-  const handleNumberOfPlayersChange = (event) => {
-    setNumberOfPlayers(parseInt(event.target.value));
-  };
-
+  const [tournamentUsers, setTournamentUsers] = useState([]);
+  const [currentPlayer, setCurrentPlayer] = useState(1);
+  const [playerNames, setPlayerNames] = useState([]);
+ 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    navigate(`/tournament/register/${numberOfPlayers}`);
+    const nbOfPlayers = parseInt(event.target.nbOfPlayers.value, 10);
+    setPlayerNames(Array.from({ length: nbOfPlayers }, () => ''));
+    setCurrentPlayer(1);
   };
 
+  const handlePlayerNameSubmit = (event) => {
+    event.preventDefault();
+    const playerName = event.target.playerName.value;
+
+    setPlayerNames((prevNames) => {
+      const updatedNames = [...prevNames];
+      updatedNames[currentPlayer - 1] = playerName;
+      return updatedNames;
+    });
+
+    setCurrentPlayer((prevPlayer) => prevPlayer + 1);
+  };
+
+  // Fonction pour vérifier si tous les noms ont été saisis
+  const allNamesEntered = () => {
+    return playerNames.every(name => name !== '');
+  };
+
+  if (currentPlayer > playerNames.length && allNamesEntered()) {
+    // Redirection une fois que tous les noms ont été saisis
+    console.log(playerNames)
+    navigate(`/tournament/register`);
+  }
+
   return (
-    <form onSubmit={handleFormSubmit}>
-      <label htmlFor="numberOfPlayers">Number of players :</label>
-      <select
-        id="numberOfPlayers"
-        value={numberOfPlayers}
-        onChange={handleNumberOfPlayersChange}
-        >
-        <option value={2}>2 players</option>
-        <option value={3}>3 players</option>
-        <option value={4}>4 players</option>
-        <option value={5}>5 players</option>
-        <option value={6}>6 players</option>
-        <option value={7}>7 players</option>
-        <option value={8}>8 players</option>
-      </select>
-      <button type="submit">Proceed to Registration</button>
-    </form>
+    <>
+      {currentPlayer <= playerNames.length && (
+        <form onSubmit={handlePlayerNameSubmit}>
+          <label htmlFor="playerName">Player {currentPlayer} choose your pseudo:</label>
+          <input type="text" name="playerName" id="playerName" />
+          <button type="submit">Submit</button>
+        </form>
+      )}
+
+      {currentPlayer > playerNames.length && (
+        <form onSubmit={handleFormSubmit}>
+          <label htmlFor="nbOfPlayers">How many players will play in the tournament?</label>
+          <input type="number" name="nbOfPlayers" id="nbOfPlayers" min="1" max="16" />
+          <button type="submit">Proceed to Registration</button>
+        </form>
+      )}
+    </>
   );
 };
 
 export default PlayerSelection;
-
