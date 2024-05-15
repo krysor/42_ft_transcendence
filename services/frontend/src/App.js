@@ -25,6 +25,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import UserPage from "./components/user/userPage";
 import PlayerSelection from "./components/tournament/playerSelection";
 import IdentificatePlayers from "./components/tournament/identificatePlayers";
+import Participants from "./components/tournament/Participant";
+import { UserProvider } from "./components/tournament/UserContext";
 
 function App () {
 	const token = sessionStorage.getItem('authtoken')
@@ -40,11 +42,11 @@ function App () {
                 </div>
             </div>
 			<NavBar isLoggedIn={isLoggedIn} user={user}/>
+			<UserProvider>
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/Game" element={<Game />} />
 				<Route path="/tournament" element={<Tournament />} />
-				<Route path="/tournament/player_select" element={<PlayerSelection />} />
 				<Route path="/tournament/register/:numberOfPlayers" element={<IdentificatePlayers />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/signup" element={<Signup />} />
@@ -56,7 +58,10 @@ function App () {
 				<Route path="/community" element={<Community />} />
 				<Route path="/edit_profile" element={<EditProfile />} />
 				<Route path="/*" element={<NotFound />} />
+          <Route path="/tournament/Participants" element={<Participants />} />
+		<Route path="/tournament/player_select" element={<PlayerSelection />} />
 			</Routes>
+      </UserProvider>
           </Router>
       );
 }
