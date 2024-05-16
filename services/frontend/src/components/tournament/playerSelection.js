@@ -38,7 +38,7 @@ const PlayerSelection = () => {
     updatedPlayers[currentPlayer - 1] = { username: playerName, profile: '/default_pp.jpeg', id: '0' };
     setPlayers(updatedPlayers);
     setCurrentPlayer(currentPlayer + 1);
-    setPlayerName(''); // Clear the input field
+    setPlayerName('');
   };
 
   const handleLoginSubmit = (event) => {
@@ -66,7 +66,7 @@ const PlayerSelection = () => {
             updatedPlayers[currentPlayer - 1] = { username: data.user.username, profile: data.user.profile_pic, id: data.user.id };
             setPlayers(updatedPlayers);
             setCurrentPlayer(currentPlayer + 1);
-            setUsername(''); // Clear the input fields
+            setUsername('');
             setPassword('');
           }
         } else if (data.error) {
@@ -79,7 +79,7 @@ const PlayerSelection = () => {
       });
   };
 
-  // ----- use effect to check if every player are registered ------
+  // ----- use effect to check if every players are registered ------
   useEffect(() => {
     if (currentPlayer > players.length && players.length) {
       setUsers(players);

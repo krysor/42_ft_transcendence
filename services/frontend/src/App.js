@@ -24,7 +24,6 @@ import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserPage from "./components/user/userPage";
 import PlayerSelection from "./components/tournament/playerSelection";
-import IdentificatePlayers from "./components/tournament/identificatePlayers";
 import Participants from "./components/tournament/Participant";
 import { UserProvider } from "./components/tournament/UserContext";
 
@@ -47,7 +46,6 @@ function App () {
 				<Route path="/" element={<Home />} />
 				<Route path="/Game" element={<Game />} />
 				<Route path="/tournament" element={<Tournament />} />
-				<Route path="/tournament/register/:numberOfPlayers" element={<IdentificatePlayers />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/login" element={<Login />} />
