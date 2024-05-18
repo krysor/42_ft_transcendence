@@ -32,7 +32,7 @@ function NavBar(props) {
 				{props.user && props.isLoggedIn && props.user.profile_pic && (
 					<Nav.Link as={Link} to="/profile">
 						<ProfilePic filename={props.user.profile_pic} />
-					</Nav.Link>}
+					</Nav.Link>)}
 			</Container>
 		</Navbar>
 	)

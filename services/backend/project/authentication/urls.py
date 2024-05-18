@@ -14,7 +14,7 @@ urlpatterns = [
     path('update_parties/', update_parties),
     path('get_parties/', get_parties),
     path('get_user_by_id/<int:user_id>', get_user_by_id),
-    path('logout/', logout),Viewed
+    path('logout/', logout),
     path('all/', all_users),
     path('add_friend/<int:friend_id>/', add_friend, name='add_friend'),
     path('remove_friend/<int:friend_id>/', remove_friend, name='remove_friend'),
