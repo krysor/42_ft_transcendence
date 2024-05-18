@@ -7,6 +7,7 @@ class User(AbstractUser):
 	profile_pic = models.ImageField(verbose_name='profile pic', default='default_pp.jpeg')
 	friends = models.ManyToManyField('self', symmetrical=False, related_name='friend_list', blank=True)
 	is_online = models.BooleanField(default=False)
+	is_student = models.BooleanField(default=False)
 
 class Match(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='match_history')

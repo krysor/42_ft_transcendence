@@ -22,21 +22,17 @@ function NavBar(props) {
 						<Nav.Link as={Link} to="/Morpion">Morpion</Nav.Link>
 						<Nav.Link as={Link} to="/about">About</Nav.Link>
 						{props.isLoggedIn ? <><Nav.Link as={Link} to="/community">Community</Nav.Link>
-											<Nav.Link as={Link} to="/logout">Logout</Nav.Link>
-											<Nav.Link as={Link} to="/profile"> {props.user
-													&& props.user.profile_pic 
-													&& <>{props.user.username}
-														<ProfilePic filename={props.user.profile_pic} /></>}
-											</Nav.Link></>
-										: <><Nav.Link as={Link} to="/signup">Signup</Nav.Link>
-											<Nav.Link as={Link} to="/login">Login</Nav.Link></>}
+										  <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
+										</>
+									  : <><Nav.Link as={Link} to="/login">Login</Nav.Link>
+									  	<Nav.Link as={Link} to="/signup">Signup</Nav.Link>
+									  	</>}
 					</Nav>
 				</Navbar.Collapse>
-				{/* {props.isLoggedIn && <Nav.Link as={Link} to="/profile">
-					{props.user
-						&& props.user.profile_pic
-						&& <ProfilePic filename={props.user.profile_pic} />}
-					</Nav.Link>} */}
+				{props.user && props.isLoggedIn && props.user.profile_pic && (
+					<Nav.Link as={Link} to="/profile">
+						<ProfilePic filename={props.user.profile_pic} />
+					</Nav.Link>}
 			</Container>
 		</Navbar>
 	)
