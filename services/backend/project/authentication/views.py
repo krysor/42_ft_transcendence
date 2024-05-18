@@ -18,8 +18,8 @@ import json
 from django.conf import settings
 import os
 
-from .serializers import UserSerializer, ScoreSerializer
-from authentication.models import User, Score
+from .serializers import UserSerializer, ScoreSerializer, MorpionSerializer
+from authentication.models import User, Score, MorpionParties
 
 @api_view(['POST'])
 def signup(request):
@@ -162,4 +162,25 @@ def update_score(request):
 def get_top_score(request):
     scores = Score.objects.all().order_by('-score')[:10]
     serialized = ScoreSerializer(scores, many=True)
+    return JsonResponse({'scores': serialized.data})
+
+# create a database entry for the user's parties
+@api_view(['POST'])
+def update_parties(request):
+
+    user = request.user
+    oponent = request.data['oponent']
+    data = request.data['points']
+
+    obj = MorpionParties.objects.create(user=user, oponent=oponent, winner=data)[0]
+    serialized = MorpionSerializer(data=request.data)
+    serialized.save(user)
+
+    return JsonResponse({'success': 'Party saved'})
+
+# get the parties of the user
+@api_view(['GET'])
+def get_parties(request):
+    parties = MorpionParties.objects.all().order_by('-date')
+    serialized = MorpionSerializer(parties, many=True)
     return JsonResponse({'scores': serialized.data})

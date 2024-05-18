@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
 import '../user/getUserData';
+
+
 import getUserData from '../user/getUserData';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, Table, Collapse } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 let user = await getUserData().then((user) => {
@@ -12,7 +15,72 @@ let user = await getUserData().then((user) => {
 	return "Guest";
 });
 
-let getScore = async () => {
+let onClickHandler = (e) => {
+    const hiddenElement = e.currentTarget.nextSibling;
+    hiddenElement.className.indexOf("collapse show") > -1 ? hiddenElement.classList.remove("show") : hiddenElement.classList.add("show");
+};
+
+let GetParties = async (user) => {
+	try {
+		const authtoken = sessionStorage.getItem('authtoken');
+		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/user/get_parties/', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Token ${authtoken}`
+			}
+		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+		const data = await response.json();
+		let responseHtml = [];
+		const option = { day: 'numeric', month: 'long', year: 'numeric' };
+		for (let i = 0; i < data.scores.length; i++) {
+			console.log(data.scores[i].date);
+			if (data.scores[i].user.username === user) {
+				responseHtml.push(
+					<tr>
+						<td>
+							{ data.scores[i].date.substring(0, 10)} { data.scores[i].date.substring(11, 19)}
+						</td>
+						<td>
+							{ data.scores[i].oponent }
+						</td>
+						<td>
+							{ data.scores[i].winner == 1 ? "Win" : (data.scores[i].winner == 0 ? "Draw" : "Lose")}
+						</td>
+					</tr>
+				);
+			}
+		}
+		return responseHtml;
+	} catch (error) {
+		console.error('Error:', error);
+		return (
+			<tr>
+				<td>
+					<Spinner animation="border" role="status">
+						<span className="visually-hidden">Loading...</span>
+					</Spinner>
+				</td>
+				<td>
+					<Spinner animation="border" role="status">
+						<span className="visually-hidden">Loading...</span>
+					</Spinner>
+				</td>
+				<td>
+					<Spinner animation="border" role="status">
+						<span className="visually-hidden">Loading...</span>
+					</Spinner>
+				</td>
+			</tr>
+		);
+	}
+}
+
+
+let GetScore = async () => {
 	try {
 		const authtoken = sessionStorage.getItem('authtoken');
 		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/user/get_top_score/', {
@@ -26,22 +94,49 @@ let getScore = async () => {
 			throw new Error('Network response was not ok');
 		}
 		const data = await response.json();
+		let parties;
+		
 		let responseHtml = [];
 		for (let i = 0; i < data.scores.length; i++) {
+			parties = await GetParties(data.scores[i].user.username);
 			data.scores[i].id = i + 1;
 			const SClass = data.scores[i].user.username === user ? "bg-warning" : "";
+			const name = "multiCollapse" + (i + 1);
+			const colName = "collapse ";
+
 			responseHtml.push(
-					<tr>
-						<td class={SClass}>
-							{ data.scores[i].id }
-						</td>
-						<td class={SClass}>
-							{ data.scores[i].user.username }
-						</td>
-						<td class={SClass}>
-							{ data.scores[i].score }
-						</td>
-					</tr>);
+				<tr onClick={onClickHandler}>
+					<td class={SClass}>
+						{ data.scores[i].id }
+					</td>
+					<td class={SClass}>
+						{ data.scores[i].user.username }
+					</td>
+					<td class={SClass}>
+						{ data.scores[i].score }
+					</td>
+				</tr>
+				);
+			responseHtml.push(
+				<tr class={colName} id={name}>
+					<td colSpan="4">
+						<div>
+							<Table striped>
+								<thead>
+									<tr class="info">
+										<th>Date</th>
+										<th>Opennent</th>
+										<th>Score</th>
+									</tr>
+								</thead>
+								<tbody>
+									{parties}
+								</tbody>
+							</Table>
+						</div>
+					</td>
+				</tr>
+				);
 		}
 		return responseHtml;
 	} catch (error) {
@@ -66,9 +161,9 @@ let getScore = async () => {
 		);
 	}
 }
-async function loadAllScore() {
+async function LoadAllScore() {
 	return (
-		await getScore().then((data) => {
+		await GetScore().then((data) => {
 			if (data) {
 				return data;
 			}
@@ -76,7 +171,7 @@ async function loadAllScore() {
 		}));
 	}
 
-let allScores = await loadAllScore();
+let allScores = await LoadAllScore();
 
 function Square({ value, onSquareClick }){
 	return (
@@ -103,12 +198,12 @@ function Board({ xIsNext, squares, onPlay }) {
 	}
 
 	async function restartGame() {
-		allScores = await loadAllScore();
+		allScores = await LoadAllScore();
 		onPlay(Array(9).fill(null));
 	}
 	
 	async function botPlayer() {
-		allScores = await loadAllScore();
+		allScores = await LoadAllScore();
 		let i = Math.floor(Math.random() * 9);
 		while (squares[i] !== null) {
 			i = Math.floor(Math.random() * 9);
@@ -123,10 +218,12 @@ function Board({ xIsNext, squares, onPlay }) {
 	if (winner) {
 		status = 'Winner: ' + winner;
 		sendScore(user, winner === user ? 1 : -1);
+		sendParty(user, winner === user ? 1 : -1, "Bot");
 		restartBtn = <button className="restartButton" onClick={restartGame}>Restart</button>;
 	} else if (draw) {
 		status = 'Draw';
 		sendScore(user, 0);
+		sendParty(user, 0, "Bot");
 		restartBtn = <button className="restartButton" onClick={restartGame}>Restart</button>;
 	} else {
 		status = 'Next player: ' + (xIsNext ? user : "Bot");
@@ -173,7 +270,28 @@ const sendScore = async (winner, points) => {
 			},
 			body: JSON.stringify(data)
 		});
-		allScores = await loadAllScore();
+		allScores = await LoadAllScore();
+
+	} catch (error) {
+		console.error('Error:', error);
+		return null;
+	}
+}
+
+const sendParty = async (winner, points, oponent) => {
+	const authtoken = sessionStorage.getItem('authtoken');
+	const data = { winner: winner, points: points, oponent: oponent};
+	try {
+
+		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/user/update_parties/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Token ${authtoken}`
+			},
+			body: JSON.stringify(data)
+		});
+		allScores = await LoadAllScore();
 
 	} catch (error) {
 		console.error('Error:', error);
@@ -207,10 +325,10 @@ export default function Morpion() {
 				</div>
 			</div>
 			<div>
-				<table class="table table-striped">
+				<Table striped>
 					<thead class="thead-dark">
 						<tr>
-							<th colspan="3">Morpion's Leaderboard</th>
+							<th colSpan="3">Morpion's Leaderboard</th>
 						</tr>
 						<tr>
 							<th>#</th>
@@ -221,7 +339,7 @@ export default function Morpion() {
 					<tbody>
 						<LoadScore />
 					</tbody>
-				</table>
+				</Table>
 			</div>
 		</div>
 	);

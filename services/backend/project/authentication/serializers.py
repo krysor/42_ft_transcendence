@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Match, Score
+from .models import User, Match, Score, MorpionParties
 
 class UserSerializer(serializers.ModelSerializer):
 	class Meta(object):
@@ -12,3 +12,10 @@ class ScoreSerializer(serializers.ModelSerializer):
 	class Meta(object):
 		model = Score
 		fields = ['user', 'score'] 
+
+class MorpionSerializer(serializers.ModelSerializer):
+	user = UserSerializer()
+	
+	class Meta(object):
+		model = MorpionParties
+		fields = ['user', 'oponent', 'date', 'winner']
