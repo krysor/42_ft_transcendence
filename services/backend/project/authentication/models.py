@@ -15,5 +15,8 @@ class Match(models.Model):
 	winner = models.BooleanField(default=True)
 
 class Score(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='score')
-	score = models.IntegerField(null=False, default=0, verbose_name='score')
+	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='score')
+	score = models.FloatField(null=False, default=0, verbose_name='score')
+
+	def __str__(self):
+		return f"{self.user.username} - {self.score}"

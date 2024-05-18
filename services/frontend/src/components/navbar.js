@@ -8,27 +8,30 @@ import ProfilePic from "./user/getProfilePic";
 
 function NavBar(props) {
 	return (
-		<Navbar bg="dark" data-bs-theme="dark">
+		<Navbar expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
 			<Container id="containerNavBar">
 				<Navbar.Brand as={Link} to="/">
 					<img id="logo" alt="" src="favicon.ico"></img>Home
 				</Navbar.Brand>
-				<Nav id="navBar" className="me-auto">
-					{/* <Navbar.Brand as={Link} to="/">Home</Navbar.Brand> */}
-					<Nav.Link as={Link} to="/Game">Game</Nav.Link>
-					<Nav.Link as={Link} to="/ThreejsGame">ThreeGame</Nav.Link>
-					<Nav.Link as={Link} to="/Morpion">Morpion</Nav.Link>
-					<Nav.Link as={Link} to="/about">About</Nav.Link>
-					{props.isLoggedIn ? <><Nav.Link as={Link} to="/community">Community</Nav.Link>
-										  <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
-										  <Nav.Link as={Link} to="/profile"> {props.user
-										  		&& props.user.profile_pic 
-												&& <>{props.user.username}
-													 <ProfilePic filename={props.user.profile_pic} /></>}
-										  </Nav.Link></>
-									  : <><Nav.Link as={Link} to="/signup">Signup</Nav.Link>
-									  	  <Nav.Link as={Link} to="/login">Login</Nav.Link></>}
-				</Nav>
+				<Navbar.Toggle aria-controls="navbar" />
+				<Navbar.Collapse id="navbar">
+					<Nav id="navBar" className="me-auto">
+						{/* <Navbar.Brand as={Link} to="/">Home</Navbar.Brand> */}
+						<Nav.Link as={Link} to="/Game">Game</Nav.Link>
+						<Nav.Link as={Link} to="/ThreejsGame">ThreeGame</Nav.Link>
+						<Nav.Link as={Link} to="/Morpion">Morpion</Nav.Link>
+						<Nav.Link as={Link} to="/about">About</Nav.Link>
+						{props.isLoggedIn ? <><Nav.Link as={Link} to="/community">Community</Nav.Link>
+											<Nav.Link as={Link} to="/logout">Logout</Nav.Link>
+											<Nav.Link as={Link} to="/profile"> {props.user
+													&& props.user.profile_pic 
+													&& <>{props.user.username}
+														<ProfilePic filename={props.user.profile_pic} /></>}
+											</Nav.Link></>
+										: <><Nav.Link as={Link} to="/signup">Signup</Nav.Link>
+											<Nav.Link as={Link} to="/login">Login</Nav.Link></>}
+					</Nav>
+				</Navbar.Collapse>
 				{/* {props.isLoggedIn && <Nav.Link as={Link} to="/profile">
 					{props.user
 						&& props.user.profile_pic

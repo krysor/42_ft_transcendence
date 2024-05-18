@@ -18,7 +18,7 @@ import json
 from django.conf import settings
 import os
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, ScoreSerializer
 from authentication.models import User, Score
 
 @api_view(['POST'])
@@ -147,24 +147,19 @@ def profile_pic(request, filename):
     except FileNotFoundError:
         return HttpResponse(status=404)
 
-# create a database entry for the user's score
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# create or modify a database entry for the user's score
 @api_view(['POST'])
 def update_score(request):
     user = request.user
-    user.score = request.data.get('score')
-    user.save()
+    obj = Score.objects.get_or_create(user=user)[0]
+    obj.score += request.data['points']
+    obj.save()
     serialized = UserSerializer(user)
     return JsonResponse({'user': serialized.data})
 
-# add score to the user's score
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-@api_view(['POST'])
-def add_score(request):
-    user = request.user
-    user.score += request.data.get('score')
-    user.save()
-    serialized = UserSerializer(user)
-    return JsonResponse({'user': serialized.data})
+# get the top 10 scores
+@api_view(['GET'])
+def get_top_score(request):
+    scores = Score.objects.all().order_by('-score')[:10]
+    serialized = ScoreSerializer(scores, many=True)
+    return JsonResponse({'scores': serialized.data})

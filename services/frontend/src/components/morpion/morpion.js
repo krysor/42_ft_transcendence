@@ -2,13 +2,81 @@ import React, { useState } from 'react';
 import './App.css';
 import '../user/getUserData';
 import getUserData from '../user/getUserData';
+import { Spinner } from 'react-bootstrap';
 
-const user = await getUserData().then((user) => {
+
+let user = await getUserData().then((user) => {
 	if (user) {
 		return user.username;
 	}
-	return user;
+	return "Guest";
 });
+
+let getScore = async () => {
+	try {
+		const authtoken = sessionStorage.getItem('authtoken');
+		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/user/get_top_score/', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Token ${authtoken}`
+			}
+		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+		const data = await response.json();
+		let responseHtml = [];
+		for (let i = 0; i < data.scores.length; i++) {
+			data.scores[i].id = i + 1;
+			const SClass = data.scores[i].user.username === user ? "bg-warning" : "";
+			responseHtml.push(
+					<tr>
+						<td class={SClass}>
+							{ data.scores[i].id }
+						</td>
+						<td class={SClass}>
+							{ data.scores[i].user.username }
+						</td>
+						<td class={SClass}>
+							{ data.scores[i].score }
+						</td>
+					</tr>);
+		}
+		return responseHtml;
+	} catch (error) {
+		return (
+			<tr>
+				<td>
+					<Spinner animation="border" role="status">
+						<span className="visually-hidden">Loading...</span>
+					</Spinner>
+				</td>
+				<td>
+					<Spinner animation="border" role="status">
+						<span className="visually-hidden">Loading...</span>
+					</Spinner>
+				</td>
+				<td>
+					<Spinner animation="border" role="status">
+						<span className="visually-hidden">Loading...</span>
+					</Spinner>
+				</td>
+			</tr>
+		);
+	}
+}
+async function loadAllScore() {
+	return (
+		await getScore().then((data) => {
+			if (data) {
+				return data;
+			}
+			return "Error: No data found.";
+		}));
+	}
+
+let allScores = await loadAllScore();
 
 function Square({ value, onSquareClick }){
 	return (
@@ -19,8 +87,10 @@ function Square({ value, onSquareClick }){
 }
 
 function Board({ xIsNext, squares, onPlay }) {
+	let winner = calculateWinner(squares);
 	function HandleClick(i) {
-		if (calculateWinner(squares) || squares[i]) {
+		winner = calculateWinner(squares);
+		if (winner || squares[i]) {
 			return;
 		}
 		const nextSquares = squares.slice();
@@ -32,11 +102,13 @@ function Board({ xIsNext, squares, onPlay }) {
 		onPlay(nextSquares);
 	}
 
-	function restartGame() {
+	async function restartGame() {
+		allScores = await loadAllScore();
 		onPlay(Array(9).fill(null));
 	}
-
-	function botPlayer() {
+	
+	async function botPlayer() {
+		allScores = await loadAllScore();
 		let i = Math.floor(Math.random() * 9);
 		while (squares[i] !== null) {
 			i = Math.floor(Math.random() * 9);
@@ -44,16 +116,17 @@ function Board({ xIsNext, squares, onPlay }) {
 		HandleClick(i);
 	}
 
-	const winner = calculateWinner(squares);
 	const draw = calculateDraw(squares);
 	let status;
 	let restartBtn = null;
+	winner = calculateWinner(squares);
 	if (winner) {
 		status = 'Winner: ' + winner;
-		sendScore(winner);
+		sendScore(user, winner === user ? 1 : -1);
 		restartBtn = <button className="restartButton" onClick={restartGame}>Restart</button>;
 	} else if (draw) {
 		status = 'Draw';
+		sendScore(user, 0);
 		restartBtn = <button className="restartButton" onClick={restartGame}>Restart</button>;
 	} else {
 		status = 'Next player: ' + (xIsNext ? user : "Bot");
@@ -87,6 +160,33 @@ function Board({ xIsNext, squares, onPlay }) {
 	);
 }
 
+const sendScore = async (winner, points) => {
+	const authtoken = sessionStorage.getItem('authtoken');
+	const data = { winner: winner, points: points};
+	try {
+
+		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/user/update_score/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Token ${authtoken}`
+			},
+			body: JSON.stringify(data)
+		});
+		allScores = await loadAllScore();
+
+	} catch (error) {
+		console.error('Error:', error);
+		return null;
+	}
+}
+
+
+
+function LoadScore() {
+	return (allScores);
+}
+
 export default function Morpion() {
 	const [history, setHistory] = useState([Array(9).fill(null)]);
 	const [currentMove, setCurrentMove] = useState(0);
@@ -100,9 +200,28 @@ export default function Morpion() {
 	}
 
 	return (
-		<div className="game">
-			<div className="game-board">
-				<Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+		<div>
+			<div className="game">
+				<div className="game-board">
+					<Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+				</div>
+			</div>
+			<div>
+				<table class="table table-striped">
+					<thead class="thead-dark">
+						<tr>
+							<th colspan="3">Morpion's Leaderboard</th>
+						</tr>
+						<tr>
+							<th>#</th>
+							<th>Player</th>
+							<th>Score</th>
+						</tr>
+					</thead>
+					<tbody>
+						<LoadScore />
+					</tbody>
+				</table>
 			</div>
 		</div>
 	);
@@ -131,26 +250,9 @@ function calculateWinner(squares) {
 	for (let i = 0; i < lines.length; i++) {
 		const [a, b, c] = lines[i];
 		if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-			return squares[a] == 'X' ? user : "Bot";
+			return (squares[a] == 'X' ? user : "Bot");
 		}
 	}
 	return null;
 }
 
-function sendScore(winner) {
-	const authtoken = sessionStorage.getItem('authtoken');
-	const data = { winner: winner };
-	fetch('http://' + window.location.host.split(':')[0] + ':8000/user/update_score/', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'Authorization': `Token ${authtoken}`
-		},
-		body: JSON.stringify(data)
-	})
-		.then(response => response.json())
-		.then(data => console.log(data))
-		.catch((error) => {
-			console.error('Error:', error);
-		});
-}
