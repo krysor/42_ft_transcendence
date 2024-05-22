@@ -8,6 +8,10 @@ import NavBar from "./components/navbar"
 import Home from "./components/home";
 import Game from "./components/game/game";
 import Tournament from "./components/tournament/tournament";
+
+import ThreejsGame from "./components/game/threejs";
+import Morpion from "./components/morpion/morpion";
+
 import About from "./components/about";
 
 import Login from "./components/user/login";
@@ -46,6 +50,8 @@ function App () {
 				<Route path="/" element={<Home />} />
 				<Route path="/Game" element={<Game />} />
 				<Route path="/tournament" element={<Tournament />} />
+				<Route path="/ThreejsGame" element={<ThreejsGame />} />
+				<Route path="/Morpion" element={<Morpion />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/login" element={<Login />} />

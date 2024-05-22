@@ -20,3 +20,19 @@ class Match(models.Model):
     winner_id = models.IntegerField(verbose_name='ID of the winner', default=0)
     winner_name = models.CharField(max_length=255, verbose_name='Name of the winner', default='')
     is_pong = models.BooleanField(default=True)
+
+class Score(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='score')
+	score = models.IntegerField(null=False, default=0, verbose_name='score')
+
+	def __str__(self):
+		return f"{self.user.username} - {self.score}"
+	
+class MorpionParties(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='morpion_parties')
+	oponent = models.CharField(max_length=20, verbose_name='oponent')
+	date = models.DateTimeField(auto_now_add=True, verbose_name='date of the match')
+	winner = models.IntegerField(null=False, default=0, verbose_name='state')
+
+	def __str__(self):
+		return f"{self.user.username} - {self.oponent} - {self.winner}"

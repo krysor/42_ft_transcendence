@@ -1,0 +1,83 @@
+/* App.css */
+
+.game-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+  }
+  
+  .game {
+	background-color: #f0f0f0;
+	border: 2px solid #333;
+	padding: 20px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .game-board {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+  }
+  
+  .board-row {
+	display: flex;
+  }
+  
+  .square {
+	background-color: #fff;
+	border: 1px solid #999;
+	font-size: 24px;
+	font-weight: bold;
+	width: 60px;
+	height: 60px;
+	margin: 4px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	transition: background-color 0.3s;
+  }
+  
+  .restartButton {
+	background-color: #e70d0dc5;
+	margin-top: 15px;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	font-size: 16px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	text-align: left;
+	display: block;
+  }
+
+  .square:hover {
+	background-color: #f0f0f0;
+  }
+  
+  .status {
+	margin-bottom: 10px;
+	font-size: 18px;
+	font-weight: bold;
+  }
+  
+  .button {
+	margin-top: 20px;
+	padding: 10px 20px;
+	font-size: 16px;
+	font-weight: bold;
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+	background-color: #0056b3;
+  }
+  
