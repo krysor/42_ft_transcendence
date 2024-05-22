@@ -14,7 +14,7 @@ function UserPage() {
 				.then(response => response.json())
 				.then(data => setUserData(data))
 				.catch(error => console.error('Error fetching users:', error));
-		});
+        }, []);
 
     if (!userData) {
         return <div>Loading...</div>;
