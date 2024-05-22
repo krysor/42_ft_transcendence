@@ -3,6 +3,8 @@ import { useUsers } from './UserContext';
 import ProfilePic from '../user/getProfilePic';
 import Game from '../game/game'; // Import the Game component
 
+const backendHost = 'http://' + window.location.hostname + ':8000';
+
 const Participants = () => {
   const { users, setUsers } = useUsers();
   const [participants, setParticipants] = useState(users);
@@ -40,10 +42,51 @@ const Participants = () => {
     setCurrentMatch({ player1, player2 });
   };
 
-  const handleGameEnd = (loser) => {
+  const fetchMatchResult = (player1, p1Result, player2, p2Result) => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    console.log('Date formatée (YYYY-MM-DD) :', formattedDate);
+
+    console.log(player1.id);
+    const jsonData = {
+      p1ID: player1.id,
+      p1Name: player1.username,
+      p1Result: p1Result,
+      p2ID: player2.id,
+      p2Name: player2.username,
+      p2Result: p2Result,
+      date: formattedDate,
+    }
+
+      fetch(backendHost + '/tournament/add_match_to_historic/', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(jsonData)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw response.error;
+        }
+      })
+      .catch(error => {console.error('There was a problem with the fetch operation:', error);});
+  }
+
+  const handleGameEnd = (player1, p1Result, player2, p2Result) => {
+    let loser;
+    if (p1Result < p2Result) {
+        loser = player1;
+    } else {
+      loser = player2;
+    }
+
     const updatedParticipants = participants.filter(participant => participant !== loser);
     setParticipants(updatedParticipants);
     setUsers(updatedParticipants);
+
+    fetchMatchResult(player1, p1Result, player2, p2Result);
 
     setCurrentMatch(null);
   };
@@ -54,8 +97,8 @@ const Participants = () => {
         <>
            <p>Player 1: {currentMatch.player1.username}</p>
           <p>Player 2: {currentMatch.player2.username}</p>
-          <button onClick={() => handleGameEnd(currentMatch.player2)}>End Game (Player 1 Wins)</button>
-          <button onClick={() => handleGameEnd(currentMatch.player1)}>End Game (Player 2 Wins)</button>
+          <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)}>End Game (Player 1 Wins)</button>
+          <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)}>End Game (Player 2 Wins)</button>
         </>
         // <Game 
         // player1={currentMatch.player1} 
@@ -64,7 +107,7 @@ const Participants = () => {
         // />
       )}
 
-      {!currentMatch && participants.length != 1 && (
+      {!currentMatch && participants.length !== 1 && (
         <>
         <h2>Tournament Participants:</h2>
         <ul>

@@ -18,7 +18,7 @@ function Login () {
 
 			fetch(backendHost + '/user/login/', {
 				method: 'POST',
-				headers: {'Content-Type': 'application/json' },
+				headers: {'Content-Type': 'apllication/json' },
 									body: JSON.stringify(jsonData)
 			})
 			.then(response => { return response.json(); })

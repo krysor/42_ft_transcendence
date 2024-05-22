@@ -10,7 +10,12 @@ class User(AbstractUser):
 	is_student = models.BooleanField(default=False)
 
 class Match(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='match_history')
-	oponent = models.CharField(max_length=20, verbose_name='oponent')
-	date = models.DateField(verbose_name='date of the match')
-	winner = models.BooleanField(default=True)
+    player1_id = models.IntegerField(verbose_name='ID of player 1', default=0)
+    player1_name = models.CharField(max_length=255, verbose_name='Name of player 1', default='')
+    player2_id = models.IntegerField(verbose_name='ID of player 2', default=0)
+    player2_name = models.CharField(max_length=255, verbose_name='Name of player 2', default='')
+    date = models.DateField(verbose_name='date of the match', null=False)
+    player1_score = models.IntegerField(verbose_name='score of player 1', default=0)
+    player2_score = models.IntegerField(verbose_name='score of player 2', default=0)
+    winner_id = models.IntegerField(verbose_name='ID of the winner', default=0)
+    winner_name = models.CharField(max_length=255, verbose_name='Name of the winner', default='')
