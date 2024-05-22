@@ -6,14 +6,20 @@ import {
 
 import NavBar from "./components/navbar"
 import Home from "./components/home";
-import Game from "./components/game/game";
-import Tournament from "./components/tournament/tournament";
+import About from "./components/about";
 
+// -----Game-----
+import Game from "./components/game/game";
 import ThreejsGame from "./components/game/threejs";
 import Morpion from "./components/morpion/morpion";
 
-import About from "./components/about";
+// ------Tournament------
+import Tournament from "./components/tournament/tournament";
+import PlayerSelection from "./components/tournament/playerSelection";
+import Matchmaking from "./components/tournament/Matchmaking";
+import { UserProvider } from "./components/tournament/UserContext";
 
+// -----user-----
 import Login from "./components/user/login";
 import Profile from "./components/user/profile";
 import Signup from "./components/user/signup";
@@ -21,15 +27,13 @@ import Logout from "./components/user/logout";
 import Community from "./components/user/community"
 import EditProfile from "./components/user/edit_profile"
 import Ft_auth from "./components/user/42_auth";
+import UserPage from "./components/user/userPage";
 
+// -----error-----
 import NotFound from "./components/notfound";
 
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import UserPage from "./components/user/userPage";
-import PlayerSelection from "./components/tournament/playerSelection";
-import Participants from "./components/tournament/Participant";
-import { UserProvider } from "./components/tournament/UserContext";
 
 function App () {
 	const token = sessionStorage.getItem('authtoken')
@@ -48,11 +52,19 @@ function App () {
 			<UserProvider>
 			<Routes>
 				<Route path="/" element={<Home />} />
+				<Route path="/about" element={<About />} />
+				<Route path="/*" element={<NotFound />} />
+				{/* -----Game----- */}
 				<Route path="/Game" element={<Game />} />
-				<Route path="/tournament" element={<Tournament />} />
 				<Route path="/ThreejsGame" element={<ThreejsGame />} />
 				<Route path="/Morpion" element={<Morpion />} />
-				<Route path="/about" element={<About />} />
+
+				{/* -----Tournament----- */}
+				<Route path="/tournament" element={<Tournament />} />
+				<Route path="/tournament/Matchmaking" element={<Matchmaking />} />
+				<Route path="/tournament/player_select" element={<PlayerSelection />} />
+				
+				{/* -----User----- */}
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/42_auth" element={<Ft_auth />} />
@@ -61,11 +73,8 @@ function App () {
 				<Route path="/user_profile/:user_id" element={<UserPage />} />
 				<Route path="/community" element={<Community />} />
 				<Route path="/edit_profile" element={<EditProfile />} />
-				<Route path="/*" element={<NotFound />} />
-          <Route path="/tournament/Participants" element={<Participants />} />
-		<Route path="/tournament/player_select" element={<PlayerSelection />} />
 			</Routes>
-      </UserProvider>
+      	</UserProvider>
           </Router>
       );
 }

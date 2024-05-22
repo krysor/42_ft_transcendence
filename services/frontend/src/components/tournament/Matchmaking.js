@@ -5,7 +5,7 @@ import Game from '../game/game'; // Import the Game component
 
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
-const Participants = () => {
+const Matchmaking = () => {
   const { users, setUsers } = useUsers();
   const [participants, setParticipants] = useState(users);
   const [currentMatch, setCurrentMatch] = useState(null);
@@ -131,4 +131,4 @@ const Participants = () => {
   );
 };
 
-export default Participants;
+export default Matchmaking;

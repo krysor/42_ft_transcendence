@@ -83,7 +83,7 @@ const PlayerSelection = () => {
   useEffect(() => {
     if (currentPlayer > players.length && players.length) {
       setUsers(players);
-      navigate(`/tournament/Participants`);
+      navigate(`/tournament/Matchmaking`);
     }
   }, [players]);
 
