@@ -96,7 +96,6 @@ def add_match(request):
     except KeyError as e:
         return Response({'error': f'Missing field: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
     except User.DoesNotExist as e:
-        # Return a generic error message without exposing sensitive information
         return Response({'error': 'A user involved in the match does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -19,3 +19,4 @@ class Match(models.Model):
     player2_score = models.IntegerField(verbose_name='score of player 2', default=0)
     winner_id = models.IntegerField(verbose_name='ID of the winner', default=0)
     winner_name = models.CharField(max_length=255, verbose_name='Name of the winner', default='')
+    is_pong = models.BooleanField(default=True)
