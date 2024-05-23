@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useUsers } from './UserContext';
 import ProfilePic from '../user/getProfilePic';
 import Game from '../game/game'; // Import the Game component
+import ThreejsGame from '../game/threejs';
 
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
@@ -94,17 +95,18 @@ const Matchmaking = () => {
   return (
     <div>
       {currentMatch && (
-        <>
-           <p>Player 1: {currentMatch.player1.username}</p>
-          <p>Player 2: {currentMatch.player2.username}</p>
-          <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)}>End Game (Player 1 Wins)</button>
-          <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)}>End Game (Player 2 Wins)</button>
-        </>
-        // <Game 
-        // player1={currentMatch.player1} 
-        // player2={currentMatch.player2} 
-        // onGameEnd={handleGameEnd} 
-        // />
+        // <>
+        //    <p>Player 1: {currentMatch.player1.username}</p>
+        //   <p>Player 2: {currentMatch.player2.username}</p>
+        //   <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)}>End Game (Player 1 Wins)</button>
+        //   <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)}>End Game (Player 2 Wins)</button>
+        // </>
+
+        <ThreejsGame 
+        p1={currentMatch.player1} 
+        p2={currentMatch.player2} 
+        onGameEnd={handleGameEnd} 
+        />
       )}
 
       {!currentMatch && participants.length !== 1 && (
