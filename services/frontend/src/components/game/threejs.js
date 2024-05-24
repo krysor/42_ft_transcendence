@@ -243,12 +243,25 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 
 	return (
 		<div>
-			<div style={{ textAlign: 'center', marginBottom: '20px' }}>
-				<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>{p1.username} Score: {scoreP1}</p>
-				<p style={{ fontWeight: 'bold', fontSize: '18px' }}>{p2.username} Score: {scoreP2}</p>
+		{p1 && p2 && (
+			<div>
+				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
+					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>{p1.username} Score: {scoreP1}</p>
+					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>{p2.username} Score: {scoreP2}</p>
+				</div>
+				<canvas ref={refContainer} />
 			</div>
-			<canvas ref={refContainer} />
-		</div>
+		)}
+		{!p1 && !p2 && (
+			<div>
+				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
+					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>Player 1 Score: {scoreP1}</p>
+					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>Player 2 Score: {scoreP2}</p>
+				</div>
+				<canvas ref={refContainer} />
+			</div>
+		)}
+	</div>
 	);
 };
 
