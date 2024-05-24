@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useUsers } from './UserContext';
+import { useLocation } from 'react-router';
 import ProfilePic from '../user/getProfilePic';
 import Game from '../game/game'; // Import the Game component
 import ThreejsGame from '../game/threejs';
-
+import Morpion from '../morpion/morpion';
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
 const Matchmaking = () => {
@@ -11,6 +12,9 @@ const Matchmaking = () => {
   const [participants, setParticipants] = useState(users);
   const [currentMatch, setCurrentMatch] = useState(null);
   const [currentPair, setCurrentPair] = useState(0);
+
+  const location = useLocation();
+  const game = location.state?.game;
 
   const doTournament = (event) => {
     event.preventDefault();
@@ -49,7 +53,6 @@ const Matchmaking = () => {
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const day = today.getDate().toString().padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-    console.log('Date formatée (YYYY-MM-DD) :', formattedDate);
 
     console.log(player1.id);
     const jsonData = {
@@ -94,19 +97,27 @@ const Matchmaking = () => {
 
   return (
     <div>
-      {currentMatch && (
+      {currentMatch && game == 'pong' && (
+        <ThreejsGame 
+        p1={currentMatch.player1} 
+        p2={currentMatch.player2} 
+        onGameEnd={handleGameEnd} 
+        />
+      )}
+
+      {currentMatch && game == 'morpion' && (
+        <Morpion 
+        p1={currentMatch.player1} 
+        p2={currentMatch.player2} 
+        onGameEnd={handleGameEnd} 
+        />
+
         // <>
         //    <p>Player 1: {currentMatch.player1.username}</p>
         //   <p>Player 2: {currentMatch.player2.username}</p>
         //   <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)}>End Game (Player 1 Wins)</button>
         //   <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)}>End Game (Player 2 Wins)</button>
         // </>
-
-        <ThreejsGame 
-        p1={currentMatch.player1} 
-        p2={currentMatch.player2} 
-        onGameEnd={handleGameEnd} 
-        />
       )}
 
       {!currentMatch && participants.length !== 1 && (

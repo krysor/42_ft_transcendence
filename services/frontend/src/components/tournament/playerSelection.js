@@ -15,6 +15,8 @@ const PlayerSelection = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [game, setGame] = useState('');
+
   const isRegisteredUser = (userID, players) => {
     for (let player of players) {
       if (player.id !== '0' && player.id === userID) {
@@ -30,6 +32,7 @@ const PlayerSelection = () => {
     const nbOfPlayers = parseInt(event.target.nbOfPlayers.value, 10);
     setPlayers(Array.from({ length: nbOfPlayers }, () => ({ username: '', profile: '/default_pp.jpeg', id: '0' })));
     setCurrentPlayer(1);
+    setGame(event.target.gameSelect.value);
   };
 
   const handlePlayerNameSubmit = (event) => {
@@ -83,7 +86,7 @@ const PlayerSelection = () => {
   useEffect(() => {
     if (currentPlayer > players.length && players.length) {
       setUsers(players);
-      navigate(`/tournament/Matchmaking`);
+      navigate(`/tournament/Matchmaking`, { state: { game } });
     }
   }, [players]);
 
@@ -137,6 +140,12 @@ const PlayerSelection = () => {
 
       {currentPlayer > players.length && (
         <form onSubmit={handleFormSubmit}>
+          <label htmlFor='gameSelect'>Choose the game:</label>
+          <select id='gameSelect' name='gameSelect' required>
+            <option value="Pong">Pong</option>
+            <option value="morpion">Morpion</option>
+          </select>
+          <br />
           <label htmlFor="nbOfPlayers">How many players will play in the tournament?</label>
           <input type="number" name="nbOfPlayers" id="nbOfPlayers" min="1" max="16" />
           <button type="submit">Proceed to Registration</button>
