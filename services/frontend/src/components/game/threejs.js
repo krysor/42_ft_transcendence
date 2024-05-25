@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.module.js';
 
-const ThreejsGame = () => {
+const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 	const scene = useRef(null);
 	const camera = useRef(null);
 	const renderer = useRef(null);
@@ -83,12 +83,10 @@ const ThreejsGame = () => {
 			player1.current = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.5, 3), new THREE.MeshPhongMaterial({ color: 0x5f005f, side: THREE.DoubleSide }));
 			player1.current.position.set(-8, 0, 0);
 			scene.current.add(player1.current);
-			//   setPlayer1(player1.current);
 
 			player2.current = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.5, 3), new THREE.MeshPhongMaterial({ color: 0x5f005f, side: THREE.DoubleSide }));
 			player2.current.position.set(8, 0, 0);
 			scene.current.add(player2.current);
-			//   setPlayer2(player2.current);
 
 			let bordeurUp = new THREE.Mesh(
 				new THREE.BoxGeometry(20, 0.5, 0.1),
@@ -102,7 +100,6 @@ const ThreejsGame = () => {
 			bordeurUp.position.y = 0;
 			bordeurUp.position.z = 7.2;
 			scene.current.add(bordeurUp);
-
 
 			let borderDown = new THREE.Mesh(
 				new THREE.BoxGeometry(20, 0.5, 0.1),
@@ -157,7 +154,6 @@ const ThreejsGame = () => {
 			};
 		};
 
-
 		function resetPositions() {
 			player1.current.position.z = 0;
 			player2.current.position.z = 0;
@@ -167,8 +163,6 @@ const ThreejsGame = () => {
 			ballVelocity.current = { x: 0.1, y: 0, z: 0 };
 		}
 
-		// Animate the scene
-		// Animate the scene
 		const animate = () => {
 			if (!scene.current || !camera.current || !renderer.current || !player1.current || !player2.current || !ball.current) return;
 
@@ -222,28 +216,25 @@ const ThreejsGame = () => {
 			}
 
 			// DETECTION OF MISSED BALL
-			// PointP1 and PointP2 are declared at the beginning of the file (8-9 lines)
-			
 			if (ball.current.position.x < -12) {
-				setScoreP2(scoreP2 + 1);
-				// console.log("Score P2: ", scoreP2, user2Score);
+				setScoreP2(prevScore => prevScore + 1);
 				resetPositions();
-			}
-			else if (ball.current.position.x > 12) {
-				setScoreP1(scoreP1 + 1);
-				// console.log("Score P1: ", scoreP1, user1Score);
+			} else if (ball.current.position.x > 12) {
+				setScoreP1(prevScore => prevScore + 1);
 				resetPositions();
 			}
 
-			renderer.current.render(scene.current, camera.current);
-			requestAnimationFrame(animate);
+			if (scoreP1 >= 10 || scoreP2 >= 10) {
+				onGameEnd(p1, scoreP1, p2, scoreP2);
+			} else {
+				renderer.current.render(scene.current, camera.current);
+				requestAnimationFrame(animate);
+			}
 		};
-
 
 		initScene();
 
 		return () => {
-			// directionalLight.dispose();
 			document.removeEventListener('keydown', handleKeyDown);
 			document.removeEventListener('keyup', handleKeyUp);
 			cancelAnimationFrame(animate);
@@ -257,13 +248,25 @@ const ThreejsGame = () => {
 
 	return (
 		<div>
-			<div style={{ textAlign: 'center', marginBottom: '20px' }}>
-				<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>Player 1 Score: {scoreP1}</p>
-				<p style={{ fontWeight: 'bold', fontSize: '18px' }}>Player 2 Score: {scoreP2}</p>
+		{p1 && p2 && (
+			<div>
+				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
+					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>{p1.username} Score: {scoreP1}</p>
+					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>{p2.username} Score: {scoreP2}</p>
+				</div>
+				<canvas ref={refContainer} />
 			</div>
-			<canvas ref={refContainer} />
-
-		</div>
+		)}
+		{!p1 && !p2 && (
+			<div>
+				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
+					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>Player 1 Score: {scoreP1}</p>
+					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>Player 2 Score: {scoreP2}</p>
+				</div>
+				<canvas ref={refContainer} />
+			</div>
+		)}
+	</div>
 	);
 };
 

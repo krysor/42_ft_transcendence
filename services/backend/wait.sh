@@ -14,6 +14,6 @@ if ! python -c "from django.contrib.auth.models import User; \
     python manage.py createsuperuser --username=admin --email "" --noinput
 fi
 
-python manage.py runserver 0.0.0.0:8000
+# python manage.py runserver 0.0.0.0:8000
 
 exec "$@"

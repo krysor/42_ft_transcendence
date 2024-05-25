@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+
 function Signup () {
     const [error, setError] = useState('');
  
@@ -11,7 +13,8 @@ function Signup () {
             username: formData.get('username'),
             password: formData.get('password'),
         };
-        fetch('http://' + window.location.host.split(':')[0] + ':8000/user/signup/', {
+
+        fetch(backendHost + '/user/signup/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(JsonData)
@@ -42,9 +45,13 @@ function Signup () {
           <br />
           <label htmlFor="password">Enter your password: </label>
           <input id="password" name="password" type="password" />
-          {error && <div>Error: {error}</div>}
           <br />
           <button>Sign up !</button>
+          <br />
+          <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code">
+            Login with 42 authentication !
+          </a>
+          {error && <div>Error: {error}</div>}
         </form>
 
     );

@@ -7,7 +7,7 @@ services:
     image: postgres:latest
     env_file: ./.env
     volumes:
-      - db-v:/var/lib/postgresql/data
+      - db-v:/var/lib/postgresql
     ports:
       - "5432:5432"
     expose:
@@ -23,6 +23,7 @@ services:
     env_file: ./.env
     volumes:
       - backend-v:/code
+      - ssl-v:/ssl
     ports:
       - "8000:8000"
     expose:
@@ -40,6 +41,7 @@ services:
     env_file: ./.env
     volumes:
       - frontend-v:/usr/src/app
+      - ssl-v:/ssl
     ports:
       - "3000:3000"
     expose:
@@ -70,6 +72,13 @@ volumes:
       type: 'none'
       o: 'bind'
       device: "${PWD}/services/postgreSQL"
+  
+  ssl-v:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/ssl"
 
 networks:
   default-n:
