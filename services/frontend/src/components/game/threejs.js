@@ -25,7 +25,7 @@ const ThreejsGame = () => {
 			camera.current = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 			camera.current.position.x = 0;
 			camera.current.position.y = 12;
-			camera.current.position.z = 1;
+			camera.current.position.z = 5;
 			camera.current.lookAt(0, 0, 0);
 
 			renderer.current = new THREE.WebGLRenderer({ antialias: true, canvas: refContainer.current });
@@ -184,9 +184,7 @@ const ThreejsGame = () => {
 			ball.current.position.y += ballVelocity.current.y;
 			ball.current.position.z += ballVelocity.current.z;
 
-			console.log(ballVelocity.current.x);
-
-			player2.current.position.z = ball.current.position.z;
+			player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
 
 			// Check for collision with the game area's top and bottom boundaries
 			if (ball.current.position.z > 7.1 || ball.current.position.z < -7.1) {
@@ -225,13 +223,15 @@ const ThreejsGame = () => {
 
 			// DETECTION OF MISSED BALL
 			// PointP1 and PointP2 are declared at the beginning of the file (8-9 lines)
-
+			
 			if (ball.current.position.x < -12) {
 				setScoreP2(scoreP2 + 1);
+				// console.log("Score P2: ", scoreP2, user2Score);
 				resetPositions();
 			}
 			else if (ball.current.position.x > 12) {
-				setScoreP1(scoreP2 + 1);
+				setScoreP1(scoreP1 + 1);
+				// console.log("Score P1: ", scoreP1, user1Score);
 				resetPositions();
 			}
 
@@ -249,6 +249,11 @@ const ThreejsGame = () => {
 			cancelAnimationFrame(animate);
 		};
 	}, []);
+
+	if (scoreP1 > 9 || scoreP2 > 9) {
+		console.log("======================Game Over======================");
+	}
+	console.log("Score P2: ", scoreP2);
 
 	return (
 		<div>
