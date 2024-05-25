@@ -123,7 +123,7 @@ let GetScore = async () => {
 						<div>
 							<Table striped>
 								<thead>
-									<tr class="info">
+									<tr>
 										<th>Date</th>
 										<th>Opennent</th>
 										<th>Score</th>
@@ -298,8 +298,6 @@ const sendParty = async (winner, points, oponent) => {
 		return null;
 	}
 }
-
-
 
 function LoadScore() {
 	return (allScores);

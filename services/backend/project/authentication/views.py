@@ -213,6 +213,24 @@ def get_parties(request):
     serialized = MorpionSerializer(parties, many=True)
     return JsonResponse({'scores': serialized.data})
 
+# create a database entry for the match
+@api_view(['POST'])
+def update_match(request):
+    player1_id = request.data['player1_id']
+    player1_name = request.data['player1_name']
+    player2_id = request.data['player2_id']
+    player2_name = request.data['player2_name']
+    player1_score = request.data['player1_score']
+    player2_score = request.data['player2_score']
+    winner_id = request.data['winner_id']
+    winner_name = request.data['winner_name']
+    is_pong = True
+
+    obj = Match.objects.create(player1_id=player1_id, player1_name=player1_name, player2_id=player2_id, player2_name=player2_name, player1_score=player1_score, player2_score=player2_score, winner_id=winner_id, winner_name=winner_name, is_pong=is_pong)
+    serialized = MatchSerializer(obj)
+    serialized.save()
+    return JsonResponse({'match': serialized.data})
+
 @api_view(['POST', 'GET'])
 def ft_login(request):
     code = request.GET.get('code')
