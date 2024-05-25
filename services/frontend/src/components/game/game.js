@@ -44,9 +44,9 @@ function Game() {
 	}
 	const updateSinglePad = (player, oldY) => {
 		if (playerKeys[player]["upperKey"] && !playerKeys[player]["lowerKey"])
-			return { Y: oldY - padSpeed }
+			return { Y: (oldY - padSpeed) > 0 ? oldY - padSpeed : 0}
 		if (playerKeys[player]["lowerKey"] && !playerKeys[player]["upperKey"])
-			return { Y: oldY + padSpeed }
+			return { Y: (oldY + padSpeed) < (boardHeight - padHeight) ? oldY + padSpeed : (boardHeight - padHeight)}
 		return { Y: oldY }
 	}
 	const updatePad = () => {
@@ -69,22 +69,26 @@ function Game() {
 	const updateScore = (ballPositionX) => {
 		var newScoreLeft = state.score.left;
 		var	newScoreRight = state.score.right;
-		alert("before");
-		alert(newScoreLeft);
-		alert(newScoreRight);
 		if (ballPositionX < -ballDiameter)
 			newScoreRight += 1
 		if (ballPositionX > boardWidth)
 			newScoreLeft += 1
-		alert("after");
-		alert(newScoreLeft);
-		alert(newScoreRight);
 		const score = {
 			left: newScoreLeft,
 			right: newScoreRight
 		}
-		setState( previousState => {
-			return { ...previousState, score}});
+		if (newScoreLeft > 9 || newScoreRight > 9)
+			{
+				console.log("======================Game Over======================");
+				setState( previousState => {
+					return { ...previousState, score: { left: 0, right: 0}}
+				});
+				updatePaused();
+				//send score to backend via api
+			}
+		else
+			setState( previousState => {
+				return { ...previousState, score}});
 	}
 
 	const animate = () => {
@@ -94,7 +98,9 @@ function Game() {
 			ballSpeed.current.X *= -1;
 		if (BallLeftBoard(state.ball.X)) {
 			// do something
-			updateScore();
+			updateScore(state.ball.X);
+			// reset ball position
+			state.ball.X = 400;
 		}
 		updatePosition(ballSpeed);
 		// frameId.current = requestAnimationFrame(animate);

@@ -178,7 +178,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			ball.current.position.y += ballVelocity.current.y;
 			ball.current.position.z += ballVelocity.current.z;
 
-			player2.current.position.z = ball.current.position.z;
+			player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
 
 			// Check for collision with the game area's top and bottom boundaries
 			if (ball.current.position.z > 7.1 || ball.current.position.z < -7.1) {
@@ -239,7 +239,12 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			document.removeEventListener('keyup', handleKeyUp);
 			cancelAnimationFrame(animate);
 		};
-	}, [scoreP1, scoreP2]);
+	}, []);
+
+	if (scoreP1 > 9 || scoreP2 > 9) {
+		console.log("======================Game Over======================");
+	}
+	console.log("Score P2: ", scoreP2);
 
 	return (
 		<div>
