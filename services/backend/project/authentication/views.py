@@ -18,7 +18,7 @@ import json
 import requests
 import os
 
-from .serializers import UserSerializer, ScoreSerializer, MorpionSerializer
+from .serializers import UserSerializer, MatchSerializer, ScoreSerializer, MorpionSerializer
 from authentication.models import User, Score, MorpionParties
 
 @api_view(['POST'])

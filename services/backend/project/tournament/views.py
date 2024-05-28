@@ -21,7 +21,7 @@ import json
 import requests
 import os
 
-from authentication.serializers import UserSerializer
+from authentication.serializers import UserSerializer, MatchSerializer
 from authentication.models import User, Match
 
 
@@ -81,15 +81,16 @@ def add_match(request):
             winner_name = None
 
         match = Match.objects.create(
-            player1_id=p1_id,
-            player1_name=p1_name,
-            player2_id=p2_id,
-            player2_name=p2_name,
+            p1_id=p1_id,
+            p1_name=p1_name,
+            p2_id=p2_id,
+            p2_name=p2_name,
             date=date,
-            player1_score=p1_result,
-            player2_score=p2_result,
+            p1_score=p1_result,
+            p2_score=p2_result,
             winner_id=winner_id,
-            winner_name=winner_name
+            winner_name=winner_name,
+            is_pong=is_pong,
         )
 
         return Response({'message': 'Match added successfully.'}, status=status.HTTP_201_CREATED)
@@ -99,3 +100,16 @@ def add_match(request):
         return Response({'error': 'A user involved in the match does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+def get_all_matches(request):
+    matches = Match.objects.all()
+    serialized = MatchSerializer(matches, many=True)
+    return Response(serialized.data)
+
+@api_view(['GET'])
+def get_user_matches(request, user_id):
+    matches = Match.objects.filter(p1_id=user_id) | Match.objects.filter(p2_id=user_id)
+    serialized = MatchSerializer(matches, many=True)
+    return Response(serialized.data)

@@ -53,8 +53,8 @@ const Matchmaking = () => {
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const day = today.getDate().toString().padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
+    const is_pong = game === 'pong' ? true : false;
 
-    console.log(player1.id);
     const jsonData = {
       p1ID: player1.id,
       p1Name: player1.username,
@@ -63,6 +63,7 @@ const Matchmaking = () => {
       p2Name: player2.username,
       p2Result: p2Result,
       date: formattedDate,
+      is_pong: is_pong,
     }
 
       fetch(backendHost + '/tournament/add_match_to_historic/', {
