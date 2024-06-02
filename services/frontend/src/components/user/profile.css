@@ -2,13 +2,6 @@
     margin-bottom: 20px;
 }
 
-/* .match-detail {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-} */
-
-/* Profile.css */
 .match-list {
     list-style-type: none; /* Supprime les puces */
     padding: 0; /* Supprime le padding par défaut */
@@ -21,4 +14,23 @@
 
 .match-detail h3 {
     margin: 0 10px; /* Marge autour du texte */
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.profile_pic_username {
+    display: flex;
+    align-items: center; /* Centre verticalement la photo de profil et le nom d'utilisateur */
+    justify-content: center; /* Centre horizontalement le conteneur */
+    margin-bottom: 20px; /* Marge en bas pour espacement */
+}
+
+.profile_pic_username h2 {
+    margin-left: 20px; /* Espace entre la photo de profil et le nom d'utilisateur */
 }

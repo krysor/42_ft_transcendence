@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useUsers } from './UserContext';
 import { useLocation } from 'react-router';
+import { NavLink, Link } from "react-router-dom";
 import ProfilePic from '../user/ProfilePic';
 import Game from '../game/game'; // Import the Game component
 import ThreejsGame from '../game/threejs';
 import Morpion from '../morpion/morpion';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
 const Matchmaking = () => {
@@ -26,20 +29,18 @@ const Matchmaking = () => {
 
     let player1;
     let player2;
-  
+
     if (!participants[currentPair]) {
       setCurrentPair(0);
       player1 = participants[0];
-    }
-    else {
+    } else {
       player1 = participants[currentPair];
     }
 
     if (!participants[currentPair + 1]) {
       setCurrentPair(0);
       player2 = participants[1];
-    }
-    else {
+    } else {
       player2 = participants[currentPair + 1];
     }
 
@@ -53,7 +54,7 @@ const Matchmaking = () => {
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const day = today.getDate().toString().padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-    const is_pong = game === 'pong' ? true : false;
+    const is_pong = game === 'pong';
 
     const jsonData = {
       p1ID: player1.id,
@@ -65,23 +66,25 @@ const Matchmaking = () => {
     };
     console.log("data match: ");
     console.log(jsonData);
-      fetch(backendHost + '/tournament/add_match_to_historic/', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(jsonData)
-      })
+    fetch(backendHost + '/tournament/add_match_to_historic/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(jsonData)
+    })
       .then(response => {
         if (!response.ok) {
           throw response.error;
         }
       })
-      .catch(error => {console.error('There was a problem with the fetch operation:', error);});
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
   }
 
   const handleGameEnd = (player1, p1Result, player2, p2Result) => {
     let loser;
     if (p1Result < p2Result) {
-        loser = player1;
+      loser = player1;
     } else {
       loser = player2;
     }
@@ -96,16 +99,16 @@ const Matchmaking = () => {
   };
 
   return (
-    <div>
-      {currentMatch && game == 'pong' && (
-        <ThreejsGame 
-        p1={currentMatch.player1} 
-        p2={currentMatch.player2} 
-        onGameEnd={handleGameEnd} 
+    <div className="container mt-5">
+      {currentMatch && game === 'pong' && (
+        <ThreejsGame
+          p1={currentMatch.player1}
+          p2={currentMatch.player2}
+          onGameEnd={handleGameEnd}
         />
       )}
 
-      {currentMatch && game == 'morpion' && (
+      {currentMatch && game === 'morpion' && (
         // <Morpion 
         // p1={currentMatch.player1} 
         // p2={currentMatch.player2} 
@@ -113,31 +116,34 @@ const Matchmaking = () => {
         // />
 
         <>
-           <p>Player 1: {currentMatch.player1.username}</p>
+          <p>Player 1: {currentMatch.player1.username}</p>
           <p>Player 2: {currentMatch.player2.username}</p>
-          <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)}>End Game (Player 1 Wins)</button>
-          <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)}>End Game (Player 2 Wins)</button>
+          <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)} className="btn btn-success">End Game (Player 1 Wins)</button>
+          <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)} className="btn btn-danger">End Game (Player 2 Wins)</button>
         </>
       )}
 
       {!currentMatch && participants.length !== 1 && (
         <>
-        <h2>Tournament Participants:</h2>
-        <ul>
-          {participants.map((user, index) => (
-            <li key={index}>
-              Username: {user.username}, Profile Picture: {user.profile}
-              <ProfilePic filename={user.profile} online={user.is_online} />
-            </li>
-          ))}
-        </ul>
-        <button onClick={doTournament}>PLAY !</button>
+          <h2 className="mb-4">Tournament Participants:</h2>
+          <ul className="list-group">
+            {participants.map((user, index) => (
+              <li key={index} className="list-group-item d-flex align-items-center">
+                <ProfilePic filename={user.profile} online={user.is_online} className="mr-3" />
+                <span>Username: {user.username}</span>
+              </li>
+            ))}
+          </ul>
+          <button onClick={doTournament} className="btn btn-primary mt-4">PLAY !</button>
         </>
       )}
 
       {participants.length === 1 && (
-        <div>
-          <h3>The winner is: {participants[0].username}</h3>
+        <div className="mt-4">
+          <h3>Congratulations {participants[0].username} !!! You are the winner :)</h3>
+          <img src='/win_image.jpg'/>
+          <br />
+          <NavLink to="/tournament" className="btn btn-primary mt-4">New tournament</NavLink>
         </div>
       )}
     </div>

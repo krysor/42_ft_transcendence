@@ -15,7 +15,6 @@ import Morpion from "./components/morpion/morpion";
 
 // ------Tournament------
 import Tournament from "./components/tournament/tournament";
-import PlayerSelection from "./components/tournament/playerSelection";
 import Matchmaking from "./components/tournament/Matchmaking";
 import { UserProvider } from "./components/tournament/UserContext";
 
@@ -62,7 +61,6 @@ function App () {
 				{/* -----Tournament----- */}
 				<Route path="/tournament" element={<Tournament />} />
 				<Route path="/tournament/Matchmaking" element={<Matchmaking />} />
-				<Route path="/tournament/player_select" element={<PlayerSelection />} />
 				
 				{/* -----User----- */}
 				<Route path="/signup" element={<Signup />} />

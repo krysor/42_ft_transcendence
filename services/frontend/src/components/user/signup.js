@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
-function Signup () {
+function Signup() {
     const [error, setError] = useState('');
- 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -15,45 +16,58 @@ function Signup () {
         };
 
         fetch(backendHost + '/user/signup/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(JsonData)
-            })
-            .then(response => { return response.json(); })
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(JsonData)
+        })
+            .then(response => response.json())
             .then(data => {
-                if (data.Token)
-                {
+                if (data.Token) {
                     sessionStorage.setItem('authtoken', data.Token);
                     sessionStorage.setItem('user', JSON.stringify(data.user));
                     window.location.href = "/";
-                }
-                else if (data.error){
+                } else if (data.error) {
                     setError(data.error);
-                }
-                else{
-                    throw new Error('Failed to register new user')
+                } else {
+                    throw new Error('Failed to register new user');
                 }
             })
-            .catch(error => { console.error('There was a problem with the fetch operation:', error); });
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
     };
 
-
     return (
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="username">Enter username: </label>
-          <input id="username" name="username" type="text" />
-          <br />
-          <label htmlFor="password">Enter your password: </label>
-          <input id="password" name="password" type="password" />
-          <br />
-          <button>Sign up !</button>
-          <br />
-          <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code">
-            Login with 42 authentication !
-          </a>
-          {error && <div>Error: {error}</div>}
-        </form>
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <div className="card">
+                        <div className="card-header">
+                            <h3>Sign Up</h3>
+                        </div>
+                        <div className="card-body">
+                            <form onSubmit={handleSubmit}>
+                                <div className="form-group">
+                                    <label htmlFor="username">Enter your username:</label>
+                                    <input id="username" name="username" type="text" className="form-control" required />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="password">Enter your password:</label>
+                                    <input id="password" name="password" type="password" className="form-control" required />
+                                </div>
+                                {error && <div className="alert alert-danger mt-3">Error: {error}</div>}
 
+                                <button type="submit" className="btn btn-primary btn-block">Login</button>
+                                <p>-----or log with 42 intra----- </p>
+                                <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code">
+                                    <img src="favicon.ico" width="50" />
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }
 
