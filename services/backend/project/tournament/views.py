@@ -48,15 +48,12 @@ def add_match(request):
     try:
         date = request.data['date']
         p1_id = request.data['p1ID']
-        p1_name = request.data['p1Name']
         p1_result = request.data['p1Result']
         p2_id = request.data['p2ID']
-        p2_name = request.data['p2Name']
         p2_result = request.data['p2Result']
-
+        is_pong = request.data['is_pong']
         if p1_result > p2_result:
             winner_id = p1_id
-            winner_name = p1_name
             if p1_id != '0':
                 user1 = User.objects.get(id=p1_id)
                 user1.win += 1
@@ -67,7 +64,6 @@ def add_match(request):
                 user2.save()
         elif p1_result < p2_result:
             winner_id = p2_id
-            winner_name = p2_name
             if p1_id != 0:
                 user1 = User.objects.get(id=p1_id)
                 user1.loss += 1
@@ -78,18 +74,14 @@ def add_match(request):
                 user2.save()
         else:
             winner_id = None
-            winner_name = None
 
         match = Match.objects.create(
             p1_id=p1_id,
-            p1_name=p1_name,
             p2_id=p2_id,
-            p2_name=p2_name,
             date=date,
             p1_score=p1_result,
             p2_score=p2_result,
             winner_id=winner_id,
-            winner_name=winner_name,
             is_pong=is_pong,
         )
 

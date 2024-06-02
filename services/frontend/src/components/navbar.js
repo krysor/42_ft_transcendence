@@ -3,7 +3,7 @@
 
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import ProfilePic from "./user/getProfilePic";
+import ProfilePic from "./user/ProfilePic";
 
 function NavBar(props) {
     return (

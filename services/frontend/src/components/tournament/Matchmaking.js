@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useUsers } from './UserContext';
 import { useLocation } from 'react-router';
-import ProfilePic from '../user/getProfilePic';
+import ProfilePic from '../user/ProfilePic';
 import Game from '../game/game'; // Import the Game component
 import ThreejsGame from '../game/threejs';
 import Morpion from '../morpion/morpion';
@@ -57,15 +57,14 @@ const Matchmaking = () => {
 
     const jsonData = {
       p1ID: player1.id,
-      p1Name: player1.username,
       p1Result: p1Result,
       p2ID: player2.id,
-      p2Name: player2.username,
       p2Result: p2Result,
       date: formattedDate,
       is_pong: is_pong,
-    }
-
+    };
+    console.log("data match: ");
+    console.log(jsonData);
       fetch(backendHost + '/tournament/add_match_to_historic/', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
@@ -107,18 +106,18 @@ const Matchmaking = () => {
       )}
 
       {currentMatch && game == 'morpion' && (
-        <Morpion 
-        p1={currentMatch.player1} 
-        p2={currentMatch.player2} 
-        onGameEnd={handleGameEnd} 
-        />
+        // <Morpion 
+        // p1={currentMatch.player1} 
+        // p2={currentMatch.player2} 
+        // onGameEnd={handleGameEnd} 
+        // />
 
-        // <>
-        //    <p>Player 1: {currentMatch.player1.username}</p>
-        //   <p>Player 2: {currentMatch.player2.username}</p>
-        //   <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)}>End Game (Player 1 Wins)</button>
-        //   <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)}>End Game (Player 2 Wins)</button>
-        // </>
+        <>
+           <p>Player 1: {currentMatch.player1.username}</p>
+          <p>Player 2: {currentMatch.player2.username}</p>
+          <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)}>End Game (Player 1 Wins)</button>
+          <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)}>End Game (Player 2 Wins)</button>
+        </>
       )}
 
       {!currentMatch && participants.length !== 1 && (

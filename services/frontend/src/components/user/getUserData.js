@@ -14,6 +14,7 @@ const getUserData = async () => {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
+        console.log(data);
         return data.user;
     } catch (error) {
         console.error('Error fetching user data:', error);

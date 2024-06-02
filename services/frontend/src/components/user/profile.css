@@ -1,0 +1,24 @@
+.match-item {
+    margin-bottom: 20px;
+}
+
+/* .match-detail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+} */
+
+/* Profile.css */
+.match-list {
+    list-style-type: none; /* Supprime les puces */
+    padding: 0; /* Supprime le padding par défaut */
+}
+
+.match-detail {
+    display: flex; /* Aligne les éléments en ligne */
+    align-items: center; /* Aligne verticalement au centre */
+}
+
+.match-detail h3 {
+    margin: 0 10px; /* Marge autour du texte */
+}
