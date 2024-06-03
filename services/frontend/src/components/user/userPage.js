@@ -60,7 +60,15 @@ function UserPage() {
                                     </Link>
                                 )}
                             </div>
-                            <span className="text-muted">{match.date}</span>
+                            <span className="text-muted">
+                                {match.is_pong && (
+                                    <p>Pong</p>
+                                )}
+                                {!match.is_pong && (
+                                    <p>Morpion</p>
+                                )}
+                                {match.date}
+                            </span>
                         </li>
                     </div>
                 ))}
