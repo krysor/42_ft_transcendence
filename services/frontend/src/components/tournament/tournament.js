@@ -27,12 +27,19 @@ const Tournament = () => {
     return false;
   };
 
+  const getLoggedInUser = () => {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    return user ? { username: user.username, profile: user.profile_pic, id: user.id } : null;
+  };
+
   // ------ function to handle forms ------
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const nbOfPlayers = parseInt(event.target.nbOfPlayers.value, 10);
-    setPlayers(Array.from({ length: nbOfPlayers }, () => ({ username: '', profile: '/default_pp.jpeg', id: '0' })));
-    setCurrentPlayer(1);
+    const loggedInUser = getLoggedInUser();
+    const initialPlayers = loggedInUser ? [{ ...loggedInUser }, ...Array.from({ length: nbOfPlayers - 1 }, () => ({ username: '', profile: '/default_pp.jpeg', id: '0' }))] : Array.from({ length: nbOfPlayers }, () => ({ username: '', profile: '/default_pp.jpeg', id: '0' }));
+    setPlayers(initialPlayers);
+    setCurrentPlayer(loggedInUser ? 2 : 1);
     setGame(event.target.gameSelect.value);
   };
 
@@ -89,7 +96,7 @@ const Tournament = () => {
       setUsers(players);
       navigate(`/tournament/Matchmaking`, { state: { game } });
     }
-  }, [players]);
+  }, [players, currentPlayer]);
 
   return (
     <div className="container mt-5">
@@ -147,17 +154,17 @@ const Tournament = () => {
       )}
 
       {currentPlayer > players.length && (
-		  <form onSubmit={handleFormSubmit}>
-			<h3>Tournament</h3>
+        <form onSubmit={handleFormSubmit}>
+          <h3>Tournament</h3>
 
-			<div className="btn-group btn-group-toggle" data-toggle="buttons">
-			<label className="btn btn-secondary active">
-				<input type="radio" name="gameSelect" id="gamePong" value="Pong" autoComplete="off" defaultChecked /> Pong
-			</label>
-			<label className="btn btn-secondary">
-				<input type="radio" name="gameSelect" id="gameMorpion" value="morpion" autoComplete="off" /> Morpion
-			</label>
-			</div>
+          <div className="btn-group btn-group-toggle" data-toggle="buttons">
+            <label className="btn btn-secondary active">
+              <input type="radio" name="gameSelect" id="gamePong" value="Pong" autoComplete="off" defaultChecked /> Pong
+            </label>
+            <label className="btn btn-secondary">
+              <input type="radio" name="gameSelect" id="gameMorpion" value="morpion" autoComplete="off" /> Morpion
+            </label>
+          </div>
 
           <div className="form-group">
             <label htmlFor="nbOfPlayers">How many players will play in the tournament?</label>
