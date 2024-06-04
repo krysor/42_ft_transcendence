@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useUsers } from './UserContext';
-import { useLocation } from 'react-router';
-import { NavLink, Link } from "react-router-dom";
+import { useLocation, NavLink } from 'react-router-dom';
 import ProfilePic from '../user/ProfilePic';
-import Game from '../game/game'; // Import the Game component
 import ThreejsGame from '../game/threejs';
 import Morpion from '../morpion/morpion';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,6 +13,7 @@ const Matchmaking = () => {
   const [participants, setParticipants] = useState(users);
   const [currentMatch, setCurrentMatch] = useState(null);
   const [currentPair, setCurrentPair] = useState(0);
+  const [isReady, setIsReady] = useState(false);
 
   const location = useLocation();
   const game = location.state?.game;
@@ -27,25 +26,29 @@ const Matchmaking = () => {
       return;
     }
 
+    let i = currentPair;
     let player1;
     let player2;
 
-    if (!participants[currentPair]) {
-      setCurrentPair(0);
-      player1 = participants[0];
+      console.log("first " + i + " " + participants[i]);
+    if (!participants[i]) {
+      i = 0;
+      player1 = participants[i];
     } else {
-      player1 = participants[currentPair];
+      player1 = participants[i];
     }
 
-    if (!participants[currentPair + 1]) {
-      setCurrentPair(0);
-      player2 = participants[1];
+    console.log("second " + i + " + 1 " + participants[i + 1]);
+    if (!participants[i + 1]) {
+      i = 0;
+      player2 = participants[i];
     } else {
-      player2 = participants[currentPair + 1];
+      player2 = participants[i + 1];
     }
 
-    setCurrentPair(currentPair + 1);
+    setCurrentPair(i + 1);
     setCurrentMatch({ player1, player2 });
+    setIsReady(false);
   };
 
   const fetchMatchResult = (player1, p1Result, player2, p2Result) => {
@@ -98,31 +101,12 @@ const Matchmaking = () => {
     setCurrentMatch(null);
   };
 
+  const handleReadyClick = () => {
+    setIsReady(true);
+  };
+
   return (
     <div className="container mt-5">
-      {currentMatch && game === 'pong' && (
-        <ThreejsGame
-          p1={currentMatch.player1}
-          p2={currentMatch.player2}
-          onGameEnd={handleGameEnd}
-        />
-      )}
-
-      {currentMatch && game === 'morpion' && (
-        // <Morpion 
-        // p1={currentMatch.player1} 
-        // p2={currentMatch.player2} 
-        // onGameEnd={handleGameEnd} 
-        // />
-
-        <>
-          <p>Player 1: {currentMatch.player1.username}</p>
-          <p>Player 2: {currentMatch.player2.username}</p>
-          <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)} className="btn btn-success">End Game (Player 1 Wins)</button>
-          <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)} className="btn btn-danger">End Game (Player 2 Wins)</button>
-        </>
-      )}
-
       {!currentMatch && participants.length !== 1 && (
         <>
           <h2 className="mb-4">Tournament Participants:</h2>
@@ -138,10 +122,39 @@ const Matchmaking = () => {
         </>
       )}
 
+      {currentMatch && !isReady && (
+        <>
+          <p>Next match:</p>
+          <p>{currentMatch.player1.username} VS {currentMatch.player2.username}</p>
+          <button onClick={handleReadyClick} className="btn btn-primary">Ready</button>
+        </>
+      )}
+
+      {currentMatch && isReady && (
+        <>
+          {currentMatch && game === 'pong' && (
+            <ThreejsGame
+              p1={currentMatch.player1}
+              p2={currentMatch.player2}
+              onGameEnd={handleGameEnd}
+            />
+          )}
+
+          {currentMatch && game === 'morpion' && (
+            <>
+              <p>Player 1: {currentMatch.player1.username}</p>
+              <p>Player 2: {currentMatch.player2.username}</p>
+              <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)} className="btn btn-success">End Game (Player 1 Wins)</button>
+              <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)} className="btn btn-danger">End Game (Player 2 Wins)</button>
+            </>
+          )}
+        </>
+      )}
+
       {participants.length === 1 && (
         <div className="mt-4">
           <h3>Congratulations {participants[0].username} !!! You are the winner :)</h3>
-          <img src='/win_image.jpg'/>
+          <img src='/win_image.jpg' alt="Winner"/>
           <br />
           <NavLink to="/tournament" className="btn btn-primary mt-4">New tournament</NavLink>
         </div>
