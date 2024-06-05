@@ -10,7 +10,7 @@ const Tournament = () => {
   const { setUsers } = useUsers();
   const { players, setPlayers, addPlayer } = useTournament();
   const navigate = useNavigate();
-  const [currentPlayer, setCurrentPlayer] = useState(() => sessionStorage.getItem('currentPlayer') || 1);
+  const [currentPlayer, setCurrentPlayer] = useState(() => Number(sessionStorage.getItem('currentPlayer')) || 1);
   const [error, setError] = useState('');
   const [playerName, setPlayerName] = useState('');
   const [username, setUsername] = useState('');
@@ -70,11 +70,12 @@ const Tournament = () => {
               // console.log("curplayer" + currentPlayer)
               setCurrentPlayer(prev => Number(prev) + 1);
             } else {
-              console.log("User already registered:", data.user.id);
+              setError('This user is already registered to this tournament.');
             }
           }
         })
         .catch(error => {
+          setError('Error: ' + error);
           console.error('Error:', error);
         });
     }
