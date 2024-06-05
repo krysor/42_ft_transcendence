@@ -18,6 +18,10 @@ const Matchmaking = () => {
   const location = useLocation();
   const game = location.state?.game;
 
+  sessionStorage.removeItem("players");
+  sessionStorage.removeItem("currentPlayer");
+  sessionStorage.removeItem("game");
+
   const doTournament = (event) => {
     event.preventDefault();
 

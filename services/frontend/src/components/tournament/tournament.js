@@ -1,30 +1,87 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useUsers } from './UserContext';
+import { useTournament } from './TournamentContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
 const Tournament = () => {
   const { setUsers } = useUsers();
+  const { players, setPlayers, addPlayer } = useTournament();
   const navigate = useNavigate();
-  const [currentPlayer, setCurrentPlayer] = useState(1);
-  const [players, setPlayers] = useState([]);
+  const [currentPlayer, setCurrentPlayer] = useState(() => sessionStorage.getItem('currentPlayer') || 1);
   const [error, setError] = useState('');
-
   const [playerName, setPlayerName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [game, setGame] = useState(() => sessionStorage.getItem('game') || '');
+  const location = useLocation();
 
-  const [game, setGame] = useState('');
+  useEffect(() => {
+    console.log("1");
+    const storedPlayers = JSON.parse(sessionStorage.getItem('players'));
+    if (storedPlayers) {
+      setPlayers(storedPlayers);
+    }
+  }, [setPlayers]);
+
+  useEffect(() => {
+    console.log("2");
+      sessionStorage.setItem('players', JSON.stringify(players));
+  }, [players]);
+
+  useEffect(() => {
+    console.log("3");
+    sessionStorage.setItem('currentPlayer', JSON.stringify(currentPlayer));
+  }, [currentPlayer]);
+
+  useEffect(() => {
+    console.log("4");
+    sessionStorage.setItem('game', game);
+  }, [game]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const code = urlParams.get('code');
+
+    if (code) {
+      console.log("CODE SUCCESS");
+      fetch(backendHost + '/tournament/ft_login/?code=' + code, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.user) {
+            console.log("User data:", data.user);
+            if (!isRegisteredUser(data.user.id, players)) {
+              const storedPlayers = JSON.parse(sessionStorage.getItem('players'));
+              // if (storedPlayers) {
+              //   setPlayers(storedPlayers);
+              // }
+              // console.log("storedPlayers "+ storedPlayers);
+              const updatedPlayers = [...storedPlayers];
+              // console.log("player: " + updatedPlayers);
+              updatedPlayers[currentPlayer - 1] = { username: data.user.username, profile: data.user.profile_pic, id: data.user.id };
+              setPlayers(updatedPlayers);
+              // console.log("curplayer" + currentPlayer)
+              setCurrentPlayer(prev => Number(prev) + 1);
+            } else {
+              console.log("User already registered:", data.user.id);
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  }, [addPlayer, location.search, players]);
 
   const isRegisteredUser = (userID, players) => {
-    for (let player of players) {
-      if (player.id !== '0' && player.id === userID) {
-        return true;
-      }
-    }
-    return false;
+    return players.some(player => player.id !== '0' && player.id === userID);
   };
 
   const getLoggedInUser = () => {
@@ -32,7 +89,6 @@ const Tournament = () => {
     return user ? { username: user.username, profile: user.profile_pic, id: user.id } : null;
   };
 
-  // ------ function to handle forms ------
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const nbOfPlayers = parseInt(event.target.nbOfPlayers.value, 10);
@@ -46,15 +102,15 @@ const Tournament = () => {
   const handlePlayerNameSubmit = (event) => {
     event.preventDefault();
     const updatedPlayers = [...players];
+    console.log("player: " + updatedPlayers);
     updatedPlayers[currentPlayer - 1] = { username: playerName, profile: '/default_pp.jpeg', id: '0' };
     setPlayers(updatedPlayers);
-    setCurrentPlayer(currentPlayer + 1);
+    setCurrentPlayer(prev => Number(prev) + 1);
     setPlayerName('');
   };
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
-
     setError('');
 
     const jsonData = {
@@ -76,7 +132,7 @@ const Tournament = () => {
             const updatedPlayers = [...players];
             updatedPlayers[currentPlayer - 1] = { username: data.user.username, profile: data.user.profile_pic, id: data.user.id };
             setPlayers(updatedPlayers);
-            setCurrentPlayer(currentPlayer + 1);
+            setCurrentPlayer(prev => Number(prev) + 1);
             setUsername('');
             setPassword('');
           }
@@ -90,13 +146,14 @@ const Tournament = () => {
       });
   };
 
-  // ----- use effect to check if every players are registered ------
   useEffect(() => {
     if (currentPlayer > players.length && players.length) {
+      console.log(currentPlayer + " > " + players.length + " end conditions")
       setUsers(players);
+      setPlayers([]);
       navigate(`/tournament/Matchmaking`, { state: { game } });
     }
-  }, [players, currentPlayer]);
+  }, [players, currentPlayer, setUsers, game, navigate]);
 
   return (
     <div className="container mt-5">
@@ -145,7 +202,7 @@ const Tournament = () => {
             </div>
             <button type="submit" className="btn btn-primary">Login!</button>
             <br />
-            <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code">
+            <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Ftournament%2F&response_type=code">
               Login with 42 authentication!
             </a>
             {error && <div className="alert alert-danger mt-2">{error}</div>}
