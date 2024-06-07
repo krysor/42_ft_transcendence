@@ -15,9 +15,10 @@ import Morpion from "./components/morpion/morpion";
 
 // ------Tournament------
 import Tournament from "./components/tournament/tournament";
-import PlayerSelection from "./components/tournament/playerSelection";
 import Matchmaking from "./components/tournament/Matchmaking";
+import Ft_auth_tournament from "./components/tournament/42_auth_tournament";
 import { UserProvider } from "./components/tournament/UserContext";
+import { TournamentProvider } from "./components/tournament/TournamentContext";
 
 // -----user-----
 import Login from "./components/user/login";
@@ -50,6 +51,7 @@ function App () {
             </div>
 			<NavBar isLoggedIn={isLoggedIn} user={user}/>
 			<UserProvider>
+			<TournamentProvider>
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/about" element={<About />} />
@@ -62,8 +64,7 @@ function App () {
 				{/* -----Tournament----- */}
 				<Route path="/tournament" element={<Tournament />} />
 				<Route path="/tournament/Matchmaking" element={<Matchmaking />} />
-				<Route path="/tournament/player_select" element={<PlayerSelection />} />
-				
+				<Route path="/42_auth_tournament" element={<Ft_auth_tournament />} />
 				{/* -----User----- */}
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/login" element={<Login />} />
@@ -74,6 +75,7 @@ function App () {
 				<Route path="/community" element={<Community />} />
 				<Route path="/edit_profile" element={<EditProfile />} />
 			</Routes>
+		</TournamentProvider>
       	</UserProvider>
           </Router>
       );

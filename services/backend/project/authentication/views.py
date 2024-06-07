@@ -18,7 +18,7 @@ import json
 import requests
 import os
 
-from .serializers import UserSerializer, ScoreSerializer, MorpionSerializer
+from .serializers import UserSerializer, MatchSerializer, ScoreSerializer, MorpionSerializer
 from authentication.models import User, Score, MorpionParties
 
 @api_view(['POST'])
@@ -236,7 +236,6 @@ def ft_login(request):
 
                 if user_response.status_code == 200:
                     user_data = user_response.json()
-                    print(user_data)
                     username = user_data.get('login')
                     email = user_data.get('email')
                     user, created = User.objects.get_or_create(email=email, defaults={'username': username})

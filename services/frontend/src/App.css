@@ -1,6 +1,4 @@
 .profile_pic {
-	width: 40px;
-	height: 40px;
 	border-radius: 50%;
 	position: relative;
 	position: relative;
@@ -22,4 +20,19 @@
 	bottom: 0;
 	right: 0;
 	border: 1px solid #fff;
+}
+
+.profile_pic_size_40 img {
+    width: 40px;
+    height: 40px;
+}
+
+.profile_pic_size_50 img {
+    width: 50px;
+    height: 50px;
+}
+
+.profile_pic_size_100 img {
+    width: 100px;
+    height: 100px;
 }

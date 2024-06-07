@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import ProfilePic from './getProfilePic';
+import ProfilePic from './ProfilePic';
 
 const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
