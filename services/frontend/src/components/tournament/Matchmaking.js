@@ -34,7 +34,7 @@ const Matchmaking = () => {
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       event.preventDefault();
-      event.returnValue = 'You are in the middle of a tournament, are you sure you want to leave?'; // Chrome requires returnValue to be set
+      event.returnValue = 'You are in the middle of a tournament, are you sure you want to leave?';
     };
 
     const handleNavLinkClick = (event) => {
@@ -70,7 +70,6 @@ const Matchmaking = () => {
     let player1;
     let player2;
 
-    console.log("first " + i + " " + participants[i]);
     if (!participants[i]) {
       i = 0;
       player1 = participants[i];
@@ -78,7 +77,6 @@ const Matchmaking = () => {
       player1 = participants[i];
     }
 
-    console.log("second " + i + " + 1 " + participants[i + 1]);
     if (!participants[i + 1]) {
       i = 0;
       player2 = participants[i];
@@ -107,8 +105,7 @@ const Matchmaking = () => {
       date: formattedDate,
       is_pong: is_pong,
     };
-    console.log("data match: ");
-    console.log(jsonData);
+
     fetch(backendHost + '/tournament/add_match_to_historic/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

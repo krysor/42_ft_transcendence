@@ -42,7 +42,6 @@ const Tournament = () => {
     const code = urlParams.get('code');
 
     if (code) {
-      console.log("CODE SUCCESS");
       fetch(backendHost + '/tournament/ft_login/?code=' + code, {
         method: 'POST',
         headers: {
@@ -52,7 +51,6 @@ const Tournament = () => {
         .then(response => response.json())
         .then(data => {
           if (data.user) {
-            console.log("User data:", data.user);
             if (!isRegisteredUser(data.user.id, players)) {
               const storedPlayers = JSON.parse(sessionStorage.getItem('players'));
               const updatedPlayers = [...storedPlayers];
@@ -93,7 +91,6 @@ const Tournament = () => {
   const handlePlayerNameSubmit = (event) => {
     event.preventDefault();
     const updatedPlayers = [...players];
-    console.log("player: " + updatedPlayers);
     updatedPlayers[currentPlayer - 1] = { username: playerName, profile: '/default_pp.jpeg', id: '0', win: '0', loss:'0' };
     setPlayers(updatedPlayers);
     setCurrentPlayer(prev => Number(prev) + 1);
@@ -139,7 +136,6 @@ const Tournament = () => {
 
   useEffect(() => {
     if (currentPlayer > players.length && players.length) {
-      console.log(currentPlayer + " > " + players.length + " end conditions")
       setUsers(players);
       setPlayers([]);
       navigate(`/tournament/Matchmaking`, { state: { game } });

@@ -226,7 +226,7 @@ def ft_login(request):
             'redirect_uri': 'http://localhost:3000/42_auth/'
         }
         response = requests.post(url, data=data)
-        print(response.json())
+
     if response.status_code == 200:
             token = response.json().get('access_token')
             if token:
@@ -236,7 +236,6 @@ def ft_login(request):
 
                 if user_response.status_code == 200:
                     user_data = user_response.json()
-                    print(user_data)
                     username = user_data.get('login')
                     email = user_data.get('email')
                     user, created = User.objects.get_or_create(email=email, defaults={'username': username})

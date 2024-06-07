@@ -35,8 +35,6 @@ def log_user(request):
     if user.is_student == True:
         raise AuthenticationFailed({'error': 'Please use 42 authentication to log as this user'})
     if user.check_password(request.data['password']):
-        # token, created = Token.objects.get_or_create(user=user)
-        # user.is_online = True
         user.save()
         serialized = UserSerializer(user)
         return JsonResponse({'user': serialized.data})
@@ -129,8 +127,7 @@ def ft_login_tournament(request):
                 })
 
                 if user_response.status_code == 200:
-                    user_data = user_response.json()
-                    print(user_data)
+                    user_data = user_response.json()  
                     username = user_data.get('login')
                     email = user_data.get('email')
                     user, created = User.objects.get_or_create(email=email, defaults={'username': username})
