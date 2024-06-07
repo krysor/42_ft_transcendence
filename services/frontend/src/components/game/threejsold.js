@@ -81,15 +81,15 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 
 			// Load players
 			player1.current = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.5, 3), new THREE.MeshPhongMaterial({ color: 0x5f005f, side: THREE.DoubleSide }));
-			player1.current.position.set(-8, 0, 0);
+			player1.current.position.set(-10.8, 0, 0);
 			scene.current.add(player1.current);
 
 			player2.current = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.5, 3), new THREE.MeshPhongMaterial({ color: 0x5f005f, side: THREE.DoubleSide }));
-			player2.current.position.set(8, 0, 0);
+			player2.current.position.set(10.8, 0, 0);
 			scene.current.add(player2.current);
 
 			let bordeurUp = new THREE.Mesh(
-				new THREE.BoxGeometry(20, 0.5, 0.1),
+				new THREE.BoxGeometry(22, 0.5, 0.1),
 				new THREE.MeshPhongMaterial({
 					color: 0x9f9f9f,
 					side: THREE.DoubleSide
@@ -98,11 +98,11 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			bordeurUp.name = "borderUp";
 			bordeurUp.position.x = 0;
 			bordeurUp.position.y = 0;
-			bordeurUp.position.z = 7.2;
+			bordeurUp.position.z = 7.4;
 			scene.current.add(bordeurUp);
 
 			let borderDown = new THREE.Mesh(
-				new THREE.BoxGeometry(20, 0.5, 0.1),
+				new THREE.BoxGeometry(22, 0.5, 0.1),
 				new THREE.MeshPhongMaterial({
 					color: 0x9f9f9f,
 					side: THREE.DoubleSide
@@ -111,7 +111,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			borderDown.name = "borderDown";
 			borderDown.position.x = 0;
 			borderDown.position.y = 0;
-			borderDown.position.z = -7.2;
+			borderDown.position.z = -7.4;
 			scene.current.add(borderDown);
 
 			// Load ball
@@ -178,7 +178,8 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			ball.current.position.y += ballVelocity.current.y;
 			ball.current.position.z += ballVelocity.current.z;
 
-			player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
+			// player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
+			player2.current.position.z = ball.current.position.z;
 
 			// Check for collision with the game area's top and bottom boundaries
 			if (ball.current.position.z > 7.1 || ball.current.position.z < -7.1) {
