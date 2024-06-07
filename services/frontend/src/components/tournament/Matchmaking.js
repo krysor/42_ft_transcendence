@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useUsers } from './UserContext';
-import { useLocation, NavLink } from 'react-router-dom';
+import { useLocation, NavLink, useNavigate, usePrompt } from 'react-router-dom';
 import ProfilePic from '../user/ProfilePic';
 import ThreejsGame from '../game/threejs';
 import Morpion from '../morpion/morpion';
@@ -16,11 +16,47 @@ const Matchmaking = () => {
   const [isReady, setIsReady] = useState(false);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const game = location.state?.game;
 
   sessionStorage.removeItem("players");
   sessionStorage.removeItem("currentPlayer");
   sessionStorage.removeItem("game");
+
+  const sortParticipantsByLevel = (participants) => {
+    return participants.sort((a, b) => (b.win - b.loss) - (a.win - a.loss));
+  };
+
+  useEffect(() => {
+    setParticipants(sortParticipantsByLevel(participants));
+  }, [participants]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue = 'You are in the middle of a tournament, are you sure you want to leave?'; // Chrome requires returnValue to be set
+    };
+
+    const handleNavLinkClick = (event) => {
+      const confirmationMessage = 'You are in the middle of a tournament, are you sure you want to leave?';
+      if (!window.confirm(confirmationMessage)) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    document.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', handleNavLinkClick);
+    });
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.querySelectorAll('a').forEach(link => {
+        link.removeEventListener('click', handleNavLinkClick);
+      });
+    };
+  }, [location, navigate]);
 
   const doTournament = (event) => {
     event.preventDefault();
@@ -34,7 +70,7 @@ const Matchmaking = () => {
     let player1;
     let player2;
 
-      console.log("first " + i + " " + participants[i]);
+    console.log("first " + i + " " + participants[i]);
     if (!participants[i]) {
       i = 0;
       player1 = participants[i];

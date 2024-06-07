@@ -105,3 +105,50 @@ def get_user_matches(request, user_id):
     matches = Match.objects.filter(p1_id=user_id) | Match.objects.filter(p2_id=user_id)
     serialized = MatchSerializer(matches, many=True)
     return Response(serialized.data)
+
+
+@api_view(['POST', 'GET'])
+def ft_login_tournament(request):
+    code = request.GET.get('code')
+    if code:
+        url = 'https://api.intra.42.fr/oauth/token'
+        data = {
+            'grant_type': 'authorization_code',
+            'client_id': os.getenv('UID_KEY'),
+            'client_secret': os.getenv('SECRET_KEY'),
+            'code': code,
+            'redirect_uri': 'http://localhost:3000/tournament/'
+        }
+        response = requests.post(url, data=data)
+
+    if response.status_code == 200:
+            token = response.json().get('access_token')
+            if token:
+                user_response = requests.get('https://api.intra.42.fr/v2/me', headers={
+                    'Authorization': f'Bearer {token}'
+                })
+
+                if user_response.status_code == 200:
+                    user_data = user_response.json()
+                    print(user_data)
+                    username = user_data.get('login')
+                    email = user_data.get('email')
+                    user, created = User.objects.get_or_create(email=email, defaults={'username': username})
+                    if created:
+                        user.username = username
+                        profile_pic_data = user_data.get('image')
+                        if profile_pic_data:
+                            profile_pic_url = profile_pic_data.get('link')
+                            if profile_pic_url:
+                                response = requests.get(profile_pic_url)
+                                if response.status_code == 200:
+                                    user.profile_pic.save(f'{username}_profile_pic.jpg', ContentFile(response.content))
+                        user.is_student = True
+                        user.save()
+                    elif user.is_student == False:
+                        raise AuthenticationFailed({'error': 'This username is not registered as a 42 student'})
+                    token, created = Token.objects.get_or_create(user=user)
+                    user.is_online = True
+                    serialized = UserSerializer(user)
+                    return JsonResponse({'user': serialized.data})
+    raise AuthenticationFailed({'error': '42 auth failed'})

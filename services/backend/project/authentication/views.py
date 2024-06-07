@@ -226,7 +226,7 @@ def ft_login(request):
             'redirect_uri': 'http://localhost:3000/42_auth/'
         }
         response = requests.post(url, data=data)
-
+        print(response.json())
     if response.status_code == 200:
             token = response.json().get('access_token')
             if token:

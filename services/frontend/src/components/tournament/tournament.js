@@ -19,7 +19,6 @@ const Tournament = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.log("1");
     const storedPlayers = JSON.parse(sessionStorage.getItem('players'));
     if (storedPlayers) {
       setPlayers(storedPlayers);
@@ -27,17 +26,14 @@ const Tournament = () => {
   }, [setPlayers]);
 
   useEffect(() => {
-    console.log("2");
       sessionStorage.setItem('players', JSON.stringify(players));
   }, [players]);
 
   useEffect(() => {
-    console.log("3");
     sessionStorage.setItem('currentPlayer', JSON.stringify(currentPlayer));
   }, [currentPlayer]);
 
   useEffect(() => {
-    console.log("4");
     sessionStorage.setItem('game', game);
   }, [game]);
 
@@ -59,15 +55,9 @@ const Tournament = () => {
             console.log("User data:", data.user);
             if (!isRegisteredUser(data.user.id, players)) {
               const storedPlayers = JSON.parse(sessionStorage.getItem('players'));
-              // if (storedPlayers) {
-              //   setPlayers(storedPlayers);
-              // }
-              // console.log("storedPlayers "+ storedPlayers);
               const updatedPlayers = [...storedPlayers];
-              // console.log("player: " + updatedPlayers);
-              updatedPlayers[currentPlayer - 1] = { username: data.user.username, profile: data.user.profile_pic, id: data.user.id };
+              updatedPlayers[currentPlayer - 1] = { username: data.user.username, profile: data.user.profile_pic, id: data.user.id, win: data.user.win, loss: data.user.loss };
               setPlayers(updatedPlayers);
-              // console.log("curplayer" + currentPlayer)
               setCurrentPlayer(prev => Number(prev) + 1);
             } else {
               setError('This user is already registered to this tournament.');
@@ -94,7 +84,7 @@ const Tournament = () => {
     event.preventDefault();
     const nbOfPlayers = parseInt(event.target.nbOfPlayers.value, 10);
     const loggedInUser = getLoggedInUser();
-    const initialPlayers = loggedInUser ? [{ ...loggedInUser }, ...Array.from({ length: nbOfPlayers - 1 }, () => ({ username: '', profile: '/default_pp.jpeg', id: '0' }))] : Array.from({ length: nbOfPlayers }, () => ({ username: '', profile: '/default_pp.jpeg', id: '0' }));
+    const initialPlayers = loggedInUser ? [{ ...loggedInUser }, ...Array.from({ length: nbOfPlayers - 1 }, () => ({ username: '', profile: '/default_pp.jpeg', id: '0', win: '0', loss: '0' }))] : Array.from({ length: nbOfPlayers }, () => ({ username: '', profile: '/default_pp.jpeg', id: '0', win: '0', loss: '0' }));
     setPlayers(initialPlayers);
     setCurrentPlayer(loggedInUser ? 2 : 1);
     setGame(event.target.gameSelect.value);
@@ -104,7 +94,7 @@ const Tournament = () => {
     event.preventDefault();
     const updatedPlayers = [...players];
     console.log("player: " + updatedPlayers);
-    updatedPlayers[currentPlayer - 1] = { username: playerName, profile: '/default_pp.jpeg', id: '0' };
+    updatedPlayers[currentPlayer - 1] = { username: playerName, profile: '/default_pp.jpeg', id: '0', win: '0', loss:'0' };
     setPlayers(updatedPlayers);
     setCurrentPlayer(prev => Number(prev) + 1);
     setPlayerName('');
@@ -131,7 +121,7 @@ const Tournament = () => {
             setError('This user is already registered to this tournament.');
           } else {
             const updatedPlayers = [...players];
-            updatedPlayers[currentPlayer - 1] = { username: data.user.username, profile: data.user.profile_pic, id: data.user.id };
+            updatedPlayers[currentPlayer - 1] = { username: data.user.username, profile: data.user.profile_pic, id: data.user.id, win: data.user.win, loss: data.user.loss};
             setPlayers(updatedPlayers);
             setCurrentPlayer(prev => Number(prev) + 1);
             setUsername('');
