@@ -32,6 +32,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
+class MatchSerializer(serializers.ModelSerializer):
+	class Meta(object):
+		model = Match
+		fields = ['player1_id', 'player1_name', 'player2_id', 'player2_name', 'player1_score', 'player2_score', 'winner_id', 'winner_name', 'is_pong']
+
 class ScoreSerializer(serializers.ModelSerializer):
 	user = UserSerializer()
 	
