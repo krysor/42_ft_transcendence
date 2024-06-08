@@ -163,20 +163,30 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			ballVelocity.current = { x: 0.1, y: 0, z: 0 };
 		}
 
-		const animate = () => {
+		let lastTime = performance.now();
+
+		const animate = (currentTime) => {
 			if (!scene.current || !camera.current || !renderer.current || !player1.current || !player2.current || !ball.current) return;
 
+			// Calculate the time difference since the last frame
+			const delta = (currentTime - lastTime) / 1000; // Convert to seconds
+			lastTime = currentTime;
+
+			// Define the movement speed
+			const paddleSpeed = 0.1; // Adjust as needed
+			const ballSpeedFactor = 1; // Adjust as needed
+
 			if (playerKeys.current.player1.ArrowUp) {
-				if (player1.current.position.z > -5.6) player1.current.position.z -= 0.1;
+				if (player1.current.position.z > -5.6) player1.current.position.z -= paddleSpeed * delta;
 			}
 
 			if (playerKeys.current.player1.ArrowDown) {
-				if (player1.current.position.z < 5.6) player1.current.position.z += 0.1;
+				if (player1.current.position.z < 5.6) player1.current.position.z += paddleSpeed * delta;
 			}
 
-			ball.current.position.x += ballVelocity.current.x;
-			ball.current.position.y += ballVelocity.current.y;
-			ball.current.position.z += ballVelocity.current.z;
+			ball.current.position.x += ballVelocity.current.x * ballSpeedFactor * delta;
+			ball.current.position.y += ballVelocity.current.y * ballSpeedFactor * delta;
+			ball.current.position.z += ballVelocity.current.z * ballSpeedFactor * delta;
 
 			// player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
 			player2.current.position.z = ball.current.position.z;
@@ -197,7 +207,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				) {
 					ballVelocity.current.x *= -1; // Reverse the ball's X-velocity
 					let hitPosZ = ball.current.position.z - player1.current.position.z; // Collision point
-					ballVelocity.current.z = hitPosZ * 0.04; // This factor controls the influence of hit position on velocity
+					ballVelocity.current.z = hitPosZ * 0.06; // This factor controls the influence of hit position on velocity
 				}
 			}
 
@@ -212,7 +222,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				) {
 					ballVelocity.current.x *= -1; // Reverse the ball's X-velocity
 					let hitPosZ = ball.current.position.z - player2.current.position.z; // Collision point
-					ballVelocity.current.z = hitPosZ * 0.04; // This factor controls the influence of hit position on velocity
+					ballVelocity.current.z = hitPosZ * 0.06; // This factor controls the influence of hit position on velocity
 				}
 			}
 

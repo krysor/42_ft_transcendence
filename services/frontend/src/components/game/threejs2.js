@@ -279,7 +279,7 @@ function ThreejsGame() {
 				if (ball.position.z < player1.position.z + 1.5 && ball.position.z > player1.position.z - 1.5) {
 					ballVelocity.x *= -1; // Reverse the ball's X-velocity
 					let hitPosZ = ball.position.z - player1.position.z; // Collision point
-					ballVelocity.z += hitPosZ * 0.05; // This factor controls the influence of hit position on velocity
+					ballVelocity.z += hitPosZ * 10; // This factor controls the influence of hit position on velocity
 				}
 			}
 			
@@ -287,7 +287,7 @@ function ThreejsGame() {
 				if (ball.position.z < player2.position.z + 1.5 && ball.position.z > player2.position.z - 1.5) {
 					ballVelocity.x *= -1; // Reverse the ball's X-velocity
 					let hitPosZ = ball.position.z - player2.position.z; // Collision point
-					ballVelocity.z += hitPosZ * 0.05; // This factor controls the influence of hit position on velocity
+					ballVelocity.z += hitPosZ * 10; // This factor controls the influence of hit position on velocity
 				}
 			}
 
