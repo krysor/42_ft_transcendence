@@ -12,6 +12,7 @@ function Profile() {
         profile_pic: '',
         loss: 0,
         win: 0,
+        language: "eng",
         matches: []
     });
 
@@ -35,6 +36,7 @@ function Profile() {
             <div className="profile_pic_username d-flex align-items-center mb-4">
                 {profile_pic && <ProfilePic filename={profile_pic} online="" size={100} className="rounded-circle" />}
                 {username && <h2 className="ml-3">{username}</h2>}
+                
             </div>
             <br/>
 

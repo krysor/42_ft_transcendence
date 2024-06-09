@@ -34,7 +34,7 @@ def signup(request):
     request.data['username'] = request.data.get('username', '').strip()
     serialized = UserSerializer(data=request.data)
     if serialized.is_valid():
-        user = User.objects.create_user(username=request.data['username'], password=request.data['password'])
+        user = User.objects.create_user(username=request.data['username'], password=request.data['password'], language=request.data['language'])
         token = Token.objects.create(user=user)
         user.is_online = True
         user.save()
