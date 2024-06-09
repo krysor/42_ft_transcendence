@@ -202,12 +202,13 @@ function Board({ xIsNext, squares, onPlay }) {
 		onPlay(Array(9).fill(null));
 	}
 	
-	function minimax(squares, depth, isMaximizing) {
+	function minimax(squares, depth, isMaximizing, maxDepth = 2) {
 		const winner = calculateWinner(squares);
 		if (winner === "Bot") return { score: 10 - depth };
 		if (winner === user) return { score: depth - 10 };
 		if (calculateDraw(squares)) return { score: 0 };
-	
+		if (depth >= maxDepth) return { score: 0 }; // Stop searching deeper
+
 		if (isMaximizing) {
 			let bestScore = -Infinity;
 			let bestMove = null;
