@@ -190,7 +190,13 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			ball.current.position.z += ballVelocity.current.z * ballSpeedFactor * delta;
 
 			// player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
-			player2.current.position.z = ball.current.position.z;
+			const threshold = 0.1; // Define a threshold value
+
+			const diff = ball.current.position.z - player2.current.position.z;
+
+			if (Math.abs(diff) > threshold) {
+				player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
+			}
 
 			// Check for collision with the game area's top and bottom boundaries
 			if (ball.current.position.z > 7.1 || ball.current.position.z < -7.1) {
