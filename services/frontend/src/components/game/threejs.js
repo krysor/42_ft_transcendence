@@ -169,12 +169,13 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			if (!scene.current || !camera.current || !renderer.current || !player1.current || !player2.current || !ball.current) return;
 
 			// Calculate the time difference since the last frame
+			currentTime = performance.now();
 			const delta = (currentTime - lastTime) / 1000; // Convert to seconds
 			lastTime = currentTime;
 
 			// Define the movement speed
-			const paddleSpeed = 0.1; // Adjust as needed
-			const ballSpeedFactor = 1; // Adjust as needed
+			const paddleSpeed = 10; // Adjust as needed
+			const ballSpeedFactor = 80; // Adjust as needed
 
 			if (playerKeys.current.player1.ArrowUp) {
 				if (player1.current.position.z > -5.6) player1.current.position.z -= paddleSpeed * delta;
@@ -197,6 +198,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			}
 
 			// Check for collision with player paddles
+			const deviation = 0.1; // Adjust as needed
 			if (
 				ball.current.position.x < player1.current.position.x + paddleDepth.current &&
 				ball.current.position.x > player1.current.position.x - paddleDepth.current
@@ -207,7 +209,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				) {
 					ballVelocity.current.x *= -1; // Reverse the ball's X-velocity
 					let hitPosZ = ball.current.position.z - player1.current.position.z; // Collision point
-					ballVelocity.current.z = hitPosZ * 0.06; // This factor controls the influence of hit position on velocity
+					ballVelocity.current.z = hitPosZ * deviation; // This factor controls the influence of hit position on velocity
 				}
 			}
 
@@ -222,7 +224,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				) {
 					ballVelocity.current.x *= -1; // Reverse the ball's X-velocity
 					let hitPosZ = ball.current.position.z - player2.current.position.z; // Collision point
-					ballVelocity.current.z = hitPosZ * 0.06; // This factor controls the influence of hit position on velocity
+					ballVelocity.current.z = hitPosZ * deviation; // This factor controls the influence of hit position on velocity
 				}
 			}
 
