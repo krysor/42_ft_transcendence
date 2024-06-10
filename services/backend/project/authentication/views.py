@@ -158,6 +158,9 @@ def edit_profile(request):
     if new_profile_pic:
         user.profile_pic.save(new_profile_pic.name, new_profile_pic)
 
+    if request.data.get('language'):
+        user.language = request.data.get('language')
+
     user.save()
     serialized = UserSerializer(user)
     return JsonResponse({'user': serialized.data})

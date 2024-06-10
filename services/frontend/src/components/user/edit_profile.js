@@ -25,6 +25,11 @@ function EditProfile() {
             formData.append('profile_pic', profilePicFile);
         }
 
+        const languageSelect = event.target.languageSelect.value;
+        if (languageSelect) {
+            formData.append('language', languageSelect);
+        }
+        
         fetch(backendHost + '/user/edit_profile/', {
             method: 'POST',
             headers: { 'Authorization': `Token ${authtoken}` },
@@ -65,11 +70,25 @@ function EditProfile() {
                                     <label htmlFor="password">New Password:</label>
                                     <input id="password" name="password" type="text" className="form-control" />
                                 </div>
+                                <br />
                                 <div className="form-group">
                                     <label htmlFor="profile_pic">Upload New Profile Picture:</label>
                                     <br />
                                     <input id="profile_pic" name="profile_pic" type="file" className="form-control-file" />
                                 </div>
+                                <br />
+                                <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label className="btn btn-secondary active">
+                                    <input type="radio" name="languageSelect" id="eng" value="eng" autoComplete="off" /> English
+                                    </label>
+                                    <label className="btn btn-secondary">
+                                    <input type="radio" name="languageSelect" id="fr" value="fr" autoComplete="off" /> Français
+                                    </label>
+                                    <label className="btn btn-secondary">
+                                    <input type="radio" name="languageSelect" id="nl" value="nl" autoComplete="off" /> Nederlands
+                                    </label>
+                                </div>
+                                <br />
                                 {error && <div className="alert alert-danger mt-3">Error: {error}</div>}
                                 <button type="submit" className="btn btn-primary btn-block">Save</button>
                             </form>

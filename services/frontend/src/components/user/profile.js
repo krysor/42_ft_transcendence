@@ -29,14 +29,13 @@ function Profile() {
         return <div>Loading...</div>;
     }
 
-    const { username, profile_pic, loss, win, matches } = userData;
+    const { username, profile_pic, loss, win, language,matches } = userData;
 
     return (
         <div className="profile container mt-5">
             <div className="profile_pic_username d-flex align-items-center mb-4">
                 {profile_pic && <ProfilePic filename={profile_pic} online="" size={100} className="rounded-circle" />}
                 {username && <h2 className="ml-3">{username}</h2>}
-                
             </div>
             <br/>
 

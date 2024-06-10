@@ -36,6 +36,8 @@ import NotFound from "./components/notfound";
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const backendHost = 'http://' + window.location.hostname + ':8000';
+
 function App () {
 	const token = sessionStorage.getItem('authtoken')
 	const user = JSON.parse(sessionStorage.getItem('user'))
