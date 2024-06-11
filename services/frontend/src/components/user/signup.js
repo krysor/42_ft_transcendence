@@ -57,6 +57,7 @@ function Signup() {
                                     <label htmlFor="password">Enter your password:</label>
                                     <input id="password" name="password" type="password" className="form-control" required />
                                 </div>
+                                <p>Enter you language:</p>
                                 <div className="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label className="btn btn-secondary active">
                                     <input type="radio" name="languageSelect" id="eng" value="eng" autoComplete="off" defaultChecked /> English
@@ -69,6 +70,7 @@ function Signup() {
                                     </label>
                                 </div>
                                 {error && <div className="alert alert-danger mt-3">Error: {error}</div>}
+                                <br />
                                 <br />
                                 <button type="submit" className="btn btn-primary btn-block">Login</button>
                                 <p>-----or log with 42 intra----- </p>
