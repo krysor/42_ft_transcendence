@@ -33,6 +33,9 @@ import UserPage from "./components/user/userPage";
 // -----error-----
 import NotFound from "./components/notfound";
 
+// -----translation-----
+import { useTranslation } from 'react-i18next'
+
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -42,6 +45,9 @@ function App () {
 	const token = sessionStorage.getItem('authtoken')
 	const user = JSON.parse(sessionStorage.getItem('user'))
 	const isLoggedIn = !!token;
+
+	{/* -----Add this to create a translation field----- */}
+	const { t } = useTranslation()
 
       return (
           <Router>
@@ -79,6 +85,8 @@ function App () {
 			</Routes>
 		</TournamentProvider>
       	</UserProvider>
+			{/* -----Translation test----- */}
+		  	{t('test')}
           </Router>
       );
 }

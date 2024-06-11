@@ -4,6 +4,13 @@
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ProfilePic from "./user/ProfilePic";
+import i18next from "i18next";
+
+const lngs = {
+    en: { nativeName: 'English' },
+    fr: { nativeName: 'Français' },
+    nl: { nativeName: 'Nederlands' }
+}
 
 function NavBar(props) {
     return (
@@ -33,6 +40,11 @@ function NavBar(props) {
                         )}
                     </Nav>
                 </Navbar.Collapse>
+                <div>
+                    {Object.keys(lngs).map((lng) => (
+                        <button type="submit" key={lng} onClick={() => i18next.changeLanguage(lng)} disabled={i18next.resolvedLanguage === lng}>{lngs[lng].nativeName}</button>)
+                    )}
+                </div>
                 {props.user && props.isLoggedIn && props.user.profile_pic && (
                     <Nav.Link as={Link} to="/profile">
                         <ProfilePic filename={props.user.profile_pic} />
