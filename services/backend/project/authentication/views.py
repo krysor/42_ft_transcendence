@@ -27,7 +27,6 @@ def signup(request):
     username = request.data.get('username', '').strip()
     password = request.data.get('password', '').strip()
     language = request.data.get('language', '')
-
     if username == '':
         raise ValidationError({'error': 'Username cannot be empty'})
 
@@ -151,13 +150,15 @@ def remove_friend(request, friend_id):
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def edit_profile(request):
+    print("test1")
     user = request.user
     new_username = request.data.get('username', '').strip()
     new_password = request.data.get('password', '').strip()
 
     if new_username:
-        if User.objects.filter(new_username).exists():
+        if User.objects.filter(username=new_username).exists():
             raise ValidationError({'error': 'Username is already taken'})
+        print("test2")
         if len(request.data.get('username', '')) > 20:
             raise ValidationError({'error': 'username must be at least 1 and less than 20 characters long'})
         if re.search(r'[<>&"\'/\\()`,;]', new_username):
