@@ -17,24 +17,36 @@ from rest_framework import status
 import json
 import requests
 import os
+import re
 
 from .serializers import UserSerializer, MatchSerializer, ScoreSerializer, MorpionSerializer
 from authentication.models import User, Score, MorpionParties
 
 @api_view(['POST'])
 def signup(request):
-    if User.objects.filter(username=request.data['username']).exists():
+    username = request.data.get('username', '').strip()
+    password = request.data.get('password', '').strip()
+    language = request.data.get('language', '')
+    if username == '':
+        raise ValidationError({'error': 'Username cannot be empty'})
+
+    if User.objects.filter(username=username).exists():
         raise ValidationError({'error': 'Username is already taken'})
 
-    if len(request.data.get('username', '')) < 0 or len(request.data.get('username', '')) > 20:
-            raise ValidationError({'error': 'username must be at least 1 and less than 20 characters long'})
-    if len(request.data.get('password', '')) < 8:
-            raise ValidationError({'error': 'Password must be at least 8 characters long'})
+    if len(username) == 0 or len(username) > 20:
+        raise ValidationError({'error': 'Username must be at least 1 and less than 20 characters long'})
 
-    request.data['username'] = request.data.get('username', '').strip()
+    if len(password) < 8:
+        raise ValidationError({'error': 'Password must be at least 8 characters long'})
+
+    if re.search(r'[<>&"\'/\\()`,;]', username):
+        raise ValidationError({'error': 'Username cannot contain the following characters: <, >, &, ", \', /, \\, (, ), `, ;'})
+
+    request.data['username'] = username
     serialized = UserSerializer(data=request.data)
+
     if serialized.is_valid():
-        user = User.objects.create_user(username=request.data['username'], password=request.data['password'])
+        user = User.objects.create_user(username=username, password=password, language=language)
         token = Token.objects.create(user=user)
         user.is_online = True
         user.save()
@@ -138,25 +150,35 @@ def remove_friend(request, friend_id):
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def edit_profile(request):
+    print("test1")
     user = request.user
-    
-    if request.data.get('username') and User.objects.filter(username=request.data['username']).exists():
-        raise ValidationError({'error': 'Username is already taken'})
+    new_username = request.data.get('username', '').strip()
+    new_password = request.data.get('password', '').strip()
 
-    if request.data.get('username') and len(request.data.get('username', '')) > 20:
+    if new_username:
+        if User.objects.filter(username=new_username).exists():
+            raise ValidationError({'error': 'Username is already taken'})
+        print("test2")
+        if len(request.data.get('username', '')) > 20:
             raise ValidationError({'error': 'username must be at least 1 and less than 20 characters long'})
-    if request.data.get('password') and len(request.data.get('password', '')) < 8 and len(request.data.get('password', '')) != 0:
+        if re.search(r'[<>&"\'/\\()`,;]', new_username):
+            raise ValidationError({'error': 'Username cannot contain the following characters: <, >, &, ", \', /, \\, (, ), `, ;'})
+        user.username = new_username
+
+    if new_password:
+        if len(request.data.get('password', '')) < 8 and len(request.data.get('password', '')) != 0:
             raise ValidationError({'error': 'Password must be at least 8 characters long'})
-
-    if request.data.get('username'):
-        user.username = request.data.get('username')
-
-    if request.data.get('password'):
-        user.set_password(request.data.get('password'))
+        user.set_password(new_password)
     
     new_profile_pic = request.FILES.get('profile_pic')
     if new_profile_pic:
+        file_extension = os.path.splitext(new_profile_pic.name)[1][1:].lower()
+        if file_extension not in ['jpg', 'jpeg', 'png', 'gif']:
+            raise ValidationError({'error': 'Invalid file extension. Allowed extensions are: jpg, jpeg, png, gif'})
         user.profile_pic.save(new_profile_pic.name, new_profile_pic)
+
+    if request.data.get('language'):
+        user.language = request.data.get('language')
 
     user.save()
     serialized = UserSerializer(user)

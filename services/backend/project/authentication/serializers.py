@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'loss', 'win', 'profile_pic', 'friends', 'is_online', 'matches']
+        fields = ['id', 'username', 'loss', 'win', 'profile_pic', 'friends', 'is_online', 'language', 'matches']
 
     def get_matches(self, obj):
         matches_as_p1 = Match.objects.filter(p1=obj.id)

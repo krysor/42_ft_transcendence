@@ -8,6 +8,7 @@ class User(AbstractUser):
 	friends = models.ManyToManyField('self', symmetrical=False, related_name='friend_list', blank=True)
 	is_online = models.BooleanField(default=False)
 	is_student = models.BooleanField(default=False)
+	language = models.CharField(default='eng')
 
 class Match(models.Model):
     p1 = models.ForeignKey(User, related_name='matches_as_p1', on_delete=models.CASCADE)

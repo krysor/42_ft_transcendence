@@ -12,6 +12,7 @@ function Profile() {
         profile_pic: '',
         loss: 0,
         win: 0,
+        language: "eng",
         matches: []
     });
 
@@ -28,7 +29,7 @@ function Profile() {
         return <div>Loading...</div>;
     }
 
-    const { username, profile_pic, loss, win, matches } = userData;
+    const { username, profile_pic, loss, win, language,matches } = userData;
 
     return (
         <div className="profile container mt-5">

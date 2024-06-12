@@ -9,10 +9,12 @@ function Signup() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        const languageSelect = event.target.languageSelect.value
         const formData = new FormData(event.target);
         const JsonData = {
             username: formData.get('username'),
             password: formData.get('password'),
+            language: languageSelect,
         };
 
         fetch(backendHost + '/user/signup/', {
@@ -55,8 +57,21 @@ function Signup() {
                                     <label htmlFor="password">Enter your password:</label>
                                     <input id="password" name="password" type="password" className="form-control" required />
                                 </div>
+                                <p>Enter you language:</p>
+                                <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label className="btn btn-secondary active">
+                                    <input type="radio" name="languageSelect" id="eng" value="eng" autoComplete="off" defaultChecked /> English
+                                    </label>
+                                    <label className="btn btn-secondary">
+                                    <input type="radio" name="languageSelect" id="fr" value="fr" autoComplete="off" /> Français
+                                    </label>
+                                    <label className="btn btn-secondary">
+                                    <input type="radio" name="languageSelect" id="nl" value="nl" autoComplete="off" /> Nederlands
+                                    </label>
+                                </div>
                                 {error && <div className="alert alert-danger mt-3">Error: {error}</div>}
-
+                                <br />
+                                <br />
                                 <button type="submit" className="btn btn-primary btn-block">Login</button>
                                 <p>-----or log with 42 intra----- </p>
                                 <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code">
