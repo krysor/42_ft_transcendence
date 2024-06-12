@@ -202,13 +202,57 @@ function Board({ xIsNext, squares, onPlay }) {
 		onPlay(Array(9).fill(null));
 	}
 	
+	function minimax(squares, depth, isMaximizing, maxDepth = 2) {
+		const winner = calculateWinner(squares);
+		if (winner === "Bot") return { score: 10 - depth };
+		if (winner === user) return { score: depth - 10 };
+		if (calculateDraw(squares)) return { score: 0 };
+		if (depth >= maxDepth) return { score: 0 }; // Stop searching deeper
+
+		if (isMaximizing) {
+			let bestScore = -Infinity;
+			let bestMove = null;
+			for (let i = 0; i < squares.length; i++) {
+				if (squares[i] === null) {
+					squares[i] = "O";  // Bot's move
+					const { score } = minimax(squares, depth + 1, false);
+					squares[i] = null;
+					if (score > bestScore) {
+						bestScore = score;
+						bestMove = i;
+					}
+				}
+			}
+			return { score: bestScore, move: bestMove };
+		} else {
+			let bestScore = Infinity;
+			let bestMove = null;
+			for (let i = 0; i < squares.length; i++) {
+				if (squares[i] === null) {
+					squares[i] = "X";  // User's move
+					const { score } = minimax(squares, depth + 1, true);
+					squares[i] = null;
+					if (score < bestScore) {
+						bestScore = score;
+						bestMove = i;
+					}
+				}
+			}
+			return { score: bestScore, move: bestMove };
+		}
+	}	
+
 	async function botPlayer() {
 		allScores = await LoadAllScore();
-		let i = Math.floor(Math.random() * 9);
-		while (squares[i] !== null) {
-			i = Math.floor(Math.random() * 9);
+		// let i = Math.floor(Math.random() * 9);
+		// while (squares[i] !== null) {
+		// 	i = Math.floor(Math.random() * 9);
+		// }
+		let bestMove = minimax(squares, 0, true).move;
+		if (bestMove !== null) {
+			HandleClick(bestMove);
 		}
-		HandleClick(i);
+		//HandleClick(i);
 	}
 
 	const draw = calculateDraw(squares);
