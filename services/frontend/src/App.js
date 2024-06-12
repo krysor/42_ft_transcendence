@@ -3,6 +3,8 @@ import {
     Routes,
     Route
 } from "react-router-dom";
+import React, {  useEffect } from 'react';
+import i18next from 'i18next';
 
 import NavBar from "./components/navbar"
 import Home from "./components/home";
@@ -90,7 +92,6 @@ function App () {
           </Router>
       );
 }
-
 export default App;
 
 // function App () {

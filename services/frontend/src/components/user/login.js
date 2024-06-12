@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import i18next from 'i18next';
 const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function Login() {
@@ -26,6 +26,7 @@ function Login() {
             .then(data => {
                 console.log(data);
                 if (data.Token) {
+                    i18next.changeLanguage(data.user.language);
                     sessionStorage.setItem('authtoken', data.Token);
                     sessionStorage.setItem('user', JSON.stringify(data.user));
                     window.location.href = "/";
