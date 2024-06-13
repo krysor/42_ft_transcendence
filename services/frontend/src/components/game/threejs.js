@@ -126,7 +126,10 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 		// Initialize key state
 		const initKeys = () => {
 			playerKeys.current = {
-				player1: { ArrowUp: false, ArrowDown: false },
+				player1: { w: false, s: false },
+
+				// MODIFIED THIS ONE TO TRY TO MAKE MOVING P2 POSSIBLE
+				// player2: { ArrowUp: false, ArrowDown: false },
 				player2: { ArrowUp: false, ArrowDown: false },
 			};
 
@@ -177,12 +180,20 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			const paddleSpeed = 10; // Adjust as needed
 			const ballSpeedFactor = 80; // Adjust as needed
 
-			if (playerKeys.current.player1.ArrowUp) {
+			if (playerKeys.current.player1.w) {
 				if (player1.current.position.z > -5.6) player1.current.position.z -= paddleSpeed * delta;
 			}
 
-			if (playerKeys.current.player1.ArrowDown) {
+			if (playerKeys.current.player1.s) {
 				if (player1.current.position.z < 5.6) player1.current.position.z += paddleSpeed * delta;
+			}
+
+			// ADDED THIS ONE TO TRY TO MAKE MOVING P2 POSSIBLE
+			if (playerKeys.current.player2.ArrowUp) {
+				if (player2.current.position.z > -5.6) player2.current.position.z -= paddleSpeed * delta;
+			}
+			if (playerKeys.current.player2.ArrowDown) {
+				if (player2.current.position.z < 5.6) player2.current.position.z += paddleSpeed * delta;
 			}
 
 			ball.current.position.x += ballVelocity.current.x * ballSpeedFactor * delta;
