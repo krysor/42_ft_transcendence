@@ -1,3 +1,21 @@
 {
+    "Login": "Inloggen",
+    "Signup": "Account aanmaken",
+    "Enter your username": "Voer je gebruikersnaam in",
+    "Enter your password": "Voer je wachtwoord in",
+    "or log with 42 intra": "of log in met 42 intra",
+    "Player": "Speler",
+    "choose your pseudo": "Kies je psuedo-naam",
+    "How many players will play in the tournament ?": "Hoeveel spelers nemen deel aan het toernooi?",
+    "Tournament": "Toernooi",
+    "Proceed to Registration": "Ga verder naar registratie",
+    "or": "of",
+    "Tournament participants": "Toernooi Deelnemers",
+    "PLAY": "SPEEL",
+    "Next match": "Volgende wedstrijd",
+    "Ready": "Klaar",
+    "Congratulations": "Gefeliciteerd",
+    "You are the winner": "Jij bent de winnaar!",
+    "New tournament": "Nieuw toernooi",
     "test": "vertalingstest van bestand"
 }
