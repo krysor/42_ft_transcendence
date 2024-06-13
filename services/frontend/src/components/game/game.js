@@ -138,3 +138,30 @@ function Game() {
 
 export default Game
 // export { Game, state, setState }
+
+const sendScore = async (player, player_id, oponent, score, winner) => {
+	const authtoken = localStorage.getItem('authtoken');
+	const data = {
+		player1_name: player['p1'],
+		player2_name: player['p2'],
+		player1_id: player_id['p1'],
+		player2_id: player_id['p2'],
+		player1_score: score['left'],
+		player2_score: score['right'],
+		winner_id: winner['id'],
+		winner_name: winner['name'],
+	};
+	try {
+		const response = await fetch('http://localhost:3001/api/score', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${authtoken}`
+			},
+			body: JSON.stringify({ score }),
+		});
+	} catch (error) {
+		console.error('Error:', error);
+		return null;
+	}
+}

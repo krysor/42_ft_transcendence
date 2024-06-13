@@ -81,15 +81,15 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 
 			// Load players
 			player1.current = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.5, 3), new THREE.MeshPhongMaterial({ color: 0x5f005f, side: THREE.DoubleSide }));
-			player1.current.position.set(-8, 0, 0);
+			player1.current.position.set(-10.8, 0, 0);
 			scene.current.add(player1.current);
 
 			player2.current = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.5, 3), new THREE.MeshPhongMaterial({ color: 0x5f005f, side: THREE.DoubleSide }));
-			player2.current.position.set(8, 0, 0);
+			player2.current.position.set(10.8, 0, 0);
 			scene.current.add(player2.current);
 
 			let bordeurUp = new THREE.Mesh(
-				new THREE.BoxGeometry(20, 0.5, 0.1),
+				new THREE.BoxGeometry(22, 0.5, 0.1),
 				new THREE.MeshPhongMaterial({
 					color: 0x9f9f9f,
 					side: THREE.DoubleSide
@@ -98,11 +98,11 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			bordeurUp.name = "borderUp";
 			bordeurUp.position.x = 0;
 			bordeurUp.position.y = 0;
-			bordeurUp.position.z = 7.2;
+			bordeurUp.position.z = 7.4;
 			scene.current.add(bordeurUp);
 
 			let borderDown = new THREE.Mesh(
-				new THREE.BoxGeometry(20, 0.5, 0.1),
+				new THREE.BoxGeometry(22, 0.5, 0.1),
 				new THREE.MeshPhongMaterial({
 					color: 0x9f9f9f,
 					side: THREE.DoubleSide
@@ -111,7 +111,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			borderDown.name = "borderDown";
 			borderDown.position.x = 0;
 			borderDown.position.y = 0;
-			borderDown.position.z = -7.2;
+			borderDown.position.z = -7.4;
 			scene.current.add(borderDown);
 
 			// Load ball
@@ -126,7 +126,10 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 		// Initialize key state
 		const initKeys = () => {
 			playerKeys.current = {
-				player1: { ArrowUp: false, ArrowDown: false },
+				player1: { w: false, s: false },
+
+				// MODIFIED THIS ONE TO TRY TO MAKE MOVING P2 POSSIBLE
+				// player2: { ArrowUp: false, ArrowDown: false },
 				player2: { ArrowUp: false, ArrowDown: false },
 			};
 
@@ -163,22 +166,49 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			ballVelocity.current = { x: 0.1, y: 0, z: 0 };
 		}
 
-		const animate = () => {
+		let lastTime = performance.now();
+
+		const animate = (currentTime) => {
 			if (!scene.current || !camera.current || !renderer.current || !player1.current || !player2.current || !ball.current) return;
 
-			if (playerKeys.current.player1.ArrowUp) {
-				if (player1.current.position.z > -5.6) player1.current.position.z -= 0.1;
+			// Calculate the time difference since the last frame
+			currentTime = performance.now();
+			const delta = (currentTime - lastTime) / 1000; // Convert to seconds
+			lastTime = currentTime;
+
+			// Define the movement speed
+			const paddleSpeed = 10; // Adjust as needed
+			const ballSpeedFactor = 80; // Adjust as needed
+
+			if (playerKeys.current.player1.w) {
+				if (player1.current.position.z > -5.6) player1.current.position.z -= paddleSpeed * delta;
 			}
 
-			if (playerKeys.current.player1.ArrowDown) {
-				if (player1.current.position.z < 5.6) player1.current.position.z += 0.1;
+			if (playerKeys.current.player1.s) {
+				if (player1.current.position.z < 5.6) player1.current.position.z += paddleSpeed * delta;
 			}
 
-			ball.current.position.x += ballVelocity.current.x;
-			ball.current.position.y += ballVelocity.current.y;
-			ball.current.position.z += ballVelocity.current.z;
+			// ADDED THIS ONE TO TRY TO MAKE MOVING P2 POSSIBLE
+			if (playerKeys.current.player2.ArrowUp) {
+				if (player2.current.position.z > -5.6) player2.current.position.z -= paddleSpeed * delta;
+			}
+			if (playerKeys.current.player2.ArrowDown) {
+				if (player2.current.position.z < 5.6) player2.current.position.z += paddleSpeed * delta;
+			}
 
-			player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
+			ball.current.position.x += ballVelocity.current.x * ballSpeedFactor * delta;
+			ball.current.position.y += ballVelocity.current.y * ballSpeedFactor * delta;
+			ball.current.position.z += ballVelocity.current.z * ballSpeedFactor * delta;
+
+			// player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
+			const threshold = 0.1; // Define a threshold value
+
+			const diff = ball.current.position.z - player2.current.position.z;
+
+			// THIS THE PRIMITIVE AI
+			// if (Math.abs(diff) > threshold) {
+			// 	player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
+			// }
 
 			// Check for collision with the game area's top and bottom boundaries
 			if (ball.current.position.z > 7.1 || ball.current.position.z < -7.1) {
@@ -186,6 +216,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			}
 
 			// Check for collision with player paddles
+			const deviation = 0.1; // Adjust as needed
 			if (
 				ball.current.position.x < player1.current.position.x + paddleDepth.current &&
 				ball.current.position.x > player1.current.position.x - paddleDepth.current
@@ -196,7 +227,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				) {
 					ballVelocity.current.x *= -1; // Reverse the ball's X-velocity
 					let hitPosZ = ball.current.position.z - player1.current.position.z; // Collision point
-					ballVelocity.current.z = hitPosZ * 0.04; // This factor controls the influence of hit position on velocity
+					ballVelocity.current.z = hitPosZ * deviation; // This factor controls the influence of hit position on velocity
 				}
 			}
 
@@ -211,7 +242,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				) {
 					ballVelocity.current.x *= -1; // Reverse the ball's X-velocity
 					let hitPosZ = ball.current.position.z - player2.current.position.z; // Collision point
-					ballVelocity.current.z = hitPosZ * 0.04; // This factor controls the influence of hit position on velocity
+					ballVelocity.current.z = hitPosZ * deviation; // This factor controls the influence of hit position on velocity
 				}
 			}
 
