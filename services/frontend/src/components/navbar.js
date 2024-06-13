@@ -5,6 +5,7 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ProfilePic from "./user/ProfilePic";
 import i18next from "i18next";
+import { useTranslation } from 'react-i18next'
 
 const lngs = {
     en: { nativeName: 'English' },
@@ -13,6 +14,8 @@ const lngs = {
 }
 
 function NavBar(props) {
+    const { t } = useTranslation()
+
     return (
         <Navbar expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
             <Container id="containerNavBar">
@@ -23,7 +26,7 @@ function NavBar(props) {
                 <Navbar.Collapse id="navbar">
                     <Nav id="navBar" className="me-auto">
                         <Nav.Link as={Link} to="/Game">Game</Nav.Link>
-                        <Nav.Link as={Link} to="/tournament">Tournament</Nav.Link>
+                        <Nav.Link as={Link} to="/tournament">{t('Tournament')}</Nav.Link>
                         <Nav.Link as={Link} to="/ThreejsGame">ThreeGame</Nav.Link>
                         <Nav.Link as={Link} to="/Morpion">Morpion</Nav.Link>
                         <Nav.Link as={Link} to="/about">About</Nav.Link>
@@ -34,8 +37,8 @@ function NavBar(props) {
                             </>
                         ) : (
                             <>
-                                <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                                <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
+                                <Nav.Link as={Link} to="/login">{t('Login')}</Nav.Link>
+                                <Nav.Link as={Link} to="/signup">{t('Signup')}</Nav.Link>
                             </>
                         )}
                     </Nav>

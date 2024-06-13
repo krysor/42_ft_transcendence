@@ -47,7 +47,7 @@ function App () {
 	const token = sessionStorage.getItem('authtoken')
 	const user = JSON.parse(sessionStorage.getItem('user'))
 	const isLoggedIn = !!token;
-
+	
 	{/* -----Add this to create a translation field----- */}
 	const { t } = useTranslation()
 

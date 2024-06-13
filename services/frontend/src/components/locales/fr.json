@@ -1,0 +1,21 @@
+{
+    "Login": "Se connecter",
+    "Signup": "S'incscire",
+    "Enter your username": "Entre ton nom d'utilisateur",
+    "Enter your password": "Entre ton mot de passe",
+    "or log with 42 intra": "ou se connecter via l'intra 42",
+    "Player": "Joueur",
+    "choose your pseudo": "choisis ton pseudo",
+    "How many players will play in the tournament ?": "Combien de Joueurs vont participer au tournoi ?",
+    "Tournament": "Tournoi",
+    "Proceed to Registration": "Procéder à l'inscription",
+    "or": "ou",
+    "Tournament participants": "Participants du tournoi",
+    "PLAY": "JOUER",
+    "Next match": "Prochain match",
+    "Ready": "Prêt",
+    "Congratulations": "Bravo",
+    "You are the winner": "Tu as gagné",
+    "New tournament": "Nouveau tournoi",
+    "test": "test de traduction du fichier"
+}

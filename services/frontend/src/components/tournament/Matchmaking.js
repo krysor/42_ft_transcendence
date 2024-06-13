@@ -5,10 +5,11 @@ import ProfilePic from '../user/ProfilePic';
 import ThreejsGame from '../game/threejs';
 import Morpion from '../morpion/morpion';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { useTranslation } from 'react-i18next'
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
 const Matchmaking = () => {
+  const { t } = useTranslation()
   const { users, setUsers } = useUsers();
   const [participants, setParticipants] = useState(users);
   const [currentMatch, setCurrentMatch] = useState(null);
@@ -146,24 +147,24 @@ const Matchmaking = () => {
     <div className="container mt-5">
       {!currentMatch && participants.length !== 1 && (
         <>
-          <h2 className="mb-4">Tournament Participants:</h2>
+          <h2 className="mb-4">{t('Tournament participants')}:</h2>
           <ul className="list-group">
             {participants.map((user, index) => (
               <li key={index} className="list-group-item d-flex align-items-center">
                 <ProfilePic filename={user.profile} online={user.is_online} className="mr-3" />
-                <span>Username: {user.username}</span>
+                <span>{user.username}</span>
               </li>
             ))}
           </ul>
-          <button onClick={doTournament} className="btn btn-primary mt-4">PLAY !</button>
+          <button onClick={doTournament} className="btn btn-primary mt-4">{t('PLAY')} !</button>
         </>
       )}
 
       {currentMatch && !isReady && (
         <>
-          <p>Next match:</p>
+          <p>{t('Next match')}:</p>
           <p>{currentMatch.player1.username} VS {currentMatch.player2.username}</p>
-          <button onClick={handleReadyClick} className="btn btn-primary">Ready</button>
+          <button onClick={handleReadyClick} className="btn btn-primary">{t('Ready')}</button>
         </>
       )}
 
@@ -179,8 +180,8 @@ const Matchmaking = () => {
 
           {currentMatch && game === 'morpion' && (
             <>
-              <p>Player 1: {currentMatch.player1.username}</p>
-              <p>Player 2: {currentMatch.player2.username}</p>
+              <p>{t('Player')} 1: {currentMatch.player1.username}</p>
+              <p>{t('Player')} 2: {currentMatch.player2.username}</p>
               <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)} className="btn btn-success">End Game (Player 1 Wins)</button>
               <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)} className="btn btn-danger">End Game (Player 2 Wins)</button>
             </>
@@ -190,10 +191,10 @@ const Matchmaking = () => {
 
       {participants.length === 1 && (
         <div className="mt-4">
-          <h3>Congratulations {participants[0].username} !!! You are the winner :)</h3>
+          <h3>{t('Congratulations')} {participants[0].username} !!! {t('You are the winner')} :)</h3>
           <img src='/win_image.jpg' alt="Winner"/>
           <br />
-          <NavLink to="/tournament" className="btn btn-primary mt-4">New tournament</NavLink>
+          <NavLink to="/tournament" className="btn btn-primary mt-4">{t('New tournament')}</NavLink>
         </div>
       )}
     </div>
