@@ -194,9 +194,10 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 
 			const diff = ball.current.position.z - player2.current.position.z;
 
-			if (Math.abs(diff) > threshold) {
-				player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
-			}
+			// THIS THE PRIMITIVE AI
+			// if (Math.abs(diff) > threshold) {
+			// 	player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
+			// }
 
 			// Check for collision with the game area's top and bottom boundaries
 			if (ball.current.position.z > 7.1 || ball.current.position.z < -7.1) {
