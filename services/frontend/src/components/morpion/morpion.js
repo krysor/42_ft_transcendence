@@ -7,7 +7,6 @@ import { Spinner, Table, Collapse } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next'
 
-
 let user = await getUserData().then((user) => {
 	if (user) {
 		return user.username;
@@ -350,7 +349,7 @@ function LoadScore() {
 }
 
 export default function Morpion({ p1, p2, onGameEnd }) {
-	const { t } = useTranslation();
+	const { t }	= useTranslation();
 	const [history, setHistory] = useState([Array(9).fill(null)]);
 	const [currentMove, setCurrentMove] = useState(0);
 	const xIsNext = currentMove % 2 === 0;

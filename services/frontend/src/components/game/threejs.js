@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.module.js';
+import { useTranslation } from 'react-i18next';
 
 const ThreejsGame = ({ p1, p2, onGameEnd }) => {
+	const { t }	= useTranslation();
 	const scene = useRef(null);
 	const camera = useRef(null);
 	const renderer = useRef(null);
@@ -291,8 +293,8 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 		{!p1 && !p2 && (
 			<div>
 				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
-					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>Player 1 Score: {scoreP1}</p>
-					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>Player 2 Score: {scoreP2}</p>
+					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>{t('Player 1 Score')} : {scoreP1}</p>
+					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>{t('Player 2 Score')} : {scoreP2}</p>
 				</div>
 				<canvas ref={refContainer} />
 			</div>
