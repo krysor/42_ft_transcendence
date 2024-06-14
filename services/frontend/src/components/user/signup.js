@@ -62,6 +62,7 @@ function Signup() {
                                     <label htmlFor="password">{t('Enter your password')}:</label>
                                     <input id="password" name="password" type="password" className="form-control" required />
                                 </div>
+                                <p>Enter you language:</p>
                                 <div className="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label className="btn btn-secondary active">
                                     <input type="radio" name="languageSelect" id="eng" value="eng" autoComplete="off" defaultChecked /> English
@@ -77,6 +78,9 @@ function Signup() {
                                 <br />
                                 <button type="submit" className="btn btn-primary btn-block">{t('Signup')}</button>
                                 <p>-----{t('or log with 42 intra')}----- </p>
+                                <br />
+                                <button type="submit" className="btn btn-primary btn-block">Login</button>
+                                <p>-----or log with 42 intra----- </p>
                                 <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code">
                                     <img src="favicon.ico" width="50" />
                                 </a>

@@ -1,33 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ProfilePic from './ProfilePic';
 
 const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function Community() {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
-  const [friends, setFriends] = useState([]); // Define 'friends' state variable
+  const [friends, setFriends] = useState([]); // Initialize 'friends' as an empty array
   const authtoken = sessionStorage.getItem('authtoken');
   const current_user = JSON.parse(sessionStorage.getItem('user'));
 
   useEffect(() => {
     fetch(backendHost + '/user/all/')
       .then(response => response.json())
-      .then(data => setUsers(data))
+      .then(data => setUsers(Array.isArray(data) ? data : []))
       .catch(error => console.error('Error fetching users:', error));
   }, []);
 
-    // Fetch friends of the current user
-    useEffect(() => {
-      fetch(backendHost + '/user/friend_list/', {
-        headers: {
-          'Authorization': `Token ${authtoken}`
+  // Fetch friends of the current user
+  useEffect(() => {
+    fetch(backendHost + '/user/friend_list/', {
+      headers: {
+        'Authorization': `Token ${authtoken}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data) {
+          setFriends(Array.isArray(data) ? data : []);
+        } else {
+          sessionStorage.removeItem('user');
+          sessionStorage.removeItem('authtoken');
+          navigate('/home');
         }
       })
-        .then(response => response.json())
-        .then(data => setFriends(data))
-        .catch(error => console.error('Error fetching friends:', error));
-    }, [authtoken]); // Trigger fetch on authtoken change
+      .catch(error => {
+        console.error('Error fetching friends:', error);
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('authtoken');
+        navigate('/home');
+      });
+  }, [authtoken, navigate]); // Trigger fetch on authtoken change
 
   const handleAddFriend = (userId) => {
     fetch(backendHost + `/user/add_friend/${userId}/`, {
