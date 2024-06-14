@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import './App.css';
 import '../user/getUserData';
 
-
 import getUserData from '../user/getUserData';
 import { Spinner, Table, Collapse } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useTranslation } from 'react-i18next'
 
 
 let user = await getUserData().then((user) => {
@@ -256,21 +256,23 @@ function Board({ xIsNext, squares, onPlay }) {
 	}
 
 	const draw = calculateDraw(squares);
+	const { t } = useTranslation();
+	//let winner = {t('Bot')};
 	let status;
 	let restartBtn = null;
 	winner = calculateWinner(squares);
 	if (winner) {
-		status = 'Winner: ' + winner;
+		status = t('Winner: ') + winner;
 		sendScore(user, winner === user ? 1 : -1);
-		sendParty(user, winner === user ? 1 : -1, "Bot");
-		restartBtn = <button className="restartButton" onClick={restartGame}>Restart</button>;
+		sendParty(user, winner === user ? 1 : -1, t('Bot'));
+		restartBtn = <button className="restartButton" onClick={restartGame}>{t('Restart')}</button>;
 	} else if (draw) {
-		status = 'Draw';
+		status = t('Draw');
 		sendScore(user, 0);
-		sendParty(user, 0, "Bot");
-		restartBtn = <button className="restartButton" onClick={restartGame}>Restart</button>;
+		sendParty(user, 0, t('Bot'));
+		restartBtn = <button className="restartButton" onClick={restartGame}>{t('Restart')}</button>;
 	} else {
-		status = 'Next player: ' + (xIsNext ? user : "Bot");
+		status = t('Next player') + ": " + (xIsNext ? user : t('Bot'));
 	}
 	if (!xIsNext && !winner && !draw) {
 		setTimeout(() => {
@@ -348,6 +350,7 @@ function LoadScore() {
 }
 
 export default function Morpion({ p1, p2, onGameEnd }) {
+	const { t } = useTranslation();
 	const [history, setHistory] = useState([Array(9).fill(null)]);
 	const [currentMove, setCurrentMove] = useState(0);
 	const xIsNext = currentMove % 2 === 0;
@@ -370,12 +373,12 @@ export default function Morpion({ p1, p2, onGameEnd }) {
 				<Table striped>
 					<thead class="thead-dark">
 						<tr>
-							<th colSpan="3">Morpion's Leaderboard</th>
+							<th colSpan="3">{t('Morpion\'s Leaderboard')}</th>
 						</tr>
 						<tr>
 							<th>#</th>
-							<th>Player</th>
-							<th>Score</th>
+							<th>{t('Player')}</th>
+							<th>{t('Score')}</th>
 						</tr>
 					</thead>
 					<tbody>

@@ -1,9 +1,21 @@
 {
+    "Restart": "Restart",
+    "Next player": "Next player",
+    "Winner": "Winner",
+    "Draw": "Draw",
+    "Bot": "Bot",
+    "Morpion's Leaderboard": "Morpion's Leaderboard",
+    "Score": "Score",
+    "Intro": "This page was made as a project for the 19 school 42 network",
+    "Game": "Game",
+    "3D-Game": "3D-Game",
+    "Logout": "Logout",
+    "Community": "Community",
     "Login": "Login",
     "Signup": "Signup",
     "Enter your username": "Enter your username",
     "Enter your password": "Enter your password",
-    "or log with 42 intra": "or log with 42 intra",
+    "or log with 42 intra": "or log in with 42 intra",
     "Player": "Player",
     "choose your pseudo": "choose your pseudo",
     "How many players will play in the tournament ?": "How many players will play in the tournament ?",
@@ -16,6 +28,5 @@
     "Ready": "Ready",
     "Congratulations": "Congratulations",
     "You are the winner": "You are the winner",
-    "New tournament": "New tournament",
-    "test": "translation test from file"
+    "New tournament": "New tournament"
 }

@@ -1,4 +1,16 @@
 {
+    "Restart": "Opnieuw",
+    "Next player": "Volgende speler",
+    "Winner": "Winnaar",
+    "Draw": "Gelijk",
+    "Bot": "Computer",
+    "Morpion's Leaderboard": "Morpion's Scoreboord",
+    "Score": "Score",
+    "Intro": "Deze website is gemaakt als project voor de S19 school van het 42 netwerk.",
+    "Game": "Spelen",
+    "3D-Game": "3D-Spelen",
+    "Logout": "Uitloggen",
+    "Community": "Gemeenschap",
     "Login": "Inloggen",
     "Signup": "Account aanmaken",
     "Enter your username": "Voer je gebruikersnaam in",
@@ -16,6 +28,5 @@
     "Ready": "Klaar",
     "Congratulations": "Gefeliciteerd",
     "You are the winner": "Jij bent de winnaar!",
-    "New tournament": "Nieuw toernooi",
-    "test": "vertalingstest van bestand"
+    "New tournament": "Nieuw toernooi"
 }

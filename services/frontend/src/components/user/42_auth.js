@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const Ft_auth = () => {
+const FtAuth = () => {
     const [error, setError] = useState('');
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -57,5 +57,5 @@ const Ft_auth = () => {
     );
 };
 
-export default Ft_auth;
+export default FtAuth;
 

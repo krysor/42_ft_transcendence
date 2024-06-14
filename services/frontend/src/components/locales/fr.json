@@ -1,4 +1,16 @@
 {
+    "Restart": "xxx",
+    "Next player": "xxx",
+    "Winner": "xxx",
+    "Draw": "xxx",
+    "Bot": "Bot",
+    "Morpion's Leaderboard": "Morpion's xxx",
+    "Score": "Score",
+    "Intro": "xxx",
+    "Game": "Joueur",
+    "3D-Game": "3D-Joueur",
+    "Logout": "Fermer la session",
+    "Community": "Communauté",
     "Login": "Se connecter",
     "Signup": "S'incscire",
     "Enter your username": "Entre ton nom d'utilisateur",
@@ -16,6 +28,5 @@
     "Ready": "Prêt",
     "Congratulations": "Bravo",
     "You are the winner": "Tu as gagné",
-    "New tournament": "Nouveau tournoi",
-    "test": "test de traduction du fichier"
+    "New tournament": "Nouveau tournoi"
 }

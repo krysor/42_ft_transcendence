@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTournament } from './TournamentContext';
 
-const Ft_auth_tournament = () => {
+const FtAuthTournament = () => {
   const [error, setError] = useState('');
   const { addPlayer } = useTournament();
   const navigate = useNavigate();
@@ -54,4 +54,4 @@ const Ft_auth_tournament = () => {
   );
 };
 
-export default Ft_auth_tournament;
+export default FtAuthTournament;
