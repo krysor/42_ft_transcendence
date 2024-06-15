@@ -273,7 +273,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			console.log("max:", max);
 
 			if (onGameEnd) {
-				if (max === 19 || (max === 2 && Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2)) {
+				if (max === 19 || (max === 11 && Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2)) {
 					onGameEnd(p1, scoreP1Ref.current, p2, scoreP2Ref.current);
 				}
 			} else {
