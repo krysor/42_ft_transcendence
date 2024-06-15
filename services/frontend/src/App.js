@@ -11,6 +11,7 @@ import Home from "./components/home";
 // -----Game-----
 import Game from "./components/game/game";
 import ThreejsGame from "./components/game/threejs";
+// import ThreejsGameAI from "./components/game/threejsai";
 import Morpion from "./components/morpion/morpion";
 
 // ------Tournament------

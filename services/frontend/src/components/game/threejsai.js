@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.module.js';
 import { useTranslation } from 'react-i18next';
 
-const ThreejsGame = ({ p1, p2, onGameEnd }) => {
+const ThreejsGameAI = ({ p1, p2, onGameEnd }) => {
 	const { t }	= useTranslation();
 	const scene = useRef(null);
 	const camera = useRef(null);
@@ -154,7 +154,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			playerKeys.current = {
 				...playerKeys.current,
 				player1: { ...playerKeys.current.player1, [key]: true },
-				player2: { ...playerKeys.current.player2, [key]: true },
+				// player2: { ...playerKeys.current.player2, [key]: true },
 			};
 		};
 
@@ -164,7 +164,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			playerKeys.current = {
 				...playerKeys.current,
 				player1: { ...playerKeys.current.player1, [key]: false },
-				player2: { ...playerKeys.current.player2, [key]: false },
+				// player2: { ...playerKeys.current.player2, [key]: false },
 			};
 		};
 
@@ -199,13 +199,13 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				if (player1.current.position.z < 5.6) player1.current.position.z += paddleSpeed * delta;
 			}
 
-			// ADDED THIS ONE TO TRY TO MAKE MOVING P2 POSSIBLE
-			if (player2 && playerKeys.current.player2.ArrowUp) {
-				if (player2.current.position.z > -5.6) player2.current.position.z -= paddleSpeed * delta;
-			}
-			if (player2 && playerKeys.current.player2.ArrowDown) {
-				if (player2.current.position.z < 5.6) player2.current.position.z += paddleSpeed * delta;
-			}
+			// // ADDED THIS ONE TO TRY TO MAKE MOVING P2 POSSIBLE
+			// if (player2 && playerKeys.current.player2.ArrowUp) {
+			// 	if (player2.current.position.z > -5.6) player2.current.position.z -= paddleSpeed * delta;
+			// }
+			// if (player2 && playerKeys.current.player2.ArrowDown) {
+			// 	if (player2.current.position.z < 5.6) player2.current.position.z += paddleSpeed * delta;
+			// }
 
 			ball.current.position.x += ballVelocity.current.x * ballSpeedFactor * delta;
 			ball.current.position.y += ballVelocity.current.y * ballSpeedFactor * delta;
@@ -215,15 +215,13 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 
 			// THIS THE PRIMITIVE AI
 
-			if (!player2) {
-				// player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
-				const threshold = 0.1; // Define a threshold value
+			// player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
+			const threshold = 0.1; // Define a threshold value
 
-				const diff = ball.current.position.z - player2.current.position.z;
+			const diff = ball.current.position.z - player2.current.position.z;
 
-				if (Math.abs(diff) > threshold) {
-					player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
-				}
+			if (Math.abs(diff) > threshold) {
+				player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
 			}
 
 
@@ -324,4 +322,4 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 	);
 };
 
-export default ThreejsGame;
+export default ThreejsGameAI;
