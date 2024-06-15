@@ -33,5 +33,13 @@
     "Ready": "Klaar",
     "Congratulations": "Gefeliciteerd",
     "You are the winner": "Jij bent de winnaar!",
-    "New tournament": "Nieuw toernooi"
+    "New tournament": "Nieuw toernooi",
+    "Games lost": "",
+    "Games won": "",
+    "Matches": "",
+    "Edit Profile": "",
+    "New username": "",
+    "New password": "",
+    "Upload new profile picture": "",
+    "Save": ""
 }

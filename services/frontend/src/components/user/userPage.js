@@ -3,10 +3,11 @@ import ProfilePic from "./ProfilePic";
 import { useParams, Link } from 'react-router-dom';
 import './profile.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { useTranslation } from 'react-i18next'
 const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function UserPage() {
+    const { t } = useTranslation();
 	const { user_id } = useParams();
     const [userData, setUserData] = useState(null);
 	const url_request = backendHost + '/user/get_user_by_id/' + user_id
@@ -38,11 +39,11 @@ function UserPage() {
             <br/>
 
             <div className="mb-3">
-                {loss !== null && <h4 className="text-danger">Games Lost: {loss}</h4>}
-                {win !== null && <h4 className="text-success">Games Won: {win}</h4>}
+                {loss !== null && <h4 className="text-danger">{t('Games lost')}: {loss}</h4>}
+                {win !== null && <h4 className="text-success">{t('Games won')}: {win}</h4>}
             </div>
 
-            <h3>Matches:</h3>
+            <h3>{t('Matches')}:</h3>
             <ul className="match-list">
                 {matches && matches.map(match => (
                     <div className="match-historic" key={match.id}>
