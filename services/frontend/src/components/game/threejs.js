@@ -21,6 +21,10 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 	const [scoreP1, setScoreP1] = useState(0);
 	const [scoreP2, setScoreP2] = useState(0);
 
+	const scoreP1Ref = useRef(0);
+	const scoreP2Ref = useRef(0);
+
+
 	useEffect(() => {
 		// Initialize Three.js scene, camera, and renderer
 		const initScene = () => {
@@ -253,21 +257,23 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			// DETECTION OF MISSED BALL
 			if (ball.current.position.x < -12) {
 				setScoreP2(prevScore => prevScore + 1);
+				scoreP2Ref.current = scoreP2Ref.current + 1;
 				resetPositions();
 			} else if (ball.current.position.x > 12) {
 				setScoreP1(prevScore => prevScore + 1);
+				scoreP1Ref.current = scoreP1Ref.current + 1;
 				resetPositions();
 			}
 
-			let max = Math.max(scoreP1, scoreP2);
-			if (max === 19 || (max === 2 && Math.abs(scoreP2 - scoreP1) >= 2)) {
-				if (onGameEnd) {
-					onGameEnd(p1, scoreP1, p2, scoreP2);
+			let max = Math.max(scoreP1Ref.current, scoreP2Ref.current);
+
+			console.log("max:", max);
+
+			if (onGameEnd) {
+				if (max === 19 || (max === 2 && Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2)) {
+					onGameEnd(p1, scoreP1Ref.current, p2, scoreP2Ref.current);
 				}
 			} else {
-				
-				console.log("scoreP1:", scoreP1);
-
 				renderer.current.render(scene.current, camera.current);
 				frameID.current = requestAnimationFrame(animate);
 			}
