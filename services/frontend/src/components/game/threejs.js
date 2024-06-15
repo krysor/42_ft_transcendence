@@ -21,6 +21,9 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 	const [scoreP1, setScoreP1] = useState(0);
 	const [scoreP2, setScoreP2] = useState(0);
 
+	// State for keeping the scores up to date inside the animate function: 
+	// 		useState variables don't change in the animate function
+	//		because the animation loop doesn't rerender.
 	const scoreP1Ref = useRef(0);
 	const scoreP2Ref = useRef(0);
 
