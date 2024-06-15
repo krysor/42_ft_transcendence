@@ -15,6 +15,8 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 	const ballVelocity = useRef({ x: 0.1, y: 0, z: 0 });
 	const refContainer = useRef();
 
+	const frameID = useRef();//POSSIBLY UNNECESSARY
+
 	// State for displaying scores
 	const [scoreP1, setScoreP1] = useState(0);
 	const [scoreP2, setScoreP2] = useState(0);
@@ -257,27 +259,35 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				resetPositions();
 			}
 
-			if (scoreP1 >= 10 || scoreP2 >= 10) {
-				onGameEnd(p1, scoreP1, p2, scoreP2);
+			let max = Math.max(scoreP1, scoreP2);
+			if (max === 19 || (max === 2 && Math.abs(scoreP2 - scoreP1) >= 2)) {
+				if (onGameEnd) {
+					onGameEnd(p1, scoreP1, p2, scoreP2);
+				}
 			} else {
+				
+				console.log("scoreP1:", scoreP1);
+
 				renderer.current.render(scene.current, camera.current);
-				requestAnimationFrame(animate);
+				frameID.current = requestAnimationFrame(animate);
 			}
 		};
+
+		// frameID.current = requestAnimationFrame(animate);
 
 		initScene();
 
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
 			document.removeEventListener('keyup', handleKeyUp);
-			cancelAnimationFrame(animate);
+			cancelAnimationFrame(frameID);
 		};
 	}, []);
 
-	if (scoreP1 > 9 || scoreP2 > 9) {
-		console.log("======================Game Over======================");
-	}
-	console.log("Score P2: ", scoreP2);
+	// if (scoreP1 > 9 || scoreP2 > 9) {
+	// 	console.log("======================Game Over======================");
+	// }
+	// console.log("Score P2: ", scoreP2);
 
 	return (
 		<div>
@@ -299,7 +309,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				<canvas ref={refContainer} />
 			</div>
 		)}
-	</div>
+		</div>
 	);
 };
 
