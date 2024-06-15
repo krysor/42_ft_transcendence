@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import i18next from 'i18next';
-
+import { useTranslation } from 'react-i18next'
 const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function EditProfile() {
     const authtoken = sessionStorage.getItem('authtoken');
     const [error, setError] = useState('');
-
+    const { t } = useTranslation()
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -60,21 +60,21 @@ function EditProfile() {
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-header">
-                            <h1>Edit Profile</h1>
+                            <h1>{t('Edit Profile')}</h1>
                         </div>
                         <div className="card-body">
                             <form onSubmit={handleSubmit} encType="multipart/form-data">
                                 <div className="form-group">
-                                    <label htmlFor="username">New Username:</label>
+                                    <label htmlFor="username">{t('New username')}:</label>
                                     <input id="username" name="username" type="text" className="form-control" />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="password">New Password:</label>
+                                    <label htmlFor="password">{t('New password')}:</label>
                                     <input id="password" name="password" type="text" className="form-control" />
                                 </div>
                                 <br />
                                 <div className="form-group">
-                                    <label htmlFor="profile_pic">Upload New Profile Picture:</label>
+                                    <label htmlFor="profile_pic">{t('Upload new profile picture')}:</label>
                                     <br />
                                     <input id="profile_pic" name="profile_pic" type="file" className="form-control-file" />
                                 </div>
@@ -92,7 +92,7 @@ function EditProfile() {
                                 </div>
                                 <br />
                                 {error && <div className="alert alert-danger mt-3">Error: {error}</div>}
-                                <button type="submit" className="btn btn-primary btn-block">Save</button>
+                                <button type="submit" className="btn btn-primary btn-block">{t('Save')}</button>
                             </form>
                         </div>
                     </div>

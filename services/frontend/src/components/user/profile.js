@@ -4,9 +4,11 @@ import ProfilePic from "./ProfilePic";
 import getUserData from "./getUserData";
 import './profile.css'; // Assurez-vous d'importer le fichier CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useTranslation } from 'react-i18next'
 
 function Profile() {
     const authtoken = sessionStorage.getItem('authtoken');
+    const { t } = useTranslation();
     const [userData, setUserData] = useState({
         username: '',
         profile_pic: '',
@@ -40,11 +42,11 @@ function Profile() {
             <br/>
 
             <div className="mb-3">
-                {loss !== null && <h4 className="text-danger">Games Lost: {loss}</h4>}
-                {win !== null && <h4 className="text-success">Games Won: {win}</h4>}
+                {loss !== null && <h4 className="text-danger">{t('Games lost')}: {loss}</h4>}
+                {win !== null && <h4 className="text-success">{t('Games won')}: {win}</h4>}
             </div>
 
-            <h3>Matches:</h3>
+            <h3>{t('Matches')}:</h3>
             <ul className="match-list">
                 {matches && matches.map(match => (
                     <div className="match-historic" key={match.id}>
@@ -75,7 +77,7 @@ function Profile() {
                     </div>
                 ))}
             </ul>
-            <NavLink to="/edit_profile" className="btn btn-primary mt-4">Edit Profile</NavLink>
+            <NavLink to="/edit_profile" className="btn btn-primary mt-4">{t('Edit Profile')}</NavLink>
         </div>
     );
 }
