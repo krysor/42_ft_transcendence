@@ -169,9 +169,7 @@ const Matchmaking = () => {
       )}
 
       {currentMatch && isReady && (
-        <>
-          <h1>outside: game: {game}</h1>
-          
+        <>          
           {currentMatch && game === 'Pong' && (
             <ThreejsGame
               p1={currentMatch.player1}
