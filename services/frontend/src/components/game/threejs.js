@@ -268,14 +268,10 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				resetPositions();
 			}
 
-			let max = Math.max(scoreP1Ref.current, scoreP2Ref.current);
-
-			console.log("max:", max);
-
-			if (onGameEnd) {
-				if (max === 19 || (max === 11 && Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2)) {
-					onGameEnd(p1, scoreP1Ref.current, p2, scoreP2Ref.current);
-				}
+			let higherScore = Math.max(scoreP1Ref.current, scoreP2Ref.current);			
+			if (onGameEnd && (higherScore === 19 || (higherScore === 11
+								&& Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2))) {
+				onGameEnd(p1, scoreP1Ref.current, p2, scoreP2Ref.current);
 			} else {
 				renderer.current.render(scene.current, camera.current);
 				frameID.current = requestAnimationFrame(animate);
