@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.module.js';
 import { useTranslation } from 'react-i18next';
+import { NavLink } from 'react-router-dom';
 
-const ThreejsGameAI = ({ p1, p2, onGameEnd }) => {
+const ThreejsGameAI = ({ p1, p2 }) => {
 	const { t }	= useTranslation();
 	const scene = useRef(null);
 	const camera = useRef(null);
@@ -14,9 +15,9 @@ const ThreejsGameAI = ({ p1, p2, onGameEnd }) => {
 	const paddleDepth = useRef(0.5);
 	const ballVelocity = useRef({ x: 0.1, y: 0, z: 0 });
 	const refContainer = useRef();
-
 	const frameID = useRef();//POSSIBLY UNNECESSARY
-
+	
+	const [end, setEnd] = useState(false);
 	// State for displaying scores
 	const [scoreP1, setScoreP1] = useState(0);
 	const [scoreP2, setScoreP2] = useState(0);
@@ -273,9 +274,9 @@ const ThreejsGameAI = ({ p1, p2, onGameEnd }) => {
 			}
 
 			let higherScore = Math.max(scoreP1Ref.current, scoreP2Ref.current);			
-			if (onGameEnd && (higherScore === 19 || (higherScore === 11
+			if ( (higherScore === 19 || (higherScore === 3
 								&& Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2))) {
-				onGameEnd(p1, scoreP1Ref.current, p2, scoreP2Ref.current);
+				setEnd(true);
 			} else {
 				renderer.current.render(scene.current, camera.current);
 				frameID.current = requestAnimationFrame(animate);
@@ -300,7 +301,7 @@ const ThreejsGameAI = ({ p1, p2, onGameEnd }) => {
 
 	return (
 		<div>
-		{p1 && p2 && (
+		{p1 && p2 && !end && (
 			<div>
 				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
 					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>{p1.username} Score: {scoreP1}</p>
@@ -309,7 +310,7 @@ const ThreejsGameAI = ({ p1, p2, onGameEnd }) => {
 				<canvas ref={refContainer} />
 			</div>
 		)}
-		{!p1 && !p2 && (
+		{!p1 && !p2 && !end && (
 			<div>
 				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
 					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>{t('Player 1 Score')} : {scoreP1}</p>
@@ -317,6 +318,22 @@ const ThreejsGameAI = ({ p1, p2, onGameEnd }) => {
 				</div>
 				<canvas ref={refContainer} />
 			</div>
+		)}
+		{end && scoreP1 > scoreP2 && (
+			<>
+			<h3>{t('Congratulations')} !!! {t('You won against the ai')} :)</h3>
+			<img src='/win_image.jpg' alt="Winner"/>
+          	<br />
+			<NavLink to="/tournament" className="btn btn-secondary mt-4">{t('Play again')}</NavLink>
+			</>
+		)}
+
+		{end && scoreP1 < scoreP2 && (
+			<>
+			<h3>Ho you have lost.. You suck at this game :c</h3>
+          	<br />
+			<NavLink to="/tournament" className="btn btn-secondary mt-4">{t('Play again')}</NavLink>
+			</>
 		)}
 		</div>
 	);

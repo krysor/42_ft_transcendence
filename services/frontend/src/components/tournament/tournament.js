@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { useUsers } from './UserContext';
 import { useTournament } from './TournamentContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,6 +18,7 @@ const Tournament = () => {
   const [password, setPassword] = useState('');
   const [game, setGame] = useState(() => sessionStorage.getItem('game') || '');
   const location = useLocation();
+  let vsAI = false;
 
   useEffect(() => {
     const storedPlayers = JSON.parse(sessionStorage.getItem('players'));
@@ -200,6 +201,7 @@ const Tournament = () => {
       )}
 
       {currentPlayer > players.length && (
+        <>
         <form onSubmit={handleFormSubmit}>
           <h3>{t('Tournament')}</h3>
 
@@ -214,10 +216,15 @@ const Tournament = () => {
 
           <div className="form-group">
             <label htmlFor="nbOfPlayers">{t('How many players will play in the tournament ?')}</label>
-            <input type="number" name="nbOfPlayers" id="nbOfPlayers" min="1" max="16" className="form-control" />
+            <input type="number" name="nbOfPlayers" id="nbOfPlayers" min="2" max="16" className="form-control" />
           </div>
           <button type="submit" className="btn btn-primary">{t('Proceed to Registration')}</button>
         </form>
+        <br />
+        <h3>{t('Play against ai')}</h3>
+          <NavLink to="/pong_ai" className="btn btn-secondary">Pong</NavLink>
+          <NavLink to="/morpion" className="btn btn-secondary">Morpion</NavLink>
+      </>
       )}
     </div>
   );
