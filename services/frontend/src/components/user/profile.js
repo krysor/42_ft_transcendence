@@ -41,6 +41,8 @@ function Profile() {
             </div>
             <br/>
 
+
+            
             <div className="mb-3">
                 {loss !== null && <h4 className="text-danger">{t('Games lost')}: {loss}</h4>}
                 {win !== null && <h4 className="text-success">{t('Games won')}: {win}</h4>}
@@ -81,7 +83,7 @@ function Profile() {
                     </div>
                 ))}
             </ul>
-            <NavLink to="/edit_profile" className="btn btn-primary mt-4">{t('Edit Profile')}</NavLink>
+            <NavLink to="/edit_profile" className="btn btn-secondary mt-4">{t('Edit Profile')}</NavLink>
         </div>
     );
 }

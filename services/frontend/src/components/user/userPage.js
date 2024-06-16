@@ -49,17 +49,21 @@ function UserPage() {
                     <div className="match-historic" key={match.id}>
                         <li className="match-item list-group-item mb-3 p-3">
                             <div className="match-detail d-flex justify-content-between align-items-center">
-                                {match.p1 && (
-                                    <Link to={`/user_profile/${match.p1.id}`} className="mr-3">
-                                        <ProfilePic filename={match.p1.profile_pic} online="" size={40} className="rounded-circle" />
-                                    </Link>
-                                )}
-                                <h5>{match.p1 ? match.p1.username : 'Unknown'} {match.p1_score} vs {match.p2_score} {match.p2 ? match.p2.username : 'Unknown'}</h5>
-                                {match.p2 && (
-                                    <Link to={`/user_profile/${match.p2.id}`} className="ml-3">
-                                        <ProfilePic filename={match.p2.profile_pic} online="" size={40} className="rounded-circle" />
-                                    </Link>
-                                )}
+                            {match.p1 ? (
+                                <Link to={`/user_profile/${match.p1.id}`} className="mr-3">
+                                    <ProfilePic filename={match.p1.profile_pic || '/default_pp.jpeg'} online="" size={40} className="rounded-circle" />
+                                </Link>
+                            ) : (
+                                <img src="/default_pp.jpeg" alt="Anonyme" className="mr-3 rounded-circle" style={{ width: 40, height: 40 }} />
+                            )}
+                            <h5>{match.p1 ? match.p1.username : 'Anonyme'} {match.p1_score} vs {match.p2_score} {match.p2 ? match.p2.username : 'Anonyme'}</h5>
+                            {match.p2 ? (
+                                <Link to={`/user_profile/${match.p2.id}`} className="ml-3">
+                                    <ProfilePic filename={match.p2.profile_pic || '/default_pp.jpeg'} online="" size={40} className="rounded-circle" />
+                                </Link>
+                            ) : (
+                                <img src="/default_pp.jpeg" alt="Anonyme" className="ml-3 rounded-circle" style={{ width: 40, height: 40 }} />
+                            )}
                             </div>
                             <span className="text-muted">
                                 {match.is_pong && (
