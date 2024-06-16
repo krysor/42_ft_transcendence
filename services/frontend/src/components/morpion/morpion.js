@@ -80,6 +80,7 @@ let GetParties = async (user) => {
 
 
 let GetScore = async () => {
+	// const { t }	= useTranslation();
 	try {
 		const authtoken = sessionStorage.getItem('authtoken');
 		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/user/get_top_score/', {
@@ -142,19 +143,22 @@ let GetScore = async () => {
 		return (
 			<tr>
 				<td>
-					<Spinner animation="border" role="status">
+					{/* add translation */}
+					<p>Log in to see the leaderbord</p>
+					{/* <th>{t('Score')}</th> */}
+					{/* <Spinner animation="border" role="status">
 						<span className="visually-hidden">Loading...</span>
-					</Spinner>
+					</Spinner> */}
 				</td>
 				<td>
-					<Spinner animation="border" role="status">
+					{/* <Spinner animation="border" role="status">
 						<span className="visually-hidden">Loading...</span>
-					</Spinner>
+					</Spinner> */}
 				</td>
 				<td>
-					<Spinner animation="border" role="status">
+					{/* <Spinner animation="border" role="status">
 						<span className="visually-hidden">Loading...</span>
-					</Spinner>
+					</Spinner> */}
 				</td>
 			</tr>
 		);
