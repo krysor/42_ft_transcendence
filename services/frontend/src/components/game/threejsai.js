@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.module.js';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
-
+import getUserData from '../user/getUserData';
+const backendHost = 'http://' + window.location.hostname + ':8000';
 const ThreejsGameAI = ({ p1, p2 }) => {
 	const { t }	= useTranslation();
 	const scene = useRef(null);
@@ -28,6 +29,61 @@ const ThreejsGameAI = ({ p1, p2 }) => {
 	const scoreP1Ref = useRef(0);
 	const scoreP2Ref = useRef(0);
 
+	const getUser = () => {
+		const authtoken = sessionStorage.getItem('authtoken');
+		fetch(backendHost + '/user/user_detail/', {
+			method: 'GET',
+			headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${authtoken}`
+            },
+		})
+		.then(response => { return response.json(); })
+		.then(data => {
+			console.log(data);
+			if (data.Token) {
+				sessionStorage.setItem('authtoken', data.Token);
+				sessionStorage.setItem('user', JSON.stringify(data.user));
+				return data.user;
+			}
+			else if (data.error) {
+				throw data.error;
+			}
+		})
+		.catch(error => { console.error('There was a problem with the fetch operation:', error); });
+	}
+
+	const fetchMatchResult = (player1, p1Result, botResult) => {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = (today.getMonth() + 1).toString().padStart(2, '0');
+		const day = today.getDate().toString().padStart(2, '0');
+		const formattedDate = `${year}-${month}-${day}`;
+		const is_pong = true;
+
+		const jsonData = {
+		  p1ID: player1.id,
+		  p1Result: p1Result,
+		  p2ID: "0",
+		  p2Result: botResult,
+		  date: formattedDate,
+		  is_pong: is_pong,
+		};
+	
+		fetch(backendHost + '/tournament/add_match_to_historic/', {
+		  method: 'POST',
+		  headers: { 'Content-Type': 'application/json' },
+		  body: JSON.stringify(jsonData)
+		})
+		  .then(response => {
+			if (!response.ok) {
+			  throw response.error;
+			}
+		  })
+		  .catch(error => {
+			console.error('There was a problem with the fetch operation:', error);
+		  });
+	  }
 
 	useEffect(() => {
 		// Initialize Three.js scene, camera, and renderer
@@ -277,6 +333,14 @@ const ThreejsGameAI = ({ p1, p2 }) => {
 			if ( (higherScore === 19 || (higherScore === 3
 								&& Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2))) {
 				setEnd(true);
+				console.log("get user data");
+				getUser();
+				const user = JSON.parse(sessionStorage.getItem('user'));
+				console.log("user id:" + user.id);
+
+				if (user) {
+					fetchMatchResult(user, scoreP1Ref.current, scoreP2Ref.current);
+				}
 			} else {
 				renderer.current.render(scene.current, camera.current);
 				frameID.current = requestAnimationFrame(animate);
