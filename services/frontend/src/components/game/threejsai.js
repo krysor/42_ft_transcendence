@@ -330,14 +330,11 @@ const ThreejsGameAI = ({ p1, p2 }) => {
 			}
 
 			let higherScore = Math.max(scoreP1Ref.current, scoreP2Ref.current);			
-			if ( (higherScore === 19 || (higherScore === 3
+			if ( (higherScore === 19 || (higherScore === 11
 								&& Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2))) {
 				setEnd(true);
-				console.log("get user data");
 				getUser();
 				const user = JSON.parse(sessionStorage.getItem('user'));
-				console.log("user id:" + user.id);
-
 				if (user) {
 					fetchMatchResult(user, scoreP1Ref.current, scoreP2Ref.current);
 				}
@@ -374,6 +371,7 @@ const ThreejsGameAI = ({ p1, p2 }) => {
 				<canvas ref={refContainer} />
 			</div>
 		)}
+
 		{!p1 && !p2 && !end && (
 			<div>
 				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
@@ -383,9 +381,10 @@ const ThreejsGameAI = ({ p1, p2 }) => {
 				<canvas ref={refContainer} />
 			</div>
 		)}
+
 		{end && scoreP1 > scoreP2 && (
 			<>
-			<h3>{t('Congratulations')} !!! {t('You won against the ai')} :)</h3>
+			<h3>{t('Congratulations')} !!! {t('You won against the bot')} :)</h3>
 			<img src='/win_image.jpg' alt="Winner"/>
           	<br />
 			<NavLink to="/tournament" className="btn btn-secondary mt-4">{t('Play again')}</NavLink>
@@ -394,7 +393,7 @@ const ThreejsGameAI = ({ p1, p2 }) => {
 
 		{end && scoreP1 < scoreP2 && (
 			<>
-			<h3>Ho you have lost.. You suck at this game :c</h3>
+			<h3>{t('Ho you have lost... You suck at this game')} :c</h3>
           	<br />
 			<NavLink to="/tournament" className="btn btn-secondary mt-4">{t('Play again')}</NavLink>
 			</>

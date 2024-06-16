@@ -193,7 +193,7 @@ const Tournament = () => {
             <br />
             <p className="text-center">-----{t('or')}-----</p>
             <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Ftournament%2F&response_type=code">
-              Login with 42 authentication!
+              {t('Login with 42 authentication')}
             </a>
             {error && <div className="alert alert-danger mt-2">{error}</div>}
           </form>
@@ -221,7 +221,7 @@ const Tournament = () => {
           <button type="submit" className="btn btn-primary">{t('Proceed to Registration')}</button>
         </form>
         <br />
-        <h3>{t('Play against ai')}</h3>
+        <h3>{t('Play against the bot')}</h3>
           <NavLink to="/pong_ai" className="btn btn-secondary">Pong</NavLink>
           <NavLink to="/morpion" className="btn btn-secondary">Morpion</NavLink>
       </>

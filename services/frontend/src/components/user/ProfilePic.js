@@ -5,8 +5,14 @@ const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes us
 
 function ProfilePic({ filename, online, size = 40 }) {
     const [profilePicUrl, setProfilePicUrl] = useState('');
-    const url_request = `${backendHost}/user/profile_pic${filename}`;
     
+    console.log("filename before: " + filename)
+    if (!filename) {
+        filename = "/default_pp.jpeg";
+    }
+    console.log("ICICICICI")
+    const url_request = `${backendHost}/user/profile_pic${filename}`;
+    console.log(url_request);
     useEffect(() => {
         fetch(url_request)
             .then(response => {
