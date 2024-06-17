@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { useNavigate } from 'react-router-dom';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next'
 
@@ -9,6 +9,7 @@ const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes us
 function Signup() {
     const [error, setError] = useState('');
     const { t } = useTranslation()
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -32,7 +33,7 @@ function Signup() {
                     i18next.changeLanguage(data.user.language);
                     sessionStorage.setItem('authtoken', data.Token);
                     sessionStorage.setItem('user', JSON.stringify(data.user));
-                    window.location.href = "/";
+                    navigate(`/profile`);
                 } else if (data.error) {
                     setError(data.error);
                 } else {
