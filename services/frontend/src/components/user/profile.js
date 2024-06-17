@@ -32,7 +32,7 @@ function Profile() {
         return <div>Loading...</div>;
     }
 
-    const { username, profile_pic, loss, win, language,matches } = userData;
+    const { username, profile_pic, loss, win, matches } = userData;
 
     return (
         <div className="profile container mt-5">
