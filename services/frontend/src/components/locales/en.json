@@ -33,5 +33,13 @@
     "Ready": "Ready",
     "Congratulations": "Congratulations",
     "You are the winner": "You are the winner",
-    "New tournament": "New tournament"
+    "New tournament": "New tournament",
+    "Games lost": "Games lost",
+    "Games won": "Games won",
+    "Matches": "Matches",
+    "Edit Profile": "Edit Profile",
+    "New username": "New username",
+    "New password": "New password",
+    "Upload new profile picture": "Upload new profile picture",
+    "Save": "Save"
 }

@@ -34,12 +34,12 @@
     "Congratulations": "Gefeliciteerd",
     "You are the winner": "Jij bent de winnaar!",
     "New tournament": "Nieuw toernooi",
-    "Games lost": "",
-    "Games won": "",
-    "Matches": "",
-    "Edit Profile": "",
-    "New username": "",
-    "New password": "",
-    "Upload new profile picture": "",
-    "Save": ""
+    "Games lost": "Verloren wedstrijden",
+    "Games won": "Gewonnen wedstrijden",
+    "Matches": "Wedstrijden",
+    "Edit Profile": "Profiel aanpassen",
+    "New username": "Nieuwe gebruikersnaam",
+    "New password": "Nieuw wachtwoord",
+    "Upload new profile picture": "Verander profielfoto",
+    "Save": "Opslaan"
 }
