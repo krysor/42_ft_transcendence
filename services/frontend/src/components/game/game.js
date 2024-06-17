@@ -10,12 +10,14 @@ import { BallHitHorizontalBorder, BallHitPad, BallLeftBoard }	from './logic/coll
 // import { updatePosition, updatePaused }			from './logic/update'
 
 import { playerKeys } from './logic/keys'; 
+import { useTranslation } from 'react-i18next';
 
 const	ballSpeedStartX	= 5;
 const	ballSpeedStartY	= 5;
 const	padSpeed		= 5;
 
 function Game() {
+	const { t }	= useTranslation();
 	const [state, setState] = React.useState({
 		paused: true,
 		ball: {
@@ -122,7 +124,7 @@ function Game() {
 
 	return (
 		<div className='gameWindow'>
-			<h1>Ping pong game</h1>
+			<h1>{t('Ping pong game')}</h1>
 			<h3>{state.score.left}:{state.score.right}</h3>
 			<Board	ballPositionX={state.ball.X}
 					ballPositionY={state.ball.Y}
@@ -130,7 +132,7 @@ function Game() {
 					padRightPositionY={state.pad.right.Y}/>
 			<button id="gameButton"
 				onClick={() => updatePaused()}>
-				{state.paused ? "Play" : "Pause"}
+				{state.paused ? t('Play') : t('Pause')}
 			</button>
 		</div>
 	);

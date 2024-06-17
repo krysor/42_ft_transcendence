@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.module.js';
 import { useTranslation } from 'react-i18next';
-
-const ThreejsGame = ({ p1, p2, onGameEnd }) => {
+import { NavLink } from 'react-router-dom';
+import getUserData from '../user/getUserData';
+const backendHost = 'http://' + window.location.hostname + ':8000';
+const ThreejsGameAI = ({ p1, p2 }) => {
 	const { t }	= useTranslation();
 	const scene = useRef(null);
 	const camera = useRef(null);
@@ -14,9 +16,9 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 	const paddleDepth = useRef(0.5);
 	const ballVelocity = useRef({ x: 0.1, y: 0, z: 0 });
 	const refContainer = useRef();
-
 	const frameID = useRef();//POSSIBLY UNNECESSARY
-
+	
+	const [end, setEnd] = useState(false);
 	// State for displaying scores
 	const [scoreP1, setScoreP1] = useState(0);
 	const [scoreP2, setScoreP2] = useState(0);
@@ -27,6 +29,61 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 	const scoreP1Ref = useRef(0);
 	const scoreP2Ref = useRef(0);
 
+	const getUser = () => {
+		const authtoken = sessionStorage.getItem('authtoken');
+		fetch(backendHost + '/user/user_detail/', {
+			method: 'GET',
+			headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${authtoken}`
+            },
+		})
+		.then(response => { return response.json(); })
+		.then(data => {
+			console.log(data);
+			if (data.Token) {
+				sessionStorage.setItem('authtoken', data.Token);
+				sessionStorage.setItem('user', JSON.stringify(data.user));
+				return data.user;
+			}
+			else if (data.error) {
+				throw data.error;
+			}
+		})
+		.catch(error => { console.error('There was a problem with the fetch operation:', error); });
+	}
+
+	const fetchMatchResult = (player1, p1Result, botResult) => {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = (today.getMonth() + 1).toString().padStart(2, '0');
+		const day = today.getDate().toString().padStart(2, '0');
+		const formattedDate = `${year}-${month}-${day}`;
+		const is_pong = true;
+
+		const jsonData = {
+		  p1ID: player1.id,
+		  p1Result: p1Result,
+		  p2ID: "0",
+		  p2Result: botResult,
+		  date: formattedDate,
+		  is_pong: is_pong,
+		};
+	
+		fetch(backendHost + '/tournament/add_match_to_historic/', {
+		  method: 'POST',
+		  headers: { 'Content-Type': 'application/json' },
+		  body: JSON.stringify(jsonData)
+		})
+		  .then(response => {
+			if (!response.ok) {
+			  throw response.error;
+			}
+		  })
+		  .catch(error => {
+			console.error('There was a problem with the fetch operation:', error);
+		  });
+	  }
 
 	useEffect(() => {
 		// Initialize Three.js scene, camera, and renderer
@@ -154,7 +211,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			playerKeys.current = {
 				...playerKeys.current,
 				player1: { ...playerKeys.current.player1, [key]: true },
-				player2: { ...playerKeys.current.player2, [key]: true },
+				// player2: { ...playerKeys.current.player2, [key]: true },
 			};
 		};
 
@@ -164,7 +221,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			playerKeys.current = {
 				...playerKeys.current,
 				player1: { ...playerKeys.current.player1, [key]: false },
-				player2: { ...playerKeys.current.player2, [key]: false },
+				// player2: { ...playerKeys.current.player2, [key]: false },
 			};
 		};
 
@@ -199,13 +256,13 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				if (player1.current.position.z < 5.6) player1.current.position.z += paddleSpeed * delta;
 			}
 
-			// ADDED THIS ONE TO TRY TO MAKE MOVING P2 POSSIBLE
-			if (player2 && playerKeys.current.player2.ArrowUp) {
-				if (player2.current.position.z > -5.6) player2.current.position.z -= paddleSpeed * delta;
-			}
-			if (player2 && playerKeys.current.player2.ArrowDown) {
-				if (player2.current.position.z < 5.6) player2.current.position.z += paddleSpeed * delta;
-			}
+			// // ADDED THIS ONE TO TRY TO MAKE MOVING P2 POSSIBLE
+			// if (player2 && playerKeys.current.player2.ArrowUp) {
+			// 	if (player2.current.position.z > -5.6) player2.current.position.z -= paddleSpeed * delta;
+			// }
+			// if (player2 && playerKeys.current.player2.ArrowDown) {
+			// 	if (player2.current.position.z < 5.6) player2.current.position.z += paddleSpeed * delta;
+			// }
 
 			ball.current.position.x += ballVelocity.current.x * ballSpeedFactor * delta;
 			ball.current.position.y += ballVelocity.current.y * ballSpeedFactor * delta;
@@ -215,15 +272,13 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 
 			// THIS THE PRIMITIVE AI
 
-			if (!player2) {
-				// player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
-				const threshold = 0.1; // Define a threshold value
+			// player2.current.position.z += (ball.current.position.z > player2.current.position.z) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
+			const threshold = 0.1; // Define a threshold value
 
-				const diff = ball.current.position.z - player2.current.position.z;
+			const diff = ball.current.position.z - player2.current.position.z;
 
-				if (Math.abs(diff) > threshold) {
-					player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
-				}
+			if (Math.abs(diff) > threshold) {
+				player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
 			}
 
 
@@ -275,9 +330,14 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			}
 
 			let higherScore = Math.max(scoreP1Ref.current, scoreP2Ref.current);			
-			if (onGameEnd && (higherScore === 19 || (higherScore === 11
+			if ( (higherScore === 19 || (higherScore === 11
 								&& Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2))) {
-				onGameEnd(p1, scoreP1Ref.current, p2, scoreP2Ref.current);
+				setEnd(true);
+				getUser();
+				const user = JSON.parse(sessionStorage.getItem('user'));
+				if (user) {
+					fetchMatchResult(user, scoreP1Ref.current, scoreP2Ref.current);
+				}
 			} else {
 				renderer.current.render(scene.current, camera.current);
 				frameID.current = requestAnimationFrame(animate);
@@ -302,7 +362,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 
 	return (
 		<div>
-		{p1 && p2 && (
+		{p1 && p2 && !end && (
 			<div>
 				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
 					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>{p1.username} Score: {scoreP1}</p>
@@ -311,7 +371,8 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				<canvas ref={refContainer} />
 			</div>
 		)}
-		{!p1 && !p2 && (
+
+		{!p1 && !p2 && !end && (
 			<div>
 				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
 					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>{t('Player 1 Score')} : {scoreP1}</p>
@@ -320,8 +381,25 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				<canvas ref={refContainer} />
 			</div>
 		)}
+
+		{end && scoreP1 > scoreP2 && (
+			<>
+			<h3>{t('Congratulations')} !!! {t('You won against the bot')} :)</h3>
+			<img src='/win_image.jpg' alt="Winner"/>
+          	<br />
+			<NavLink to="/tournament" className="btn btn-secondary mt-4">{t('Play again')}</NavLink>
+			</>
+		)}
+
+		{end && scoreP1 < scoreP2 && (
+			<>
+			<h3>{t('Ho you have lost... You suck at this game')} :c</h3>
+          	<br />
+			<NavLink to="/tournament" className="btn btn-secondary mt-4">{t('Play again')}</NavLink>
+			</>
+		)}
 		</div>
 	);
 };
 
-export default ThreejsGame;
+export default ThreejsGameAI;

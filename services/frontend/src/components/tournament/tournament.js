@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { useUsers } from './UserContext';
 import { useTournament } from './TournamentContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { useTranslation } from 'react-i18next'
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
 const Tournament = () => {
+  const { t } = useTranslation()
   const { setUsers } = useUsers();
   const { players, setPlayers, addPlayer } = useTournament();
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Tournament = () => {
   const [password, setPassword] = useState('');
   const [game, setGame] = useState(() => sessionStorage.getItem('game') || '');
   const location = useLocation();
+  let vsAI = false;
 
   useEffect(() => {
     const storedPlayers = JSON.parse(sessionStorage.getItem('players'));
@@ -147,7 +149,7 @@ const Tournament = () => {
       {currentPlayer <= players.length && (
         <form onSubmit={handlePlayerNameSubmit} className="mb-3">
           <div className="form-group">
-            <label htmlFor="playerName">Player {currentPlayer} choose your pseudo:</label>
+            <label htmlFor="playerName">{t('Player')} {currentPlayer} {t('choose your pseudo')}:</label>
             <input 
               type="text" 
               name="playerName" 
@@ -157,16 +159,16 @@ const Tournament = () => {
               className="form-control"
             />
           </div>
-          <button type="submit" className="btn btn-primary">Submit</button>
+          <button type="submit" className="btn btn-primary">{t('Login')}</button>
         </form>
       )}
       <br />
       {currentPlayer <= players.length && (
         <>
-          <p className="text-center">-----or-----</p>
+          <p className="text-center">-----{t('or')}-----</p>
           <form onSubmit={handleLoginSubmit} className="mb-3">
             <div className="form-group">
-              <label htmlFor="username">Enter username: </label>
+              <label htmlFor="username">{t('Enter your username')}: </label>
               <input 
                 id="username" 
                 name="username" 
@@ -177,7 +179,7 @@ const Tournament = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="password">Enter your password: </label>
+              <label htmlFor="password">{t('Enter your password')}: </label>
               <input 
                 id="password" 
                 name="password" 
@@ -187,10 +189,11 @@ const Tournament = () => {
                 className="form-control"
               />
             </div>
-            <button type="submit" className="btn btn-primary">Login!</button>
+            <button type="submit" className="btn btn-primary">{t('Login')}</button>
             <br />
+            <p className="text-center">-----{t('or')}-----</p>
             <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Ftournament%2F&response_type=code">
-              Login with 42 authentication!
+              {t('Login with 42 authentication')}
             </a>
             {error && <div className="alert alert-danger mt-2">{error}</div>}
           </form>
@@ -198,8 +201,9 @@ const Tournament = () => {
       )}
 
       {currentPlayer > players.length && (
+        <>
         <form onSubmit={handleFormSubmit}>
-          <h3>Tournament</h3>
+          <h3>{t('Tournament')}</h3>
 
           <div className="btn-group btn-group-toggle" data-toggle="buttons">
             <label className="btn btn-secondary active">
@@ -211,11 +215,16 @@ const Tournament = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="nbOfPlayers">How many players will play in the tournament?</label>
-            <input type="number" name="nbOfPlayers" id="nbOfPlayers" min="1" max="16" className="form-control" />
+            <label htmlFor="nbOfPlayers">{t('How many players will play in the tournament ?')}</label>
+            <input type="number" name="nbOfPlayers" id="nbOfPlayers" min="2" max="16" className="form-control" />
           </div>
-          <button type="submit" className="btn btn-primary">Proceed to Registration</button>
+          <button type="submit" className="btn btn-primary">{t('Proceed to Registration')}</button>
         </form>
+        <br />
+        <h3>{t('Play against the bot')}</h3>
+          <NavLink to="/pong_ai" className="btn btn-secondary">Pong</NavLink>
+          <NavLink to="/morpion" className="btn btn-secondary">Morpion</NavLink>
+      </>
       )}
     </div>
   );

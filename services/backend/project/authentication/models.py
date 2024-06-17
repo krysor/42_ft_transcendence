@@ -11,16 +11,13 @@ class User(AbstractUser):
 	language = models.CharField(default='eng')
 
 class Match(models.Model):
-	player1_id = models.IntegerField(verbose_name='ID of player 1', default=0)
-	player1_name = models.CharField(max_length=255, verbose_name='Name of player 1', default='')
-	player2_id = models.IntegerField(verbose_name='ID of player 2', default=0)
-	player2_name = models.CharField(max_length=255, verbose_name='Name of player 2', default='')
-	date = models.DateField(auto_now_add=True, verbose_name='date of the match', null=False)
-	player1_score = models.IntegerField(verbose_name='score of player 1', default=0)
-	player2_score = models.IntegerField(verbose_name='score of player 2', default=0)
-	winner_id = models.IntegerField(verbose_name='ID of the winner', default=0)
-	winner_name = models.CharField(max_length=255, verbose_name='Name of the winner', default='')
-	is_pong = models.BooleanField(default=True)
+	p1 = models.ForeignKey(User, related_name='player1_matches', on_delete=models.SET_NULL, null=True, blank=True)
+	p2 = models.ForeignKey(User, related_name='player2_matches', on_delete=models.SET_NULL, null=True, blank=True)
+	date = models.DateField()
+	p1_score = models.IntegerField()
+	p2_score = models.IntegerField()
+	winner_id = models.IntegerField(null=True, blank=True)
+	is_pong = models.BooleanField(default=False)
 
 class Score(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='score')

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-
-const Ft_auth = () => {
+import { useNavigate } from 'react-router-dom';
+const FtAuth = () => {
     const [error, setError] = useState('');
+    const navigate = useNavigate();
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
@@ -24,7 +25,7 @@ const Ft_auth = () => {
 
                     sessionStorage.setItem('authtoken', data.Token);
                     sessionStorage.setItem('user', JSON.stringify(data.user));
-                    window.location.href = "/";
+                    navigate(`/`);
                 }
                 else if (data.error){
 					setError(data.error);
@@ -57,5 +58,5 @@ const Ft_auth = () => {
     );
 };
 
-export default Ft_auth;
+export default FtAuth;
 
