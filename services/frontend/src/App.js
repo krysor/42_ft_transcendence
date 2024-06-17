@@ -13,6 +13,8 @@ import Game from "./components/game/game";
 import ThreejsGame from "./components/game/threejs";
 // import ThreejsGameAI from "./components/game/threejsai";
 import Morpion from "./components/morpion/morpion";
+import MorpionVS from "./components/morpion/morpionvs";
+
 
 // ------Tournament------
 import Tournament from "./components/tournament/tournament";
@@ -94,7 +96,7 @@ function App () {
 				{/* -----Game----- */}
 				<Route path="/Game" element={<Game />} />
 				<Route path="/ThreejsGame" element={<ThreejsGame />} />
-				<Route path="/Morpion" element={<Morpion />} />
+				<Route path="/Morpion" element={<MorpionVS />} />
 				<Route path="/pong_ai" element={<ThreejsGameAI/>} />
 				{/* -----Tournament----- */}
 				<Route path="/tournament" element={<Tournament />} />
