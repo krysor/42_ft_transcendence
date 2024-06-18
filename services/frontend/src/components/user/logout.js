@@ -1,10 +1,10 @@
 import React, {useEffect} from "react";
-
+import { useNavigate } from 'react-router-dom';
 const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function Logout () {
 	const authtoken = sessionStorage.getItem('authtoken');
-
+	const navigate = useNavigate();
 	useEffect(() => {
 		fetch(backendHost + '/user/logout/', {
 			method: 'GET',
@@ -17,7 +17,7 @@ function Logout () {
 			if (!response.ok) {
 				sessionStorage.removeItem('authtoken');
 				sessionStorage.removeItem('user');
-				window.location.href = "/";
+				navigate(`/`);
 			}
 			return response.json();
 		})
@@ -25,13 +25,13 @@ function Logout () {
 			console.log(data);
 			sessionStorage.removeItem('authtoken');
 			sessionStorage.removeItem('user');
-			window.location.href = "/";
+			navigate(`/`);
 		})
 		.catch(error => {
 			console.error('Error fetching user data:', error);
 			sessionStorage.removeItem('authtoken');
 			sessionStorage.removeItem('user');
-			window.location.href = "/";
+			navigate(`/`);
 		});
 	});
 

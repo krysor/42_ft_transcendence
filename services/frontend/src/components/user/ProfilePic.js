@@ -6,7 +6,7 @@ const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes us
 function ProfilePic({ filename, online, size = 40 }) {
     const [profilePicUrl, setProfilePicUrl] = useState('');
     const url_request = `${backendHost}/user/profile_pic${filename}`;
-    
+
     useEffect(() => {
         fetch(url_request)
             .then(response => {

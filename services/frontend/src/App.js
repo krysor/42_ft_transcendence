@@ -3,7 +3,7 @@ import {
     Routes,
     Route
 } from "react-router-dom";
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import NavBar from "./components/navbar"
 import Home from "./components/home";
@@ -11,6 +11,7 @@ import Home from "./components/home";
 // -----Game-----
 import Game from "./components/game/game";
 import ThreejsGame from "./components/game/threejs";
+// import ThreejsGameAI from "./components/game/threejsai";
 import Morpion from "./components/morpion/morpion";
 
 // ------Tournament------
@@ -35,21 +36,49 @@ import NotFound from "./components/notfound";
 
 // -----translation-----
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom';
 
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ThreejsGameAI from "./components/game/threejsai";
 
-// const backendHost = 'http://' + window.location.hostname + ':8000';
+const backendHost = 'http://' + window.location.hostname + ':8000';
+
 
 function App () {
 	const token = sessionStorage.getItem('authtoken')
 	const user = JSON.parse(sessionStorage.getItem('user'))
 	const isLoggedIn = !!token;
-	
+	const navigate = useNavigate();
+
+	useEffect(() => {
+			fetch(backendHost + '/user/user_detail/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Token ${token}`
+				},
+			})
+			.then(response => { return response.json(); })
+			.then(data => {
+				console.log(data);
+				if (data.Token) {
+					sessionStorage.setItem('authtoken', data.Token);
+					sessionStorage.setItem('user', JSON.stringify(data.user));
+
+				}
+				else {
+					console.log("app use effect")
+					// sessionStorage.removeItem('authtoken');
+					// navigate('/');
+				}
+			})
+	}, [token]);
+
 	const { t } = useTranslation()
 
       return (
-          <Router>
+          <>
             <div class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
                 <div class="bg-dark p-4">
                     <h5 class="text-body-emphasis h4">Collapsed content</h5>
@@ -66,7 +95,7 @@ function App () {
 				<Route path="/Game" element={<Game />} />
 				<Route path="/ThreejsGame" element={<ThreejsGame />} />
 				<Route path="/Morpion" element={<Morpion />} />
-
+				<Route path="/pong_ai" element={<ThreejsGameAI/>} />
 				{/* -----Tournament----- */}
 				<Route path="/tournament" element={<Tournament />} />
 				<Route path="/tournament/Matchmaking" element={<Matchmaking />} />
@@ -83,7 +112,7 @@ function App () {
 			</Routes>
 		</TournamentProvider>
       	</UserProvider>
-          </Router>
+          </>
       );
 }
 export default App;

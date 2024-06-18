@@ -41,5 +41,16 @@
     "New username": "New username",
     "New password": "New password",
     "Upload new profile picture": "Upload new profile picture",
-    "Save": "Save"
+
+    "Save": "Save",
+    "Ho you have lost... You suck at this game": "Ho you have lost... You suck at this game",
+    "Play again": "Play again",
+    "You won against the bot": "You won against the bot",
+    "Play against the bot": "Play against the bot",
+    "Login with 42 authentication": "Login with 42 authentication",
+    "Friends": "Friends",
+    "Users": "Users",
+    "Add friend": "Add friend",
+    "Remove friend": "Remove friend"
+
 }

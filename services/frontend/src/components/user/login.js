@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom';
 
 const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function Login() {
     const { t } = useTranslation()
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -32,7 +34,7 @@ function Login() {
                     i18next.changeLanguage(data.user.language);
                     sessionStorage.setItem('authtoken', data.Token);
                     sessionStorage.setItem('user', JSON.stringify(data.user));
-                    window.location.href = "/";
+                    navigate(`/profile`);
                 }
                 else if (data.error) {
                     setError(data.error);

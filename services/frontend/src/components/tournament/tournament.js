@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { useUsers } from './UserContext';
 import { useTournament } from './TournamentContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,6 +18,7 @@ const Tournament = () => {
   const [password, setPassword] = useState('');
   const [game, setGame] = useState(() => sessionStorage.getItem('game') || '');
   const location = useLocation();
+  let vsAI = false;
 
   useEffect(() => {
     const storedPlayers = JSON.parse(sessionStorage.getItem('players'));
@@ -192,7 +193,7 @@ const Tournament = () => {
             <br />
             <p className="text-center">-----{t('or')}-----</p>
             <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Ftournament%2F&response_type=code">
-              Login with 42 authentication!
+              {t('Login with 42 authentication')}
             </a>
             {error && <div className="alert alert-danger mt-2">{error}</div>}
           </form>
@@ -200,6 +201,7 @@ const Tournament = () => {
       )}
 
       {currentPlayer > players.length && (
+        <>
         <form onSubmit={handleFormSubmit}>
           <h3>{t('Tournament')}</h3>
 
@@ -214,10 +216,15 @@ const Tournament = () => {
 
           <div className="form-group">
             <label htmlFor="nbOfPlayers">{t('How many players will play in the tournament ?')}</label>
-            <input type="number" name="nbOfPlayers" id="nbOfPlayers" min="1" max="16" className="form-control" />
+            <input type="number" name="nbOfPlayers" id="nbOfPlayers" min="2" max="16" className="form-control" />
           </div>
           <button type="submit" className="btn btn-primary">{t('Proceed to Registration')}</button>
         </form>
+        <br />
+        <h3>{t('Play against the bot')}</h3>
+          <NavLink to="/pong_ai" className="btn btn-secondary">Pong</NavLink>
+          <NavLink to="/morpion" className="btn btn-secondary">Morpion</NavLink>
+      </>
       )}
     </div>
   );

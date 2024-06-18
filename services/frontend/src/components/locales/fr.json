@@ -41,5 +41,14 @@
     "New username": "Nouveau nom d'utilisateur",
     "New password": "Nouveau mot de passe",
     "Upload new profile picture": "Nouvelle photo de profil",
-    "Save": "Sauvegarder"
+    "Save": "Sauvegarder",
+    "Ho you have lost... You suck at this game": "Ho tu as perdu... Tu es vraiment nul à ce jeu",
+    "Play again": "Rejouer",
+    "You won against the bot": "Tu as gagné contre le bot",
+    "Play against the bot": "Jouer contre le bot",
+    "Login with 42 intra": "se connecter via l'intra 42",
+    "Friends": "Amis",
+    "Users": "Utilisateurs",
+    "Add friend": "Rajouter en ami",
+    "Remove friend": "Retirer des amis"
 }
