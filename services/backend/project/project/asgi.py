@@ -1,23 +1,5 @@
-import os
-
-from channels.routing import ProtocolTypeRouter, URLRouter
-from channels.security.websocket import AllowedHostsOriginValidator
-from django.core.asgi import get_asgi_application
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ft_transcendence.settings")
-django_asgi_app = get_asgi_application()
-
-
-application = ProtocolTypeRouter(
-    {
-        "http": django_asgi_app,
-    }
-)
-
-
 # import os
 
-# from channels.auth import AuthMiddlewareStack
 # from channels.routing import ProtocolTypeRouter, URLRouter
 # from channels.security.websocket import AllowedHostsOriginValidator
 # from django.core.asgi import get_asgi_application
@@ -25,17 +7,36 @@ application = ProtocolTypeRouter(
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ft_transcendence.settings")
 # django_asgi_app = get_asgi_application()
 
-# import myapp.routing  # Assurez-vous que le fichier de routage WebSocket est correctement importé
 
 # application = ProtocolTypeRouter(
 #     {
 #         "http": django_asgi_app,
-#         "websocket": AllowedHostsOriginValidator(
-#             AuthMiddlewareStack(
-#                 URLRouter(
-#                     myapp.routing.websocket_urlpatterns
-#                 )
-#             )
-#         ),
 #     }
 # )
+
+
+# asgi.py
+import os
+from channels.auth import AuthMiddlewareStack
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.security.websocket import AllowedHostsOriginValidator
+from django.core.asgi import get_asgi_application
+from .middleware import TokenAuthMiddleware
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project_name.settings')
+
+django.setup()
+django_asgi_app = get_asgi_application()
+from project.routing import websocket_urlpatterns
+import project.routing
+
+application = ProtocolTypeRouter({
+    "http": django_asgi_app,
+    "websocket": AllowedHostsOriginValidator(
+        TokenAuthMiddleware(
+            URLRouter(
+                websocket_urlpatterns
+            )
+        )
+    ),
+})

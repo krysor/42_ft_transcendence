@@ -3,7 +3,7 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 from django.conf import settings
 
-from .views import ft_login, log_user, user_detail, signup, logout, all_users, add_friend, profile_pic, edit_profile, get_user_by_id, friend_list, remove_friend
+from .views import update_online_status, ft_login, log_user, user_detail, signup, logout, all_users, add_friend, profile_pic, edit_profile, get_user_by_id, friend_list, remove_friend
 
 urlpatterns = [
     path('login/', log_user),
@@ -18,4 +18,5 @@ urlpatterns = [
     path('profile_pic/<str:filename>/', profile_pic),
     path('friend_list/', friend_list),
     path('42_auth/', ft_login),
+    path('update_online_status/', update_online_status, name='update_online_status'),
 ]
