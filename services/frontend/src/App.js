@@ -96,7 +96,8 @@ function App () {
 				{/* -----Game----- */}
 				<Route path="/Game" element={<Game />} />
 				<Route path="/ThreejsGame" element={<ThreejsGame />} />
-				<Route path="/Morpion" element={<MorpionVS />} />
+				<Route path="/Morpion" element={<Morpion />} />
+				<Route path="/Morpionvs" element={<MorpionVS />} />
 				<Route path="/pong_ai" element={<ThreejsGameAI/>} />
 				{/* -----Tournament----- */}
 				<Route path="/tournament" element={<Tournament />} />

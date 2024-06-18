@@ -7,6 +7,40 @@ import { Spinner, Table, Collapse } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next'
 
+const backendHost = 'http://' + window.location.hostname + ':8000';
+
+const fetchMatchResult = (player1, p1Result, botResult) => {
+	const today = new Date();
+	const year = today.getFullYear();
+	const month = (today.getMonth() + 1).toString().padStart(2, '0');
+	const day = today.getDate().toString().padStart(2, '0');
+	const formattedDate = `${year}-${month}-${day}`;
+	const is_pong = false;
+
+	const jsonData = {
+	  p1ID: player1.id,
+	  p1Result: p1Result,
+	  p2ID: "0",
+	  p2Result: botResult,
+	  date: formattedDate,
+	  is_pong: is_pong,
+	};
+
+	fetch(backendHost + '/tournament/add_match_to_historic/', {
+	  method: 'POST',
+	  headers: { 'Content-Type': 'application/json' },
+	  body: JSON.stringify(jsonData)
+	})
+	  .then(response => {
+		if (!response.ok) {
+		  throw response.error;
+		}
+	  })
+	  .catch(error => {
+		console.error('There was a problem with the fetch operation:', error);
+	  });
+  }
+
 let user = await getUserData().then((user) => {
 	if (user) {
 		return user.username;
@@ -100,7 +134,7 @@ let GetScore = async () => {
 		for (let i = 0; i < data.scores.length; i++) {
 			parties = await GetParties(data.scores[i].user.username);
 			data.scores[i].id = i + 1;
-			const SClass = data.scores[i].user.username === user ? "bg-warning" : "";
+			const SClass = "";
 			const name = "multiCollapse" + (i + 1);
 			const colName = "collapse ";
 
@@ -331,7 +365,6 @@ const sendParty = async (winner, points, oponent) => {
 	const authtoken = sessionStorage.getItem('authtoken');
 	const data = { winner: winner, points: points, oponent: oponent};
 	try {
-
 		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/user/update_parties/', {
 			method: 'POST',
 			headers: {
@@ -352,7 +385,7 @@ function LoadScore() {
 	return (allScores);
 }
 
-export default function Morpion({ p1, p2, onGameEnd }) {
+export default function Morpion({ p1, onGameEnd }) {
 	const { t }	= useTranslation();
 	const [history, setHistory] = useState([Array(9).fill(null)]);
 	const [currentMove, setCurrentMove] = useState(0);

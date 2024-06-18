@@ -3,7 +3,9 @@ import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 import getUserData from '../user/getUserData';
+
 const backendHost = 'http://' + window.location.hostname + ':8000';
+
 const ThreejsGameAI = ({ p1, p2 }) => {
 	const { t }	= useTranslation();
 	const scene = useRef(null);
