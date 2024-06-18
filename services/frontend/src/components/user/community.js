@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ProfilePic from './ProfilePic';
+import { useTranslation } from 'react-i18next'
 
 const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
@@ -10,6 +11,7 @@ function Community() {
   const [friends, setFriends] = useState([]); // Initialize 'friends' as an empty array
   const authtoken = sessionStorage.getItem('authtoken');
   const current_user = JSON.parse(sessionStorage.getItem('user'));
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetch(backendHost + '/user/all/')
@@ -92,20 +94,20 @@ function Community() {
 
   return (
     <div>
-      <h1>Community</h1>
+      <h1>{t('Community')}</h1>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         {/* Display All Users (left side) */}
         <div style={{ marginRight: '4em', flex: '1' }}>
-          <h2>All Users</h2>
+          <h2>{t('Users')}</h2>
           <ul>
             {users.map(user => (
               <li key={user.id} style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
                 <Link to={`/user_profile/${user.id}`} style={{ marginRight: '20px' }}>
-                  <ProfilePic filename={user.profile_pic} online={user.is_online} />
+                  <ProfilePic filename={user.profile_pic} online={false} />
                 </Link>
                 <span style={{ marginRight: '1em', fontWeight: 'bold' }}>{user.username}</span>
                 {current_user.id !== user.id && !friends.some(friend => friend.id === user.id) && (
-                  <button onClick={() => handleAddFriend(user.id)}>Add friend</button>
+                  <button onClick={() => handleAddFriend(user.id)}>{t('Add friend')}</button>
                 )}
               </li>
             ))}
@@ -114,7 +116,7 @@ function Community() {
   
         {/* Display Friends (right side) */}
         <div style={{ flex: '1' }}>
-          <h2>Friends</h2>
+          <h2>{t('Friends')}</h2>
           <ul>
             {friends.map(friend => (
               <li key={friend.id} style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
@@ -122,7 +124,7 @@ function Community() {
                   <ProfilePic filename={friend.profile_pic} online={friend.is_online} />
                 </Link>
                 <span style={{ marginRight: '1em', fontWeight: 'bold' }}>{friend.username}</span>
-                <button onClick={() => handleRemoveFriend(friend.id)}>Remove</button>
+                <button onClick={() => handleRemoveFriend(friend.id)}>{t('Remove friend')}</button>
               </li>
             ))}
           </ul>

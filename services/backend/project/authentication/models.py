@@ -11,12 +11,12 @@ class User(AbstractUser):
 	language = models.CharField(default='eng')
 
 class Match(models.Model):
-	p1 = models.ForeignKey(User, related_name='matches_as_p1', on_delete=models.CASCADE)
-	p2 = models.ForeignKey(User, related_name='matches_as_p2', on_delete=models.CASCADE)
+	p1 = models.ForeignKey(User, related_name='player1_matches', on_delete=models.SET_NULL, null=True, blank=True)
+	p2 = models.ForeignKey(User, related_name='player2_matches', on_delete=models.SET_NULL, null=True, blank=True)
 	date = models.DateField()
 	p1_score = models.IntegerField()
 	p2_score = models.IntegerField()
-	winner_id = models.IntegerField()
+	winner_id = models.IntegerField(null=True, blank=True)
 	is_pong = models.BooleanField(default=False)
 
 class Score(models.Model):

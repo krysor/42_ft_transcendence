@@ -40,6 +40,7 @@ import { useTranslation } from 'react-i18next'
 
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ThreejsGameAI from "./components/game/threejsai";
 
 // const backendHost = 'http://' + window.location.hostname + ':8000';
 
@@ -70,7 +71,7 @@ function App () {
 				<Route path="/SelectionScreen" element={<SelectionScreen />} />
 				<Route path="/GameContainer" element={<GameContainer />} />
 				<Route path="/Morpion" element={<Morpion />} />
-
+				<Route path="/pong_ai" element={<ThreejsGameAI/>} />
 				{/* -----Tournament----- */}
 				<Route path="/tournament" element={<Tournament />} />
 				<Route path="/tournament/Matchmaking" element={<Matchmaking />} />
