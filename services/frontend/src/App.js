@@ -61,7 +61,6 @@ function App () {
 			.then(data => {
 				console.log(data);
 				if (data.Token) {
-					sessionStorage.setItem('authtoken', data.Token);
 					sessionStorage.setItem('user', JSON.stringify(data.user));
 					navigate('/');
 				}
