@@ -44,28 +44,30 @@ const backendHost = 'http://' + window.location.hostname + ':8000';
 
 
 function App () {
-	const token = sessionStorage.getItem('authtoken')
-	const user = JSON.parse(sessionStorage.getItem('user'))
+	const token = sessionStorage.getItem('authtoken');
+	const user = JSON.parse(sessionStorage.getItem('user'));
 	const isLoggedIn = !!token;
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		const tok = sessionStorage.getItem('authtoken');
 			fetch(backendHost + '/user/user_detail/', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': `Token ${token}`
+					'Authorization': `Token ${tok}`
 				},
 			})
 			.then(response => { return response.json(); })
 			.then(data => {
 				console.log(data);
-				if (data.Token) {
+				if (data.user) {
 					sessionStorage.setItem('user', JSON.stringify(data.user));
 					navigate('/');
 				}
 				else {
 					sessionStorage.removeItem('authtoken');
+					navigate('/');
 				}
 			})
 	}, [token]);

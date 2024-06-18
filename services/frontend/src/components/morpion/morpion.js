@@ -372,7 +372,7 @@ const sendParty = async (winner, points, oponent) => {
 	const authtoken = sessionStorage.getItem('authtoken');
 	const data = { winner: winner, points: points, oponent: oponent};
 	try {
-		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/user/update_parties/', {
+		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/score/update_parties/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

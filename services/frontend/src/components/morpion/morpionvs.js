@@ -11,7 +11,7 @@ const onClickHandler = (e) => {
 
 let GetParties = async (username) => {
 	try {
-		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/user/get_parties/', {
+		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/score/get_parties/', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ let GetParties = async (username) => {
 const GetScore = async () => {
 	// const { t } = useTranslation();
 	try {
-        const response = await fetch(`http://${window.location.host.split(':')[0]}:8000/user/get_top_score/`, {
+        const response = await fetch(`http://${window.location.host.split(':')[0]}:8000/score/get_top_score/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -223,7 +223,7 @@ function Board({ xIsNext, squares, onPlay, p1, p2, onGameEnd }) {
 const sendScore = async (player, points) => {
     const data = { playerId: player.id, points: points };
     try {
-        await fetch(`http://${window.location.host.split(':')[0]}:8000/user/update_score_by_id/`, {
+        await fetch(`http://${window.location.host.split(':')[0]}:8000/score/update_score_by_id/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -240,7 +240,7 @@ const sendScore = async (player, points) => {
 const sendParty = async (winner, points, oponent) => {
     const data = { winnerId: winner.id, points: points, oponent: oponent.id };
     try {
-        await fetch(`http://${window.location.host.split(':')[0]}:8000/user/update_parties_by_id/`, {
+        await fetch(`http://${window.location.host.split(':')[0]}:8000/score/update_parties_by_id/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
