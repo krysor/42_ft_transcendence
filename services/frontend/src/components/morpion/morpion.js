@@ -9,21 +9,28 @@ import { useTranslation } from 'react-i18next'
 
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
-const fetchMatchResult = (player1, p1Result, botResult) => {
+let user = await getUserData().then((user) => {
+	if (user) {
+		sessionStorage.setItem('user', JSON.stringify(user));
+		return user.username;
+	}
+	return "Guest";
+});
+
+const fetchMatchResult = (p1Result, botResult) => {
 	const today = new Date();
 	const year = today.getFullYear();
 	const month = (today.getMonth() + 1).toString().padStart(2, '0');
 	const day = today.getDate().toString().padStart(2, '0');
 	const formattedDate = `${year}-${month}-${day}`;
-	const is_pong = false;
-
+	const user = JSON.parse(sessionStorage.getItem('user'));
 	const jsonData = {
-	  p1ID: player1.id,
+	  p1ID: user.id,
 	  p1Result: p1Result,
 	  p2ID: "0",
 	  p2Result: botResult,
 	  date: formattedDate,
-	  is_pong: is_pong,
+	  is_pong: false,
 	};
 
 	fetch(backendHost + '/tournament/add_match_to_historic/', {
@@ -40,13 +47,6 @@ const fetchMatchResult = (player1, p1Result, botResult) => {
 		console.error('There was a problem with the fetch operation:', error);
 	  });
   }
-
-let user = await getUserData().then((user) => {
-	if (user) {
-		return user.username;
-	}
-	return "Guest";
-});
 
 let onClickHandler = (e) => {
     const hiddenElement = e.currentTarget.nextSibling;
@@ -70,7 +70,7 @@ let GetParties = async (user) => {
 		let responseHtml = [];
 		const option = { day: 'numeric', month: 'long', year: 'numeric' };
 		for (let i = 0; i < data.scores.length; i++) {
-			console.log(data.scores[i].date);
+			// console.log(data.scores[i].date);
 			if (data.scores[i].user.username === user) {
 				responseHtml.push(
 					<tr>
@@ -302,6 +302,8 @@ function Board({ xIsNext, squares, onPlay }) {
 		status = t('Winner: ') + winner;
 		sendScore(user, winner === user ? 1 : -1);
 		sendParty(user, winner === user ? 1 : -1, t('Bot'));
+		console.log("TEST");
+		fetchMatchResult(winner === user ? 1 : 0, winner === "Bot" ? 1 : 0);
 		restartBtn = <button className="restartButton" onClick={restartGame}>{t('Restart')}</button>;
 	} else if (draw) {
 		status = t('Draw');
