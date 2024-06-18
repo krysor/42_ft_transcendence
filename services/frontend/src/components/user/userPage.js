@@ -4,7 +4,8 @@ import { useParams, Link } from 'react-router-dom';
 import './profile.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next'
-const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+
+const backendHost = 'https://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function UserPage() {
     const { t } = useTranslation();

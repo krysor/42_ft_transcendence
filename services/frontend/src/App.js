@@ -40,7 +40,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ThreejsGameAI from "./components/game/threejsai";
 import { useNavigate } from 'react-router-dom';
 
-const backendHost = 'http://' + window.location.hostname + ':8000';
+const backendHost = 'https://' + window.location.hostname + ':8000';
 
 
 function App () {

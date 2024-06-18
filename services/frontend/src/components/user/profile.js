@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 function Profile() {
     const authtoken = sessionStorage.getItem('authtoken');
     const { t } = useTranslation();
-    console.log("profile");
+
     const [userData, setUserData] = useState({
         username: '',
         profile_pic: '',

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next'
 
-const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+const backendHost = 'https://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function Signup() {
     const [error, setError] = useState('');
@@ -80,7 +80,8 @@ function Signup() {
                                 <button type="submit" className="btn btn-primary btn-block">{t('Signup')}</button>
                                 <br />
                                 <p>-----{t('or log with 42 intra')}----- </p>
-                                <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code">
+                                {/* https link: */}
+                                <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code">
                                     <img src="favicon.ico" width="50" />
                                 </a>
                             </form>
