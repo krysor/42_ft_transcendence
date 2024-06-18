@@ -3,7 +3,7 @@ import './App.css';
 import '../user/getUserData';
 
 import getUserData from '../user/getUserData';
-import { Spinner, Table, Collapse } from 'react-bootstrap';
+import { Spinner, Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next'
 
@@ -68,7 +68,6 @@ let GetParties = async (user) => {
 		}
 		const data = await response.json();
 		let responseHtml = [];
-		const option = { day: 'numeric', month: 'long', year: 'numeric' };
 		for (let i = 0; i < data.scores.length; i++) {
 			// console.log(data.scores[i].date);
 			if (data.scores[i].user.username === user) {
@@ -81,7 +80,7 @@ let GetParties = async (user) => {
 							{ data.scores[i].oponent }
 						</td>
 						<td>
-							{ data.scores[i].winner == 1 ? "Win" : (data.scores[i].winner == 0 ? "Draw" : "Lose")}
+							{ data.scores[i].winner === 1 ? "Win" : (data.scores[i].winner === 0 ? "Draw" : "Lose")}
 						</td>
 					</tr>
 				);
@@ -302,7 +301,6 @@ function Board({ xIsNext, squares, onPlay }) {
 		status = t('Winner: ') + winner;
 		sendScore(user, winner === user ? 1 : -1);
 		sendParty(user, winner === user ? 1 : -1, t('Bot'));
-		console.log("TEST");
 		fetchMatchResult(winner === user ? 1 : 0, winner === "Bot" ? 1 : 0);
 		restartBtn = <button className="restartButton" onClick={restartGame}>{t('Restart')}</button>;
 	} else if (draw) {
@@ -355,6 +353,9 @@ const sendScore = async (winner, points) => {
 			},
 			body: JSON.stringify(data)
 		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
 		allScores = await LoadAllScore();
 
 	} catch (error) {
@@ -375,6 +376,10 @@ const sendParty = async (winner, points, oponent) => {
 			},
 			body: JSON.stringify(data)
 		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+		
 		allScores = await LoadAllScore();
 
 	} catch (error) {
@@ -396,7 +401,7 @@ export default function Morpion({ p1, onGameEnd }) {
 
 	function handlePlay(squares) {
 		const nextHistory = history.slice(0, currentMove + 1).concat([squares]);
-		setHistory(history.slice(0, currentMove + 1).concat([squares]));
+		setHistory(nextHistory);
 		setCurrentMove(currentMove + 1);
 	}
 
@@ -451,7 +456,7 @@ function calculateWinner(squares) {
 	for (let i = 0; i < lines.length; i++) {
 		const [a, b, c] = lines[i];
 		if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-			return (squares[a] == 'X' ? user : "Bot");
+			return (squares[a] === 'X' ? user : "Bot");
 		}
 	}
 	return null;

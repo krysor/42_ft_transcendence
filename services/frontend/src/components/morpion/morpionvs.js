@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { Spinner, Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,7 +22,6 @@ let GetParties = async (username) => {
 		}
 		const data = await response.json();
 		let responseHtml = [];
-		const option = { day: 'numeric', month: 'long', year: 'numeric' };
 		for (let i = 0; i < data.scores.length; i++) {
 			console.log(data.scores[i].date);
 			if (data.scores[i].user.username === username ){
@@ -35,7 +34,7 @@ let GetParties = async (username) => {
 							{ data.scores[i].oponent }
 						</td>
 						<td>
-							{ data.scores[i].winner == 1 ? "Win" : (data.scores[i].winner == 0 ? "Draw" : "Lose")}
+							{ data.scores[i].winner === 1 ? "Win" : (data.scores[i].winner === 0 ? "Draw" : "Lose")}
 						</td>
 					</tr>
 				);
@@ -168,10 +167,6 @@ function Board({ xIsNext, squares, onPlay, p1, p2, onGameEnd }) {
         allScores = await LoadAllScore();
         onPlay(Array(9).fill(null));
     }
-
-	async function asyncLoadScore() {
-		allScores = await LoadAllScore();
-	}
 
     const draw = calculateDraw(squares);
     const { t } = useTranslation();

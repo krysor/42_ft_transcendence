@@ -1,5 +1,4 @@
 import {
-    BrowserRouter as Router,
     Routes,
     Route
 } from "react-router-dom";
@@ -36,10 +35,6 @@ import UserPage from "./components/user/userPage";
 // -----error-----
 import NotFound from "./components/notfound";
 
-// -----translation-----
-import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom';
-
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ThreejsGameAI from "./components/game/threejsai";
@@ -51,7 +46,7 @@ function App () {
 	const token = sessionStorage.getItem('authtoken')
 	const user = JSON.parse(sessionStorage.getItem('user'))
 	const isLoggedIn = !!token;
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	useEffect(() => {
 			fetch(backendHost + '/user/user_detail/', {
@@ -69,15 +64,8 @@ function App () {
 					sessionStorage.setItem('user', JSON.stringify(data.user));
 
 				}
-				else {
-					console.log("app use effect")
-					// sessionStorage.removeItem('authtoken');
-					// navigate('/');
-				}
 			})
 	}, [token]);
-
-	const { t } = useTranslation()
 
       return (
           <>

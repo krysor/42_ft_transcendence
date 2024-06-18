@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useUsers } from './UserContext';
-import { useLocation, NavLink, useNavigate, usePrompt } from 'react-router-dom';
+import { useLocation, NavLink, useNavigate } from 'react-router-dom';
 import ProfilePic from '../user/ProfilePic';
 import ThreejsGame from '../game/threejs';
-import Morpion from '../morpion/morpion';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next'
 import MorpionVS from '../morpion/morpionvs';
