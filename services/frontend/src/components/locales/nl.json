@@ -34,14 +34,16 @@
     "Congratulations": "Gefeliciteerd",
     "You are the winner": "Jij bent de winnaar!",
     "New tournament": "Nieuw toernooi",
-    "Games lost": "Spellen verloren",
-    "Games won": "Spellen gewonnen",
+
+    "Games lost": "Verloren wedstrijden",
+    "Games won": "Gewonnen wedstrijden",
     "Matches": "Wedstrijden",
-    "Edit Profile": "Wijzig profiel",
+    "Edit Profile": "Profiel aanpassen",
     "New username": "Nieuwe gebruikersnaam",
     "New password": "Nieuw wachtwoord",
-    "Upload new profile picture": "Upload nieuwe profielfoto",
-    "Save": "Opslaan",
+    "Upload new profile picture": "Verander profielfoto",
+    "Save": "Opslaan"
+
 
     "Ho you have lost... You suck at this game": "xxx",
     "Play again": "xxx",
@@ -52,4 +54,5 @@
     "Users": "xxx",
     "Add friend": "xx",
     "Remove friend": "xxx"
+
 }
