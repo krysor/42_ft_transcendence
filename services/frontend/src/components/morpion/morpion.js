@@ -18,34 +18,38 @@ let user = await getUserData().then((user) => {
 });
 
 const fetchMatchResult = (p1Result, botResult) => {
-	const today = new Date();
-	const year = today.getFullYear();
-	const month = (today.getMonth() + 1).toString().padStart(2, '0');
-	const day = today.getDate().toString().padStart(2, '0');
-	const formattedDate = `${year}-${month}-${day}`;
 	const user = JSON.parse(sessionStorage.getItem('user'));
-	const jsonData = {
-	  p1ID: user.id,
-	  p1Result: p1Result,
-	  p2ID: "0",
-	  p2Result: botResult,
-	  date: formattedDate,
-	  is_pong: false,
-	};
+	if (user) {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = (today.getMonth() + 1).toString().padStart(2, '0');
+		const day = today.getDate().toString().padStart(2, '0');
+		const formattedDate = `${year}-${month}-${day}`;
 
-	fetch(backendHost + '/tournament/add_match_to_historic/', {
-	  method: 'POST',
-	  headers: { 'Content-Type': 'application/json' },
-	  body: JSON.stringify(jsonData)
-	})
-	  .then(response => {
-		if (!response.ok) {
-		  throw response.error;
-		}
-	  })
-	  .catch(error => {
-		console.error('There was a problem with the fetch operation:', error);
-	  });
+		const jsonData = {
+		  p1ID: user.id,
+		  p1Result: p1Result,
+		  p2ID: "0",
+		  p2Result: botResult,
+		  date: formattedDate,
+		  is_pong: false,
+		};
+	
+		fetch(backendHost + '/tournament/add_match_to_historic/', {
+		  method: 'POST',
+		  headers: { 'Content-Type': 'application/json' },
+		  body: JSON.stringify(jsonData)
+		})
+		  .then(response => {
+			if (!response.ok) {
+			  throw response.error;
+			}
+		  })
+		  .catch(error => {
+			console.error('There was a problem with the fetch operation:', error);
+		  });
+
+	}
   }
 
 let onClickHandler = (e) => {

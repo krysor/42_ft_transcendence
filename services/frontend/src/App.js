@@ -38,6 +38,7 @@ import NotFound from "./components/notfound";
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ThreejsGameAI from "./components/game/threejsai";
+import { useNavigate } from 'react-router-dom';
 
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
@@ -46,7 +47,7 @@ function App () {
 	const token = sessionStorage.getItem('authtoken')
 	const user = JSON.parse(sessionStorage.getItem('user'))
 	const isLoggedIn = !!token;
-	// const navigate = useNavigate();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 			fetch(backendHost + '/user/user_detail/', {
@@ -62,7 +63,10 @@ function App () {
 				if (data.Token) {
 					sessionStorage.setItem('authtoken', data.Token);
 					sessionStorage.setItem('user', JSON.stringify(data.user));
-
+					navigate('/');
+				}
+				else {
+					sessionStorage.removeItem('authtoken');
 				}
 			})
 	}, [token]);
