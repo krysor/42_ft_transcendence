@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.module.js';
 import { useTranslation } from 'react-i18next';
 
-const ThreejsGame = ({ p1, p2, onGameEnd }) => {
+const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 	const { t }	= useTranslation();
 	const scene = useRef(null);
 	const camera = useRef(null);
@@ -15,18 +15,9 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 	const ballVelocity = useRef({ x: 0.1, y: 0, z: 0 });
 	const refContainer = useRef();
 
-	const frameID = useRef();//POSSIBLY UNNECESSARY
-
 	// State for displaying scores
 	const [scoreP1, setScoreP1] = useState(0);
 	const [scoreP2, setScoreP2] = useState(0);
-
-	// State for keeping the scores up to date inside the animate function: 
-	// 		useState variables don't change in the animate function
-	//		because the animation loop doesn't rerender.
-	const scoreP1Ref = useRef(0);
-	const scoreP2Ref = useRef(0);
-
 
 	useEffect(() => {
 		// Initialize Three.js scene, camera, and renderer
@@ -179,7 +170,9 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 
 		let lastTime = performance.now();
 
+		const ballSpeedFactor = 50 + ballSpeed * 10; // Adjust as needed
 		const animate = (currentTime) => {
+			const paddleSpeed = 10; // Adjust as needed
 			if (!scene.current || !camera.current || !renderer.current || !player1.current || !player2.current || !ball.current) return;
 
 			// Calculate the time difference since the last frame
@@ -188,8 +181,6 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			lastTime = currentTime;
 
 			// Define the movement speed
-			const paddleSpeed = 10; // Adjust as needed
-			const ballSpeedFactor = 80; // Adjust as needed
 
 			if (playerKeys.current.player1.w) {
 				if (player1.current.position.z > -5.6) player1.current.position.z -= paddleSpeed * delta;
@@ -200,25 +191,28 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			}
 
 			// ADDED THIS ONE TO TRY TO MAKE MOVING P2 POSSIBLE
-			if (playerKeys.current.player2.ArrowUp) {
-				if (player2.current.position.z > -5.6) player2.current.position.z -= paddleSpeed * delta;
+			if (mode === '2players')
+			{
+				if (playerKeys.current.player2.ArrowUp) {
+					if (player2.current.position.z > -5.6) player2.current.position.z -= paddleSpeed * delta;
+				}
+				if (playerKeys.current.player2.ArrowDown) {
+					if (player2.current.position.z < 5.6) player2.current.position.z += paddleSpeed * delta;
+				}
 			}
-			if (playerKeys.current.player2.ArrowDown) {
-				if (player2.current.position.z < 5.6) player2.current.position.z += paddleSpeed * delta;
+			else
+			{
+				const threshold = 0.1; // Define a threshold value
+
+				const diff = ball.current.position.z - player2.current.position.z;
+				if (Math.abs(diff) > threshold) {
+					player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
+				}
 			}
 
 			ball.current.position.x += ballVelocity.current.x * ballSpeedFactor * delta;
 			ball.current.position.y += ballVelocity.current.y * ballSpeedFactor * delta;
 			ball.current.position.z += ballVelocity.current.z * ballSpeedFactor * delta;
-
-			// const threshold = 0.1; // Define a threshold value
-
-			const diff = ball.current.position.z - player2.current.position.z;
-
-			// THIS THE PRIMITIVE AI
-			// if (Math.abs(diff) > threshold) {
-			// 	player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
-			// }
 
 			// Check for collision with the game area's top and bottom boundaries
 			if (ball.current.position.z > 7.1 || ball.current.position.z < -7.1) {
@@ -259,39 +253,33 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 			// DETECTION OF MISSED BALL
 			if (ball.current.position.x < -12) {
 				setScoreP2(prevScore => prevScore + 1);
-				scoreP2Ref.current = scoreP2Ref.current + 1;
 				resetPositions();
 			} else if (ball.current.position.x > 12) {
 				setScoreP1(prevScore => prevScore + 1);
-				scoreP1Ref.current = scoreP1Ref.current + 1;
 				resetPositions();
 			}
 
-			let higherScore = Math.max(scoreP1Ref.current, scoreP2Ref.current);			
-			if (onGameEnd && (higherScore === 19 || (higherScore === 11
-								&& Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2))) {
-				onGameEnd(p1, scoreP1Ref.current, p2, scoreP2Ref.current);
+			if (scoreP1 >= 10 || scoreP2 >= 10) {
+				onGameEnd(p1, scoreP1, p2, scoreP2);
 			} else {
 				renderer.current.render(scene.current, camera.current);
-				frameID.current = requestAnimationFrame(animate);
+				requestAnimationFrame(animate);
 			}
 		};
-
-		// frameID.current = requestAnimationFrame(animate);
 
 		initScene();
 
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
 			document.removeEventListener('keyup', handleKeyUp);
-			cancelAnimationFrame(frameID);
+			cancelAnimationFrame(animate);
 		};
 	}, []);
 
-	// if (scoreP1 > 9 || scoreP2 > 9) {
-	// 	console.log("======================Game Over======================");
-	// }
-	// console.log("Score P2: ", scoreP2);
+	if (scoreP1 > 9 || scoreP2 > 9) {
+		console.log("======================Game Over======================");
+	}
+	console.log("Score P2: ", scoreP2);
 
 	return (
 		<div>
@@ -313,7 +301,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 				<canvas ref={refContainer} />
 			</div>
 		)}
-		</div>
+	</div>
 	);
 };
 
