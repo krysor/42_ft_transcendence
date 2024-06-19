@@ -142,7 +142,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 
 			//resize test
 			window.addEventListener('resize', () => {
-				camera.current.aspect = window.innerWidth / window.innerHeight
+				camera.current.aspect = window.innerWidth / (window.innerHeight - 143)
 				camera.current.updateProjectionMatrix()
 				renderer.current.setSize(window.innerWidth, window.innerHeight - 143)
 
