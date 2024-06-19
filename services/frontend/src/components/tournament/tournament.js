@@ -160,7 +160,7 @@ const Tournament = () => {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary">{t('Login')}</button>
+          <button type="submit" className="btn btn-primary">{t('Register')}</button>
         </form>
       )}
       <br />
