@@ -363,21 +363,21 @@ const ThreejsGameAI = ({ p1, p2 }) => {
 
 	return (
 		<div>
-		{p1 && p2 && !end && (
+		{p1 && !end && (
 			<div>
 				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
 					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>{p1.username} Score: {scoreP1}</p>
-					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>{p2.username} Score: {scoreP2}</p>
+					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>Bot Score: {scoreP2}</p>
 				</div>
 				<canvas ref={refContainer} />
 			</div>
 		)}
 
-		{!p1 && !p2 && !end && (
+		{!p1 && !end && (
 			<div>
 				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
 					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>{t('Player 1 Score')} : {scoreP1}</p>
-					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>{t('Player 2 Score')} : {scoreP2}</p>
+					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>Bot {t('Score')} : {scoreP2}</p>
 				</div>
 				<canvas ref={refContainer} />
 			</div>

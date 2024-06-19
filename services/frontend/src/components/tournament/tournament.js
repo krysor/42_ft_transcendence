@@ -157,6 +157,7 @@ const Tournament = () => {
               value={playerName} 
               onChange={(e) => setPlayerName(e.target.value)} 
               className="form-control"
+              required
             />
           </div>
           <button type="submit" className="btn btn-primary">{t('Login')}</button>
@@ -216,7 +217,7 @@ const Tournament = () => {
 
           <div className="form-group">
             <label htmlFor="nbOfPlayers">{t('How many players will play in the tournament ?')}</label>
-            <input type="number" name="nbOfPlayers" id="nbOfPlayers" min="2" max="16" className="form-control" />
+            <input type="number" name="nbOfPlayers" id="nbOfPlayers" min="2" max="16" className="form-control" required />
           </div>
           <button type="submit" className="btn btn-primary">{t('Proceed to Registration')}</button>
         </form>
