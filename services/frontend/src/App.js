@@ -11,6 +11,7 @@ import Home from "./components/home";
 import Game from "./components/game/game";
 import ThreejsGame from "./components/game/threejs_ai";
 import Morpion from "./components/morpion/morpion";
+import MorpionVS from "./components/morpion/morpionvs";
 import SelectionScreen from "./components/game/selection_screen";
 import GameContainer from "./components/game/GameContainer";
 
