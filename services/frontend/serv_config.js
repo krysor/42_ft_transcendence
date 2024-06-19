@@ -3,7 +3,7 @@ const fs = require('fs');
 const express = require('express');
 const path = require('path');
 const WebSocket = require('ws');
-const fetch = require('node-fetch');  // Pour effectuer des requêtes vers le serveur Django
+
 
 const app = express();
 const staticDir = path.join(__dirname, 'build');

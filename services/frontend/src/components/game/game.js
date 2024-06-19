@@ -154,7 +154,7 @@ const sendScore = async (player, player_id, oponent, score, winner) => {
 		winner_name: winner['name'],
 	};
 	try {
-		const response = await fetch('http://localhost:3001/api/score', {
+		const response = await fetch('https://localhost:3001/api/score', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

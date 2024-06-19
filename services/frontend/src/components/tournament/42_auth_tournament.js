@@ -12,7 +12,7 @@ const FtAuthTournament = () => {
     const code = urlParams.get('code');
 
     if (code) {
-      fetch('http://localhost:8000/tournament/ft_login/?code=' + code, {
+      fetch('https://localhost:8000/tournament/ft_login/?code=' + code, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

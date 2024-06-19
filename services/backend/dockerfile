@@ -27,4 +27,4 @@ ENTRYPOINT [ "sh", "/tmp/wait.sh" ]
 # CMD python manage.py runserver 0.0.0.0:8000
 
 # https
-CMD python manage.py makemigrations && python manage.py migrate && daphne -e ssl:8000:privateKey=/ssl/key.key:certKey=/ssl/cert.crt project.asgi:application
+CMD daphne -e ssl:8000:privateKey=/ssl/key.key:certKey=/ssl/cert.crt project.asgi:application

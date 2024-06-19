@@ -62,10 +62,12 @@ function App () {
 			.then(data => {
 				console.log(data);
 				if (data.user) {
+					console.log("still loged in");
 					sessionStorage.setItem('user', JSON.stringify(data.user));
 					navigate('/');
 				}
 				else {
+					console.log("token invalid login out");
 					sessionStorage.removeItem('authtoken');
 					navigate('/');
 				}

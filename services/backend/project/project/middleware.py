@@ -1,10 +1,10 @@
 # middleware.py
+import django
+django.setup()
 from channels.middleware import BaseMiddleware
 from channels.db import database_sync_to_async
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import AnonymousUser
-
-django.setup()
 
 @database_sync_to_async
 def get_user(scope):
