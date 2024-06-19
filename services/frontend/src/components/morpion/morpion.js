@@ -315,7 +315,7 @@ function Board({ xIsNext, squares, onPlay }) {
 	let restartBtn = null;
 	winner = calculateWinner(squares);
 	if (winner) {
-		status = t('Winner: ') + winner;
+		status = t('Winner') + ": " + winner;
 		sendScore(user, winner === user ? 1 : -1);
 		sendParty(user, winner === user ? 1 : -1, t('Bot'));
 		fetchMatchResult(winner === user ? 1 : 0, winner === "Bot" ? 1 : 0);
@@ -331,7 +331,7 @@ function Board({ xIsNext, squares, onPlay }) {
 	if (!xIsNext && !winner && !draw) {
 		setTimeout(() => {
 			botPlayer();
-		}, 1000);
+		}, 300);
 
 		return (
 			<>

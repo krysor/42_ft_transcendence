@@ -63,7 +63,7 @@ function Signup() {
                                     <label htmlFor="password">{t('Enter your password')}:</label>
                                     <input id="password" name="password" type="password" className="form-control" required />
                                 </div>
-                                <p>Enter you language:</p>
+                                <p>{t('Select your language:')}</p>
                                 <div className="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label className="btn btn-secondary active">
                                     <input type="radio" name="languageSelect" id="eng" value="eng" autoComplete="off" defaultChecked /> English

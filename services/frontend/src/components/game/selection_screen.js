@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const SelectionScreen = ({ onStartGame }) => {
     const [mode, setMode] = useState('ai'); // 'ai' or '2players'
     const [speed, setSpeed] = useState(1); // Default ball speed
+    const { t } = useTranslation();
 
     const handleSpeedChange = (e) => {
         const value = Math.max(1, Math.min(10, Number(e.target.value)));
@@ -15,7 +17,7 @@ const SelectionScreen = ({ onStartGame }) => {
 
     return (
         <div style={{ textAlign: 'center' }}>
-            <h1>Game Setup</h1>
+            <h1>{t('Game Setup')}</h1>
             <div>
                 <label>
                     <input
@@ -25,7 +27,7 @@ const SelectionScreen = ({ onStartGame }) => {
                         checked={mode === 'ai'}
                         onChange={(e) => setMode(e.target.value)}
                     />
-                    AI vs Player
+                    {t('AI vs Player')}
                 </label>
                 <label>
                     <input
@@ -35,12 +37,12 @@ const SelectionScreen = ({ onStartGame }) => {
                         checked={mode === '2players'}
                         onChange={(e) => setMode(e.target.value)}
                     />
-                    2 Players
+                    {t('2 Players')}
                 </label>
             </div>
             <div>
                 <label>
-                    Ball Speed:
+                    {t('Ball Speed:')}
                     <input
                         type="number"
                         value={speed}
@@ -50,7 +52,7 @@ const SelectionScreen = ({ onStartGame }) => {
                     />
                 </label>
             </div>
-            <button onClick={handleStartGame}>Start Game</button>
+            <button onClick={handleStartGame}>{t('Play')}</button>
         </div>
     );
 };
