@@ -24,7 +24,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 		const initScene = () => {
 			scene.current = new THREE.Scene();
 
-			camera.current = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+			camera.current = new THREE.PerspectiveCamera(75, 2, 0.1, 1000);
 			camera.current.position.x = 0;
 			camera.current.position.y = 12;
 			camera.current.position.z = 5;
@@ -137,6 +137,31 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 
 			document.addEventListener('keydown', handleKeyDown);
 			document.addEventListener('keyup', handleKeyUp);
+
+
+
+			//resize test
+			window.addEventListener('resize', () => {			
+
+				if (window.innerHeight <= 143)
+				{
+					camera.fov = 75 * (143 / window.innerHeight);
+				}
+
+				
+				if ( window.innerHeight - 143 >= window.innerWidth ) {
+					renderer.current.setSize(window.innerWidth, window.innerWidth);
+				}
+				else {
+					renderer.current.setSize(window.innerHeight - 143, window.innerHeight - 143);
+				}
+				
+				camera.current.updateProjectionMatrix ();
+				// renderer.current.setSize(window.innerWidth, window.innerHeight - 143);
+			})
+
+
+
 		};
 
 		// Handle key down events
