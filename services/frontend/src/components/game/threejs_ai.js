@@ -31,17 +31,8 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 			camera.current.lookAt(0, 0, 0);
 
 			renderer.current = new THREE.WebGLRenderer({ antialias: true, canvas: refContainer.current });
+			renderer.current.setSize(window.innerWidth, window.innerHeight - 143);
 
-			let ratio = 16 / 9;
-			let availableHeight = window.innerHeight - 143;
-		
-			if (window.innerWidth / availableHeight < ratio) {
-				renderer.current.setSize(window.innerWidth, window.innerWidth / ratio);
-			} else {
-				renderer.current.setSize(availableHeight * ratio, availableHeight);
-			}
-		
-			
 			let skyboxMaterial = [];
 			// load static image/img...
 			let texture_ft = new THREE.TextureLoader().load('skybox/mystic_ft.jpg');
@@ -147,23 +138,15 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 			document.addEventListener('keydown', handleKeyDown);
 			document.addEventListener('keyup', handleKeyUp);
 
+
+
 			//resize test
-			window.addEventListener('resize', () => {			
+			window.addEventListener('resize', () => {
+				camera.current.aspect = window.innerWidth / window.innerHeight
+				camera.current.updateProjectionMatrix()
+				renderer.current.setSize(window.innerWidth, window.innerHeight - 143)
 
-				let ratio = 16 / 9;
-				let availableHeight = window.innerHeight - 143;
-			
-				if (window.innerWidth / availableHeight < ratio) {
-					renderer.current.setSize(window.innerWidth, window.innerWidth / ratio);
-				} else {
-					renderer.current.setSize(availableHeight * ratio, availableHeight);
-				}
-			
-				camera.current.updateProjectionMatrix ();
 			})
-
-
-
 		};
 
 		// Handle key down events
