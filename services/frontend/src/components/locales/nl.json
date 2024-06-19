@@ -34,7 +34,6 @@
     "Congratulations": "Gefeliciteerd",
     "You are the winner": "Jij bent de winnaar!",
     "New tournament": "Nieuw toernooi",
-
     "Games lost": "Verloren wedstrijden",
     "Games won": "Gewonnen wedstrijden",
     "Matches": "Wedstrijden",
@@ -42,17 +41,14 @@
     "New username": "Nieuwe gebruikersnaam",
     "New password": "Nieuw wachtwoord",
     "Upload new profile picture": "Verander profielfoto",
-    "Save": "Opslaan"
-
-
-    "Ho you have lost... You suck at this game": "xxx",
-    "Play again": "xxx",
-    "You won against the bot": "xxx",
-    "Play against the bot": "xxx",
-    "Login with 42 intra": "xxx",
-    "Friends": "xxx",
-    "Users": "xxx",
-    "Add friend": "xx",
-    "Remove friend": "xxx"
-
+    "Save": "Opslaan",
+    "Ho you have lost... You suck at this game": "Ah je hebt verloren... je bakt er niks van",
+    "Play again": "Opnieuw Spelen",
+    "You won against the bot": "Je hebt de computer verslagen",
+    "Play against the bot": "Tegen de computer spelen",
+    "Login with 42 intra": "Inloggen via 42 intra",
+    "Friends": "Vrienden",
+    "Users": "Gebruikers",
+    "Add friend": "Vriend toevoegen",
+    "Remove friend": "Vriend verwijderen"
 }
