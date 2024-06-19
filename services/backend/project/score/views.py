@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponse
 from django.core.serializers import serialize
 from django.conf import settings
 from django.core.files.base import ContentFile
-
+from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
@@ -76,3 +76,25 @@ def update_match(request):
     serialized = MatchSerializer(obj)
     serialized.save()
     return JsonResponse({'match': serialized.data})
+
+@api_view(['POST'])
+def update_parties_by_id(request):
+
+    user = get_object_or_404(User, id=request.data['winnerId'])
+    oponent = request.data['oponent']
+    data = request.data['points']
+
+    obj = MorpionParties.objects.create(user=user, oponent=oponent, winner=data)[0]
+    serialized = MorpionSerializer(data=request.data)
+    serialized.save(user)
+
+    return JsonResponse({'success': 'Party saved'})
+    
+@api_view(['POST'])
+def update_score_by_id(request):
+    user = get_object_or_404(User, id=request.data.get('playerId'))
+    obj, created = Score.objects.get_or_create(user=user)
+    obj.score += request.data['points']
+    obj.save()
+
+    return Response({'message': 'Score updated successfully'})

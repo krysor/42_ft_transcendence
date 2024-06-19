@@ -3,16 +3,82 @@ import './App.css';
 import '../user/getUserData';
 
 import getUserData from '../user/getUserData';
-import { Spinner, Table, Collapse } from 'react-bootstrap';
+import { Spinner, Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next'
 
-let user = await getUserData().then((user) => {
+const backendHost = 'http://' + window.location.hostname + ':8000';
+
+const getUser = () => {
+	const authtoken = sessionStorage.getItem('authtoken');
+	fetch(backendHost + '/user/user_detail/', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': `Token ${authtoken}`
+		},
+	})
+	.then(response => { return response.json(); })
+	.then(data => {
+		console.log(data);
+		if (data.Token) {
+			sessionStorage.setItem('authtoken', data.Token);
+			sessionStorage.setItem('user', JSON.stringify(data.user));
+			return data.user;
+		}
+		else if (data.error) {
+			throw data.error;
+		}
+	})
+	.catch(error => { console.error('There was a problem with the fetch operation:', error); });
+}
+
+let user =  await getUserData().then((user) => {
+	if (user) {
+		sessionStorage.setItem('user', JSON.stringify(user));
+		return user.username;
+	}
+	user = sessionStorage.getItem('user');
 	if (user) {
 		return user.username;
 	}
 	return "Guest";
 });
+
+const fetchMatchResult = (p1Result, botResult) => {
+	const user = JSON.parse(sessionStorage.getItem('user'));
+	if (user) {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = (today.getMonth() + 1).toString().padStart(2, '0');
+		const day = today.getDate().toString().padStart(2, '0');
+		const formattedDate = `${year}-${month}-${day}`;
+
+		const jsonData = {
+		  p1ID: user.id,
+		  p1Result: p1Result,
+		  p2ID: "0",
+		  p2Result: botResult,
+		  date: formattedDate,
+		  is_pong: false,
+		};
+	
+		fetch(backendHost + '/tournament/add_match_to_historic/', {
+		  method: 'POST',
+		  headers: { 'Content-Type': 'application/json' },
+		  body: JSON.stringify(jsonData)
+		})
+		  .then(response => {
+			if (!response.ok) {
+			  throw response.error;
+			}
+		  })
+		  .catch(error => {
+			console.error('There was a problem with the fetch operation:', error);
+		  });
+
+	}
+  }
 
 let onClickHandler = (e) => {
     const hiddenElement = e.currentTarget.nextSibling;
@@ -34,9 +100,8 @@ let GetParties = async (user) => {
 		}
 		const data = await response.json();
 		let responseHtml = [];
-		const option = { day: 'numeric', month: 'long', year: 'numeric' };
 		for (let i = 0; i < data.scores.length; i++) {
-			console.log(data.scores[i].date);
+			// console.log(data.scores[i].date);
 			if (data.scores[i].user.username === user) {
 				responseHtml.push(
 					<tr>
@@ -47,7 +112,7 @@ let GetParties = async (user) => {
 							{ data.scores[i].oponent }
 						</td>
 						<td>
-							{ data.scores[i].winner == 1 ? "Win" : (data.scores[i].winner == 0 ? "Draw" : "Lose")}
+							{ data.scores[i].winner === 1 ? "Win" : (data.scores[i].winner === 0 ? "Draw" : "Lose")}
 						</td>
 					</tr>
 				);
@@ -80,7 +145,7 @@ let GetParties = async (user) => {
 
 
 let GetScore = async () => {
-	// const { t }	= useTranslation();
+
 	try {
 		const authtoken = sessionStorage.getItem('authtoken');
 		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/score/get_top_score/', {
@@ -100,7 +165,7 @@ let GetScore = async () => {
 		for (let i = 0; i < data.scores.length; i++) {
 			parties = await GetParties(data.scores[i].user.username);
 			data.scores[i].id = i + 1;
-			const SClass = data.scores[i].user.username === user ? "bg-warning" : "";
+			const SClass = "";
 			const name = "multiCollapse" + (i + 1);
 			const colName = "collapse ";
 
@@ -143,22 +208,7 @@ let GetScore = async () => {
 		return (
 			<tr>
 				<td>
-					{/* add translation */}
-					<p>Log in to see the leaderbord</p>
-					{/* <th>{t('Score')}</th> */}
-					{/* <Spinner animation="border" role="status">
-						<span className="visually-hidden">Loading...</span>
-					</Spinner> */}
-				</td>
-				<td>
-					{/* <Spinner animation="border" role="status">
-						<span className="visually-hidden">Loading...</span>
-					</Spinner> */}
-				</td>
-				<td>
-					{/* <Spinner animation="border" role="status">
-						<span className="visually-hidden">Loading...</span>
-					</Spinner> */}
+					<p> Log in to see the leaderbord </p>
 				</td>
 			</tr>
 		);
@@ -268,6 +318,7 @@ function Board({ xIsNext, squares, onPlay }) {
 		status = t('Winner: ') + winner;
 		sendScore(user, winner === user ? 1 : -1);
 		sendParty(user, winner === user ? 1 : -1, t('Bot'));
+		fetchMatchResult(winner === user ? 1 : 0, winner === "Bot" ? 1 : 0);
 		restartBtn = <button className="restartButton" onClick={restartGame}>{t('Restart')}</button>;
 	} else if (draw) {
 		status = t('Draw');
@@ -281,6 +332,28 @@ function Board({ xIsNext, squares, onPlay }) {
 		setTimeout(() => {
 			botPlayer();
 		}, 1000);
+
+		return (
+			<>
+				<div className="status">{status}</div>
+				<div className="board-row">
+					<Square value={squares[0]} />
+					<Square value={squares[1]} />
+					<Square value={squares[2]} />
+				</div>
+				<div className="board-row">
+					<Square value={squares[3]} />
+					<Square value={squares[4]} />
+					<Square value={squares[5]} />
+				</div>
+				<div className="board-row">
+					<Square value={squares[6]} />
+					<Square value={squares[7]} />
+					<Square value={squares[8]} />
+				</div>
+				<div className='restart'>{restartBtn}</div>
+			</>
+		);
 	}
 
 	return (
@@ -319,6 +392,9 @@ const sendScore = async (winner, points) => {
 			},
 			body: JSON.stringify(data)
 		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
 		allScores = await LoadAllScore();
 
 	} catch (error) {
@@ -331,7 +407,6 @@ const sendParty = async (winner, points, oponent) => {
 	const authtoken = sessionStorage.getItem('authtoken');
 	const data = { winner: winner, points: points, oponent: oponent};
 	try {
-
 		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/score/update_parties/', {
 			method: 'POST',
 			headers: {
@@ -340,6 +415,10 @@ const sendParty = async (winner, points, oponent) => {
 			},
 			body: JSON.stringify(data)
 		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+		
 		allScores = await LoadAllScore();
 
 	} catch (error) {
@@ -352,7 +431,7 @@ function LoadScore() {
 	return (allScores);
 }
 
-export default function Morpion({ p1, p2, onGameEnd }) {
+export default function Morpion({ p1, onGameEnd }) {
 	const { t }	= useTranslation();
 	const [history, setHistory] = useState([Array(9).fill(null)]);
 	const [currentMove, setCurrentMove] = useState(0);
@@ -361,7 +440,7 @@ export default function Morpion({ p1, p2, onGameEnd }) {
 
 	function handlePlay(squares) {
 		const nextHistory = history.slice(0, currentMove + 1).concat([squares]);
-		setHistory(history.slice(0, currentMove + 1).concat([squares]));
+		setHistory(nextHistory);
 		setCurrentMove(currentMove + 1);
 	}
 
@@ -416,7 +495,7 @@ function calculateWinner(squares) {
 	for (let i = 0; i < lines.length; i++) {
 		const [a, b, c] = lines[i];
 		if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-			return (squares[a] == 'X' ? user : "Bot");
+			return (squares[a] === 'X' ? user : "Bot");
 		}
 	}
 	return null;

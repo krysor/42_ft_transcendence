@@ -1,5 +1,4 @@
 import {
-    BrowserRouter as Router,
     Routes,
     Route
 } from "react-router-dom";
@@ -12,6 +11,7 @@ import Home from "./components/home";
 import Game from "./components/game/game";
 import ThreejsGame from "./components/game/threejs_ai";
 import Morpion from "./components/morpion/morpion";
+import MorpionVS from "./components/morpion/morpionvs";
 import SelectionScreen from "./components/game/selection_screen";
 import GameContainer from "./components/game/GameContainer";
 
@@ -35,48 +35,42 @@ import UserPage from "./components/user/userPage";
 // -----error-----
 import NotFound from "./components/notfound";
 
-// -----translation-----
-import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom';
-
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ThreejsGameAI from "./components/game/threejsai";
+import { useNavigate } from 'react-router-dom';
 
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
 
 function App () {
-	const token = sessionStorage.getItem('authtoken')
-	const user = JSON.parse(sessionStorage.getItem('user'))
+	const token = sessionStorage.getItem('authtoken');
+	const user = JSON.parse(sessionStorage.getItem('user'));
 	const isLoggedIn = !!token;
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		const tok = sessionStorage.getItem('authtoken');
 			fetch(backendHost + '/user/user_detail/', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': `Token ${token}`
+					'Authorization': `Token ${tok}`
 				},
 			})
 			.then(response => { return response.json(); })
 			.then(data => {
 				console.log(data);
-				if (data.Token) {
-					sessionStorage.setItem('authtoken', data.Token);
+				if (data.user) {
 					sessionStorage.setItem('user', JSON.stringify(data.user));
-
+					navigate('/');
 				}
 				else {
-					console.log("app use effect")
-					// sessionStorage.removeItem('authtoken');
-					// navigate('/');
+					sessionStorage.removeItem('authtoken');
+					navigate('/');
 				}
 			})
 	}, [token]);
-
-	const { t } = useTranslation()
 
       return (
           <>
@@ -98,6 +92,7 @@ function App () {
 				<Route path="/SelectionScreen" element={<SelectionScreen />} />
 				<Route path="/GameContainer" element={<GameContainer />} />
 				<Route path="/Morpion" element={<Morpion />} />
+				<Route path="/Morpionvs" element={<MorpionVS />} />
 				<Route path="/pong_ai" element={<ThreejsGameAI/>} />
 				{/* -----Tournament----- */}
 				<Route path="/tournament" element={<Tournament />} />

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useUsers } from './UserContext';
-import { useLocation, NavLink, useNavigate, usePrompt } from 'react-router-dom';
+import { useLocation, NavLink, useNavigate } from 'react-router-dom';
 import ProfilePic from '../user/ProfilePic';
 import ThreejsGame from '../game/threejs';
-import Morpion from '../morpion/morpion';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next'
+import MorpionVS from '../morpion/morpionvs';
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
 const Matchmaking = () => {
@@ -179,12 +179,17 @@ const Matchmaking = () => {
           )}
 
           {currentMatch && game === 'morpion' && (
-            <>
-              <p>{t('Player')} 1: {currentMatch.player1.username}</p>
-              <p>{t('Player')} 2: {currentMatch.player2.username}</p>
-              <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)} className="btn btn-success">End Game (Player 1 Wins)</button>
-              <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)} className="btn btn-danger">End Game (Player 2 Wins)</button>
-            </>
+            <MorpionVS 
+              p1={currentMatch.player1}
+              p2={currentMatch.player2}
+              onGameEnd={handleGameEnd}
+            />
+            // <>
+            //   <p>{t('Player')} 1: {currentMatch.player1.username}</p>
+            //   <p>{t('Player')} 2: {currentMatch.player2.username}</p>
+            //   <button onClick={() => handleGameEnd(currentMatch.player1, 10, currentMatch.player2, 0)} className="btn btn-success">End Game (Player 1 Wins)</button>
+            //   <button onClick={() => handleGameEnd(currentMatch.player1, 0, currentMatch.player2, 10)} className="btn btn-danger">End Game (Player 2 Wins)</button>
+            // </>
           )}
         </>
       )}
