@@ -23,9 +23,8 @@ function NavBar(props) {
                 <Navbar.Collapse id="navbar">
                     <Nav id="navBar" className="me-auto">
                         <Nav.Link as={Link} to="/tournament">{t('Tournament')}</Nav.Link>
-                        {/* <Nav.Link as={Link} to="/Game">{t('Game')}</Nav.Link> */}
-                        {/* <Nav.Link as={Link} to="/ThreejsGame">{t('3D-Game')}</Nav.Link> */}
-                        {/* <Nav.Link as={Link} to="/Morpion">Morpion</Nav.Link> */}
+                        <Nav.Link as={Link} to="/GameContainer">{t('3D-Game')}</Nav.Link>
+                        <Nav.Link as={Link} to="/Morpion">Morpion</Nav.Link>
                         {props.isLoggedIn ? (
                             <>
                                 <Nav.Link as={Link} to="/community">{t('Community')}</Nav.Link>

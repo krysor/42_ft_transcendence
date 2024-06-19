@@ -9,11 +9,10 @@ import Home from "./components/home";
 
 // -----Game-----
 import Game from "./components/game/game";
-import ThreejsGame from "./components/game/threejs";
-// import ThreejsGameAI from "./components/game/threejsai";
+import ThreejsGame from "./components/game/threejs_ai";
 import Morpion from "./components/morpion/morpion";
-import MorpionVS from "./components/morpion/morpionvs";
-
+import SelectionScreen from "./components/game/selection_screen";
+import GameContainer from "./components/game/GameContainer";
 
 // ------Tournament------
 import Tournament from "./components/tournament/tournament";
@@ -89,6 +88,8 @@ function App () {
 				{/* -----Game----- */}
 				<Route path="/Game" element={<Game />} />
 				<Route path="/ThreejsGame" element={<ThreejsGame />} />
+				<Route path="/SelectionScreen" element={<SelectionScreen />} />
+				<Route path="/GameContainer" element={<GameContainer />} />
 				<Route path="/Morpion" element={<Morpion />} />
 				<Route path="/Morpionvs" element={<MorpionVS />} />
 				<Route path="/pong_ai" element={<ThreejsGameAI/>} />
