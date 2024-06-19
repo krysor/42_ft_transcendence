@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom';
+
 const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function EditProfile() {
     const authtoken = sessionStorage.getItem('authtoken');
     const [error, setError] = useState('');
     const { t } = useTranslation()
+    const navigate = useNavigate();
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -42,7 +46,7 @@ function EditProfile() {
                 if (data.user) {
                     i18next.changeLanguage(data.user.language);
                     sessionStorage.setItem('user', JSON.stringify(data.user));
-                    window.location.href = "/profile";
+                    navigate('/profile');
                 } else if (data.error) {
                     setError(data.error);
                 } else {

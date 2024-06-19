@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 function Profile() {
     const authtoken = sessionStorage.getItem('authtoken');
     const { t } = useTranslation();
+    console.log("profile");
     const [userData, setUserData] = useState({
         username: '',
         profile_pic: '',
@@ -31,7 +32,7 @@ function Profile() {
         return <div>Loading...</div>;
     }
 
-    const { username, profile_pic, loss, win, language,matches } = userData;
+    const { username, profile_pic, loss, win, matches } = userData;
 
     return (
         <div className="profile container mt-5">
