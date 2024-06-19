@@ -318,7 +318,7 @@ function Board({ xIsNext, squares, onPlay }) {
 	if (!xIsNext && !winner && !draw) {
 		setTimeout(() => {
 			botPlayer();
-		}, 1000);
+		}, 50);
 	}
 
 	return (
