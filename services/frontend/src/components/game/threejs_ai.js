@@ -206,7 +206,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 
 				const diff = ball.current.position.z - player2.current.position.z;
 				if (Math.abs(diff) > threshold) {
-					player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05) : ((ball.current.position.z <= -5.7) ? 0 : -0.05);
+					player2.current.position.z += (diff > 0) ? ((ball.current.position.z >= 5.7) ? 0 : 0.05 * delta * ballSpeed * 20) : ((ball.current.position.z <= -5.7) ? 0 : -0.05 * delta * ballSpeed * 20);
 				}
 			}
 
