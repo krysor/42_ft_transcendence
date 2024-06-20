@@ -144,7 +144,7 @@ const Matchmaking = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-6">
       {!currentMatch && participants.length !== 1 && (
         <>
           <h2 className="mb-4">{t('Tournament participants')}:</h2>
