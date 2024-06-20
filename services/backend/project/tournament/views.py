@@ -123,10 +123,12 @@ def ft_login_tournament(request):
 			'client_id': os.getenv('UID_KEY'),
 			'client_secret': os.getenv('SECRET_KEY'),
 			'code': code,
-			'redirect_uri': 'http://localhost:3000/tournament/'
+			'redirect_uri': 'https://localhost:3000/tournament/'
+			# 'redirect_uri': 'http://localhost:3000/tournament/'
 		}
 		response = requests.post(url, data=data)
-
+		print(response.text)
+		print(response.status_code)
 	if response.status_code == 200:
 			token = response.json().get('access_token')
 			if token:

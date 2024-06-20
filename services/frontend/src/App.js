@@ -51,6 +51,8 @@ function App () {
 
 	useEffect(() => {
 		const tok = sessionStorage.getItem('authtoken');
+		if (tok) {
+
 			fetch(backendHost + '/user/user_detail/', {
 				method: 'GET',
 				headers: {
@@ -64,7 +66,7 @@ function App () {
 				if (data.user) {
 					console.log("still loged in");
 					sessionStorage.setItem('user', JSON.stringify(data.user));
-					navigate('/');
+					// navigate('/');
 				}
 				else {
 					console.log("token invalid login out");
@@ -72,6 +74,7 @@ function App () {
 					navigate('/');
 				}
 			})
+		}
 	}, [token]);
 
       return (
