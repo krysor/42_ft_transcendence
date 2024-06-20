@@ -31,7 +31,9 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 			camera.current.lookAt(0, 0, 0);
 
 			renderer.current = new THREE.WebGLRenderer({ antialias: true, canvas: refContainer.current });
-			renderer.current.setSize(window.innerWidth, window.innerHeight - 143);
+			camera.current.aspect = window.innerWidth / (window.innerHeight - 143)
+			camera.current.updateProjectionMatrix()
+			renderer.current.setSize(window.innerWidth, window.innerHeight - 143)
 
 			let skyboxMaterial = [];
 			// load static image/img...
