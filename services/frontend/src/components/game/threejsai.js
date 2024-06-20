@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
-const ThreejsGameAI = ({ p1, p2 }) => {
+const ThreejsGameAI = ({ p1 }) => {
 	const { t }	= useTranslation();
 	const scene = useRef(null);
 	const camera = useRef(null);
@@ -54,7 +54,7 @@ const ThreejsGameAI = ({ p1, p2 }) => {
 		.catch(error => { console.error('There was a problem with the fetch operation:', error); });
 	}
 
-	const fetchMatchResult = (player1, p1Result, botResult) => {
+	const fetchBotMatchResult = (player1, p1Result, botResult) => {
 		const today = new Date();
 		const year = today.getFullYear();
 		const month = (today.getMonth() + 1).toString().padStart(2, '0');
@@ -330,14 +330,16 @@ const ThreejsGameAI = ({ p1, p2 }) => {
 				resetPositions();
 			}
 
-			let higherScore = Math.max(scoreP1Ref.current, scoreP2Ref.current);			
-			if ( (higherScore === 19 || (higherScore === 11
-								&& Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2))) {
+			let higherScore = Math.max(scoreP1Ref.current, scoreP2Ref.current);
+			
+			// end condition: must have at least 11 points and an advanatage of 2 points or 19 points
+			if (( higherScore === 19 ||
+				( higherScore === 11 && Math.abs(scoreP2Ref.current - scoreP1Ref.current) >= 2) ) ) {
 				setEnd(true);
 				getUser();
 				const user = JSON.parse(sessionStorage.getItem('user'));
 				if (user) {
-					fetchMatchResult(user, scoreP1Ref.current, scoreP2Ref.current);
+					fetchBotMatchResult(user, scoreP1Ref.current, scoreP2Ref.current);
 				}
 			} else {
 				renderer.current.render(scene.current, camera.current);

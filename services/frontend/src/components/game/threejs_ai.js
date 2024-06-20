@@ -24,14 +24,16 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 		const initScene = () => {
 			scene.current = new THREE.Scene();
 
-			camera.current = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+			camera.current = new THREE.PerspectiveCamera(75, 2, 0.1, 1000);
 			camera.current.position.x = 0;
 			camera.current.position.y = 12;
 			camera.current.position.z = 5;
 			camera.current.lookAt(0, 0, 0);
 
 			renderer.current = new THREE.WebGLRenderer({ antialias: true, canvas: refContainer.current });
-			renderer.current.setSize(window.innerWidth, window.innerHeight - 143);
+			camera.current.aspect = window.innerWidth / (window.innerHeight - 143)
+			camera.current.updateProjectionMatrix()
+			renderer.current.setSize(window.innerWidth, window.innerHeight - 143)
 
 			let skyboxMaterial = [];
 			// load static image/img...
@@ -137,6 +139,16 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 
 			document.addEventListener('keydown', handleKeyDown);
 			document.addEventListener('keyup', handleKeyUp);
+
+
+
+			//resize test
+			window.addEventListener('resize', () => {
+				camera.current.aspect = window.innerWidth / (window.innerHeight - 143)
+				camera.current.updateProjectionMatrix()
+				renderer.current.setSize(window.innerWidth, window.innerHeight - 143)
+
+			})
 		};
 
 		// Handle key down events

@@ -93,7 +93,16 @@ function App () {
 				<Route path="/GameContainer" element={<GameContainer />} />
 				<Route path="/Morpion" element={<Morpion />} />
 				<Route path="/Morpionvs" element={<MorpionVS />} />
-				<Route path="/pong_ai" element={<ThreejsGameAI/>} />
+				{/* <Route path="/pong_ai" element={<ThreejsGameAI/>} /> */}
+				<Route path="/Pong" element={
+					<ThreejsGame
+					p1={{}}
+					p2={{}}
+					mode={"2players"}
+					speed={1.0}
+					onGameEnd={undefined}
+					/>}
+				/>
 				{/* -----Tournament----- */}
 				<Route path="/tournament" element={<Tournament />} />
 				<Route path="/tournament/Matchmaking" element={<Matchmaking />} />

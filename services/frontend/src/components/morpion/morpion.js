@@ -431,7 +431,7 @@ function LoadScore() {
 	return (allScores);
 }
 
-export default function Morpion({ p1, onGameEnd }) {
+export default function Morpion() {
 	const { t }	= useTranslation();
 	const [history, setHistory] = useState([Array(9).fill(null)]);
 	const [currentMove, setCurrentMove] = useState(0);

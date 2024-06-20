@@ -223,7 +223,7 @@ const Tournament = () => {
         </form>
         <br />
         <h3>{t('Play against the bot')}</h3>
-          <NavLink to="/pong_ai" className="btn btn-secondary">Pong</NavLink>
+          <NavLink to="/Pong" className="btn btn-secondary">Pong</NavLink>
           <NavLink to="/morpion" className="btn btn-secondary">Morpion</NavLink>
       </>
       )}

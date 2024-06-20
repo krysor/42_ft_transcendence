@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useUsers } from './UserContext';
 import { useLocation, NavLink, useNavigate } from 'react-router-dom';
 import ProfilePic from '../user/ProfilePic';
-import ThreejsGame from '../game/threejs';
+import ThreejsGame from '../game/threejs_ai';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next'
 import MorpionVS from '../morpion/morpionvs';
+import GameContainer from '../game/GameContainer';
+
 const backendHost = 'http://' + window.location.hostname + ':8000';
 
 const Matchmaking = () => {
@@ -171,11 +173,14 @@ const Matchmaking = () => {
       {currentMatch && isReady && (
         <>          
           {currentMatch && game === 'Pong' && (
-            <ThreejsGame
-              p1={currentMatch.player1}
-              p2={currentMatch.player2}
-              onGameEnd={handleGameEnd}
-            />
+            // <ThreejsGame
+            //   p1={currentMatch.player1}
+            //   p2={currentMatch.player2}
+            //   onGameEnd={handleGameEnd}
+            //   mode={"2players"}
+            //   speed={1}
+            // />
+            <GameContainer mode={"ai"} ballSpeed={1} onGameEnd={handleGameEnd} />
           )}
 
           {currentMatch && game === 'morpion' && (

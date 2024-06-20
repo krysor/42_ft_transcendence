@@ -20,8 +20,9 @@ const GameContainer = () => {
 
     return (
         <div>
-            {!gameStarted && <SelectionScreen onStartGame={startGame} />}
-            {gameStarted && <ThreejsGame mode={gameMode} ballSpeed={ballSpeed} onGameEnd={handleGameEnd} />}
+            <h3>Game Container</h3>
+            {/* {!gameStarted && <SelectionScreen onStartGame={startGame} />} */}
+             <ThreejsGame mode={"ai"} ballSpeed={1} onGameEnd={handleGameEnd} />
         </div>
     );
 };
