@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProfilePic.css'; // Importer le fichier CSS
 
-const backendHost = 'https://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function ProfilePic({ filename, online, size = 40 }) {
     const [profilePicUrl, setProfilePicUrl] = useState('');

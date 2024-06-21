@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
-const backendHost = 'https://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function Logout () {
 	const authtoken = sessionStorage.getItem('authtoken');

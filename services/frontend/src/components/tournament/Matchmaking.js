@@ -6,7 +6,7 @@ import ThreejsGame from '../game/threejs';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next'
 import MorpionVS from '../morpion/morpionvs';
-const backendHost = 'https://' + window.location.hostname + ':8000';
+const backendHost = 'http://' + window.location.hostname + ':8000';
 
 const Matchmaking = () => {
   const { t } = useTranslation()
