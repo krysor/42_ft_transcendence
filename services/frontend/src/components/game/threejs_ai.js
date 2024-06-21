@@ -146,8 +146,6 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 			document.addEventListener('keydown', handleKeyDown);
 			document.addEventListener('keyup', handleKeyUp);
 
-
-
 			//resize test
 			window.addEventListener('resize', () => {
 				camera.current.aspect = window.innerWidth / (window.innerHeight - 143)
@@ -279,7 +277,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 				resetPositions();
 			}
 
-			if (scoreP1Ref.current >= 1 || scoreP2Ref.current >= 1 ) {
+			if (scoreP1Ref.current >= 10 || scoreP2Ref.current >= 10 ) {
 				setEnd(true);
 				onGameEnd(p1, scoreP1Ref.current, p2, scoreP2Ref.current);
 			} else {
@@ -297,10 +295,10 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 		};
 	}, []);
 
-	// if (scoreP1 > 1 || scoreP2 > 9) {
-	// 	console.log("======================Game Over======================");
-	// }
-	// console.log("Score P2: ", scoreP2);
+	if (scoreP1 > 9 || scoreP2 > 9) {
+		console.log("======================Game Over======================");
+	}
+	console.log("Score P2: ", scoreP2);
 
 	return (
 		<div>

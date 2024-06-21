@@ -98,7 +98,9 @@ const ThreejsGameAI = ({ p1, p2 }) => {
 			camera.current.lookAt(0, 0, 0);
 
 			renderer.current = new THREE.WebGLRenderer({ antialias: true, canvas: refContainer.current });
-			renderer.current.setSize(window.innerWidth, window.innerHeight - 143);
+			camera.current.aspect = window.innerWidth / (window.innerHeight - 143)
+			camera.current.updateProjectionMatrix()
+			renderer.current.setSize(window.innerWidth, window.innerHeight - 143)
 
 			let skyboxMaterial = [];
 			// load static image/img...
@@ -204,6 +206,14 @@ const ThreejsGameAI = ({ p1, p2 }) => {
 
 			document.addEventListener('keydown', handleKeyDown);
 			document.addEventListener('keyup', handleKeyUp);
+
+			//resize test
+			window.addEventListener('resize', () => {
+				camera.current.aspect = window.innerWidth / (window.innerHeight - 143)
+				camera.current.updateProjectionMatrix()
+				renderer.current.setSize(window.innerWidth, window.innerHeight - 143)
+
+			})
 		};
 
 		// Handle key down events
