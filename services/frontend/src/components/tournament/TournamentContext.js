@@ -13,8 +13,13 @@ export const TournamentProvider = ({ children }) => {
     setPlayers((prevPlayers) => [...prevPlayers, player]);
   };
 
+  const isPlayerInTournament = (playerId) => {
+    console.log("isPlayerInTournament " + playerId);
+    return players.some(player => player.id !== '0' && player.id === playerId);
+  };
+
   return (
-    <TournamentContext.Provider value={{ players, setPlayers, addPlayer }}>
+    <TournamentContext.Provider value={{ players, setPlayers, addPlayer, isPlayerInTournament }}>
       {children}
     </TournamentContext.Provider>
   );

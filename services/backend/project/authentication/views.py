@@ -206,7 +206,8 @@ def ft_login(request):
             'client_id': os.getenv('UID_KEY'),
             'client_secret': os.getenv('SECRET_KEY'),
             'code': code,
-            'redirect_uri': 'http://localhost:3000/42_auth/'
+            'redirect_uri': 'https://localhost:3000/42_auth/'
+            # 'redirect_uri': 'http://localhost:3000/42_auth/'
         }
         response = requests.post(url, data=data)
 
@@ -241,3 +242,21 @@ def ft_login(request):
                     return JsonResponse({'Token': token.key, 'user': serialized.data})
     raise AuthenticationFailed({'error': '42 auth failed'})
 
+def update_online_status(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_id = data.get('userId')
+            is_online = data.get('isOnline')
+
+            user = User.objects.get(id=user_id)
+            user.is_online = is_online
+            user.save()
+
+            return JsonResponse({'status': 'success', 'message': 'User online status updated'})
+        except User.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)

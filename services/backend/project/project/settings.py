@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
-# from api.authentification import FortyTwoAuthentication
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,6 +25,16 @@ SECRET_KEY = 'django-insecure-6%$ya*2#kcv=gqyj93exe#dl7&!#ohmt(d#vjpb-_ch1iip-q-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SECURE_HSTS_SECONDS = 31536000  # 1 an
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+
 ALLOWED_HOSTS = ["*"]
 
 # allow the frontend to send request
@@ -37,6 +45,7 @@ ALLOWED_HOSTS = ["*"]
 # ]
 CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOWED_ORIGINS = [
+#     'https://localhost:3000',
 #     'http://localhost:3000',
 # ]
 
@@ -55,6 +64,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'authentication',
     'tournament',
+    'score',
 ]
 
 MIDDLEWARE = [

@@ -40,7 +40,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ThreejsGameAI from "./components/game/threejsai";
 import { useNavigate } from 'react-router-dom';
 
-const backendHost = 'http://' + window.location.hostname + ':8000';
+const backendHost = 'https://' + window.location.hostname + ':8000';
 
 
 function App () {
@@ -51,6 +51,8 @@ function App () {
 
 	useEffect(() => {
 		const tok = sessionStorage.getItem('authtoken');
+		if (tok) {
+
 			fetch(backendHost + '/user/user_detail/', {
 				method: 'GET',
 				headers: {
@@ -62,14 +64,17 @@ function App () {
 			.then(data => {
 				console.log(data);
 				if (data.user) {
+					console.log("still loged in");
 					sessionStorage.setItem('user', JSON.stringify(data.user));
-					navigate('/');
+					// navigate('/');
 				}
 				else {
+					console.log("token invalid login out");
 					sessionStorage.removeItem('authtoken');
 					navigate('/');
 				}
 			})
+		}
 	}, [token]);
 
       return (

@@ -9,8 +9,7 @@ const FtAuth = () => {
 
         if (code) {
 
-            // fetch('https://localhost:8000/user/42_auth/?code=' + code, {
-            fetch('http://localhost:8000/user/42_auth/?code=' + code, {
+            fetch('https://localhost:8000/user/42_auth/?code=' + code, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -27,7 +26,7 @@ const FtAuth = () => {
                     sessionStorage.setItem('user', JSON.stringify(data.user));
                     navigate(`/`);
                 }
-                else if (data.error){
+                else if (data.error) {
 					setError(data.error);
 				}
                 
@@ -44,7 +43,10 @@ const FtAuth = () => {
                 There was a problem while trying to authenticate.
                 <br />
                 {error && <div>{error}</div>}
-                <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code">
+                {/* https link: */}
+                <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code">
+                {/* http link: */}
+                {/* <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F42_auth%2F&response_type=code"> */}
 					Want to try again ?
 				</a>
             </div>

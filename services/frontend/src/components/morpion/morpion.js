@@ -7,7 +7,7 @@ import { Spinner, Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next'
 
-const backendHost = 'http://' + window.location.hostname + ':8000';
+const backendHost = 'https://' + window.location.hostname + ':8000';
 
 const getUser = () => {
 	const authtoken = sessionStorage.getItem('authtoken');
@@ -88,7 +88,7 @@ let onClickHandler = (e) => {
 let GetParties = async (user) => {
 	try {
 		const authtoken = sessionStorage.getItem('authtoken');
-		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/score/get_parties/', {
+		const response = await fetch('https://' + window.location.host.split(':')[0] + ':8000/score/get_parties/', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ let GetScore = async () => {
 
 	try {
 		const authtoken = sessionStorage.getItem('authtoken');
-		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/score/get_top_score/', {
+		const response = await fetch('https://' + window.location.host.split(':')[0] + ':8000/score/get_top_score/', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -384,7 +384,7 @@ const sendScore = async (winner, points) => {
 	const data = { winner: winner, points: points};
 	try {
 
-		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/score/update_score/', {
+		const response = await fetch('https://' + window.location.host.split(':')[0] + ':8000/score/update_score/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -407,7 +407,7 @@ const sendParty = async (winner, points, oponent) => {
 	const authtoken = sessionStorage.getItem('authtoken');
 	const data = { winner: winner, points: points, oponent: oponent};
 	try {
-		const response = await fetch('http://' + window.location.host.split(':')[0] + ':8000/score/update_parties/', {
+		const response = await fetch('https://' + window.location.host.split(':')[0] + ':8000/score/update_parties/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
