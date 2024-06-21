@@ -1,4 +1,4 @@
-const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+const backendHost = 'https://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 const getUserData = async () => {
     const authtoken = sessionStorage.getItem('authtoken');

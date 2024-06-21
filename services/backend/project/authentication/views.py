@@ -206,10 +206,10 @@ def ft_login(request):
             'client_id': os.getenv('UID_KEY'),
             'client_secret': os.getenv('SECRET_KEY'),
             'code': code,
-            'redirect_uri': 'http://localhost:3000/42_auth/'
+            'redirect_uri': 'https://localhost:3000/42_auth/'
         }
         response = requests.post(url, data=data)
-
+        print(response.text)
     if response.status_code == 200:
             token = response.json().get('access_token')
             if token:

@@ -4,7 +4,7 @@ import { useUsers } from './UserContext';
 import { useTournament } from './TournamentContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next'
-const backendHost = 'http://' + window.location.hostname + ':8000';
+const backendHost = 'https://' + window.location.hostname + ':8000';
 
 const Tournament = () => {
   const { t } = useTranslation()
@@ -193,7 +193,10 @@ const Tournament = () => {
             <button type="submit" className="btn btn-primary">{t('Login')}</button>
             <br />
             <p className="text-center">-----{t('or')}-----</p>
-            <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Ftournament%2F&response_type=code">
+            {/* https link: */}
+            <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2Ftournament%2F&response_type=code">
+            {/* http link: */}
+            {/* <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-26412c396459fecd3b1ce2d889ece2036d24ca300aa21cd337d38320cd80f828&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Ftournament%2F&response_type=code"></a> */}
               {t('Login with 42 authentication')}
             </a>
             {error && <div className="alert alert-danger mt-2">{error}</div>}

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import ProfilePic from './ProfilePic';
 import { useTranslation } from 'react-i18next'
 
-const backendHost = 'http://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
+const backendHost = 'https://' + window.location.hostname + ':8000'; //becomes useless when we have nginx
 
 function Community() {
   const navigate = useNavigate();
