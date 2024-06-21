@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.1/three.module.js';
 import { useTranslation } from 'react-i18next';
-
+import { NavLink } from 'react-router-dom';
 const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 	const { t }	= useTranslation();
 	const scene = useRef(null);
@@ -14,10 +14,16 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 	const paddleDepth = useRef(0.5);
 	const ballVelocity = useRef({ x: 0.1, y: 0, z: 0 });
 	const refContainer = useRef();
-
+	const [end, setEnd] = useState(false);
 	// State for displaying scores
 	const [scoreP1, setScoreP1] = useState(0);
 	const [scoreP2, setScoreP2] = useState(0);
+
+	// State for keeping the scores up to date inside the animate function: 
+	// 		useState variables don't change in the animate function
+	//		because the animation loop doesn't rerender.
+	const scoreP1Ref = useRef(0);
+	const scoreP2Ref = useRef(0);
 
 	useEffect(() => {
 		// Initialize Three.js scene, camera, and renderer
@@ -265,14 +271,17 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 			// DETECTION OF MISSED BALL
 			if (ball.current.position.x < -12) {
 				setScoreP2(prevScore => prevScore + 1);
+				scoreP2Ref.current = scoreP2Ref.current + 1;
 				resetPositions();
 			} else if (ball.current.position.x > 12) {
 				setScoreP1(prevScore => prevScore + 1);
+				scoreP1Ref.current = scoreP1Ref.current + 1;
 				resetPositions();
 			}
 
-			if (scoreP1 >= 10 || scoreP2 >= 10) {
-				onGameEnd(p1, scoreP1, p2, scoreP2);
+			if (scoreP1Ref.current >= 1 || scoreP2Ref.current >= 1 ) {
+				setEnd(true);
+				onGameEnd(p1, scoreP1Ref.current, p2, scoreP2Ref.current);
 			} else {
 				renderer.current.render(scene.current, camera.current);
 				requestAnimationFrame(animate);
@@ -288,10 +297,10 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 		};
 	}, []);
 
-	if (scoreP1 > 9 || scoreP2 > 9) {
-		console.log("======================Game Over======================");
-	}
-	console.log("Score P2: ", scoreP2);
+	// if (scoreP1 > 1 || scoreP2 > 9) {
+	// 	console.log("======================Game Over======================");
+	// }
+	// console.log("Score P2: ", scoreP2);
 
 	return (
 		<div>
@@ -299,7 +308,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 			<div>
 				<div style={{ textAlign: 'center', marginBottom: '20px' }}>
 					<p style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '5px' }}>{p1.username} Score: {scoreP1}</p>
-					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>{p2.username} Score: {scoreP2}</p>
+					<p style={{ fontWeight: 'bold', fontSize: '18px' }}>Bot Score: {scoreP2}</p>
 				</div>
 				<canvas ref={refContainer} />
 			</div>
@@ -312,6 +321,23 @@ const ThreejsGame = ({ p1, p2, onGameEnd, mode, ballSpeed }) => {
 				</div>
 				<canvas ref={refContainer} />
 			</div>
+		)}
+
+		{end && scoreP1 > scoreP2 && (
+			<>
+			<h3>{t('Congratulations')} !!! {t('You won against the bot')} :)</h3>
+			<img src='/win_image.jpg' alt="Winner"/>
+          	<br />
+			<NavLink to="/tournament" className="btn btn-secondary mt-4">{t('Play again')}</NavLink>
+			</>
+		)}
+
+		{end && scoreP1 < scoreP2 && (
+			<>
+			<h3>{t('Ho you have lost... You suck at this game')} :c</h3>
+          	<br />
+			<NavLink to="/tournament" className="btn btn-secondary mt-4">{t('Play again')}</NavLink>
+			</>
 		)}
 	</div>
 	);
