@@ -96,7 +96,7 @@ const Matchmaking = () => {
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const day = today.getDate().toString().padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-    const is_pong = game === 'pong';
+    const is_pong = game === 'Pong';
 
     const jsonData = {
       p1ID: player1.id,
