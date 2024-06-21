@@ -33,7 +33,7 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 		const initScene = () => {
 			scene.current = new THREE.Scene();
 
-			camera.current = new THREE.PerspectiveCamera(75, 2, 0.1, 1000);
+			camera.current = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 			camera.current.position.x = 0;
 			camera.current.position.y = 12;
 			camera.current.position.z = 5;
@@ -46,12 +46,12 @@ const ThreejsGame = ({ p1, p2, onGameEnd }) => {
 
 			let skyboxMaterial = [];
 			// load static image/img...
-			let texture_ft = new THREE.TextureLoader().load('skybox/mystic_ft.jpg');
-			let texture_bk = new THREE.TextureLoader().load('skybox/mystic_bk.jpg');
-			let texture_up = new THREE.TextureLoader().load('skybox/mystic_up.jpg');
-			let texture_dn = new THREE.TextureLoader().load('skybox/mystic_dn.jpg');
-			let texture_rt = new THREE.TextureLoader().load('skybox/mystic_rt.jpg');
-			let texture_lf = new THREE.TextureLoader().load('skybox/mystic_lf.jpg');
+			let texture_ft = new THREE.TextureLoader().load('../../skybox/mystic_ft.jpg');
+			let texture_bk = new THREE.TextureLoader().load('../../skybox/mystic_bk.jpg');
+			let texture_up = new THREE.TextureLoader().load('../../skybox/mystic_up.jpg');
+			let texture_dn = new THREE.TextureLoader().load('../../skybox/mystic_dn.jpg');
+			let texture_rt = new THREE.TextureLoader().load('../../skybox/mystic_rt.jpg');
+			let texture_lf = new THREE.TextureLoader().load('../../skybox/mystic_lf.jpg');
 
 			skyboxMaterial.push(new THREE.MeshBasicMaterial({ map: texture_ft }));
 			skyboxMaterial.push(new THREE.MeshBasicMaterial({ map: texture_bk }));
