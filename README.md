@@ -1,8 +1,6 @@
 # Ft_transcendence - Fun Transcending Time
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/your-repo/Ft_transcendence)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/your-repo/Ft_transcendence/releases)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/your-repo/Ft_transcendence/blob/main/LICENSE)
+![42](https://img.shields.io/badge/School-42-black?style=flat-square&logo=42)
 
 Ft_transcendence is a full-stack web application that combines the joy of classic games with the power of modern web technologies. Whether you're a seasoned gamer or just looking for a fun way to pass the time, Ft_transcendence offers a unique and engaging experience.
 
