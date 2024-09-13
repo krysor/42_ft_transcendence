@@ -85,7 +85,6 @@ The project follows a standard structure for a Django and React-based web applic
 ```
 Ft_transcendence
 ├── docker-compose.yml
-├── .git/
 ├── services/
 │   ├── backend/
 │   │   ├── media/
@@ -198,8 +197,6 @@ We welcome contributions from the community to enhance Ft_transcendence and make
 3. Write tests for your changes and ensure that all existing tests pass.
 4. Update the documentation if necessary.
 5. Submit a pull request with a clear description of your changes and the problem they solve.
-
-For more detailed contribution guidelines, please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## Additional Resources
 
