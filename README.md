@@ -14,7 +14,6 @@ Ft_transcendence is a full-stack web application that provides a platform for us
 - [Front-end Logic](#front-end-logic)
 - [Back-end Logic](#back-end-logic)
 - [Contribution Guidelines](#contribution-guidelines)
-- [License](#license)
 - [Additional Resources](#additional-resources)
 - [Contact Information](#contact-information)
 
@@ -132,10 +131,6 @@ We welcome contributions from the community! If you'd like to contribute to the 
 5. Submit a pull request with a detailed description of your changes.
 
 Please note that all contributions are subject to review, and we may request changes or additional improvements before merging.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ## Additional Resources
 
