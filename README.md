@@ -1,4 +1,4 @@
-# Ft_transcendence (Full-Stack Transcendence Tournament)
+# Ft_transcendence (Full-Stack Pong Tournament)
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/krysor/42_ft_transcendence)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/krysor/42_ft_transcendence)
