@@ -145,8 +145,3 @@ If you have any questions, suggestions, or need further assistance, please feel 
 - Email: [your-email@example.com](mailto:your-email@example.com)
 - Twitter: [@yourusername](https://twitter.com/yourusername)
 - GitHub: [https://github.com/krysor/42_ft_transcendence](https://github.com/krysor/42_ft_transcendence)
-```
-
-This README provides a comprehensive overview of the Ft_transcendence project, including its features, structure, technologies used, and guidelines for contributing. It covers both the front-end and back-end components, as well as instructions for running the project locally and additional resources for further learning.
-
-Feel free to modify and customize this README as needed to better fit your project's specific requirements and details.
