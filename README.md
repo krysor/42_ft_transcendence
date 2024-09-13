@@ -1,7 +1,6 @@
 # Ft_transcendence (Full-Stack Pong Tournament)
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/krysor/42_ft_transcendence)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/krysor/42_ft_transcendence)
+![42](https://img.shields.io/badge/School-42-black?style=flat-square&logo=42)
 
 Ft_transcendence is a full-stack web application that provides a platform for users to engage in online tournaments and games. It features a variety of games, including Pong and Tic-Tac-Toe, and allows users to participate in tournaments, track their scores, and interact with other players.
 
