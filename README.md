@@ -96,7 +96,8 @@ Ft_transcendence
 │   │   │   ├── tournament/
 │   │   │   ├── manage.py
 │   │   │   └── ...
-│   │   └── ssl/
+│   │   ├── ssl/
+│   │   └── ...
 │   └── frontend/
 │       ├── public/
 │       ├── src/
