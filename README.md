@@ -1,8 +1,10 @@
-# Ft_transcendence (Full-Stack Pong Tournament)
+# Ft_transcendence - Fun Transcending Time
 
-![42](https://img.shields.io/badge/School-42-black?style=flat-square&logo=42)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/your-repo/Ft_transcendence)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/your-repo/Ft_transcendence/releases)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/your-repo/Ft_transcendence/blob/main/LICENSE)
 
-Ft_transcendence is a full-stack web application that provides a platform for users to engage in online tournaments and games. It features a variety of games, including Pong and Tic-Tac-Toe, and allows users to participate in tournaments, track their scores, and interact with other players.
+Ft_transcendence is a full-stack web application that combines the joy of classic games with the power of modern web technologies. Whether you're a seasoned gamer or just looking for a fun way to pass the time, Ft_transcendence offers a unique and engaging experience.
 
 ## Table of Contents
 
@@ -18,40 +20,73 @@ Ft_transcendence is a full-stack web application that provides a platform for us
 
 ## Project Overview
 
-Ft_transcendence aims to provide an immersive and engaging gaming experience for users of all skill levels. Whether you're a casual gamer or a competitive player, Ft_transcendence offers a variety of challenges and opportunities to showcase your skills. The project's key features include:
+Ft_transcendence is a gaming platform that brings together a collection of classic games, including Pong, Tic-Tac-Toe (Morpion), and more. The project aims to provide a nostalgic and immersive gaming experience while leveraging modern web technologies for seamless gameplay and user interactions.
 
-- User authentication and profile management
-- Online multiplayer games (Pong and Tic-Tac-Toe)
-- Tournament mode with matchmaking and leaderboards
-- Real-time gameplay with smooth animations and responsive controls
-- Social features like friend lists and chat functionality
-- Customizable game settings and difficulty levels
+Key features of Ft_transcendence include:
+
+- **Classic Games**: Enjoy timeless games like Pong and Tic-Tac-Toe (Morpion) in a modern web environment.
+- **Multiplayer**: Challenge your friends or other players in exciting multiplayer matches.
+- **Leaderboards**: Track your progress and compete against others on global leaderboards.
+- **User Profiles**: Create and customize your user profile, track your game statistics, and connect with friends.
+- **Responsive Design**: Enjoy a seamless gaming experience across various devices and screen sizes.
+
+Ft_transcendence is designed for gamers of all ages and skill levels, providing a nostalgic and engaging gaming experience that transcends time.
 
 ## How to Run the Project
 
 To run the Ft_transcendence project locally, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/krysor/42_ft_transcendence.git`
-2. Navigate to the project directory: `cd 42_ft_transcendence)`
-3. Install the required dependencies:
-   - For the backend: `cd services/backend && pip install -r requirements.txt`
-   - For the frontend: `cd services/frontend && npm install`
-4. Set up the database:
-   - Create a new PostgreSQL database
-   - Update the database credentials in `services/backend/project/project/settings.py`
-5. Run the backend server: `cd services/backend/project && python manage.py runserver`
-6. In a separate terminal, run the frontend development server: `cd services/frontend && npm start`
-7. Open your web browser and visit `http://localhost:3000` to access the application.
+### Prerequisites
 
-To run the tests:
+- Docker
+- Docker Compose
 
-- For the backend: `cd services/backend/project && python manage.py test`
-- For the frontend: `cd services/frontend && npm test`
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-repo/Ft_transcendence.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd Ft_transcendence
+   ```
+
+3. Build and start the containers:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+   This command will build the necessary Docker images and start the containers for the backend, frontend, and database.
+
+4. Access the application:
+
+   - Frontend: Open your web browser and navigate to `http://localhost:3000`.
+   - Backend: The backend API will be available at `http://localhost:8000`.
+
+### Running Tests
+
+To run the tests for the project, use the following command:
+
+```bash
+# Run frontend tests
+npm test --prefix services/frontend
+
+# Run backend tests
+python manage.py test --settings=project.settings services/backend/project
+```
 
 ## Project Structure
 
+The project follows a standard structure for a Django and React-based web application:
+
 ```
-42_ft_transcendence
+Ft_transcendence
+├── docker-compose.yml
 ├── .git/
 ├── services/
 │   ├── backend/
@@ -66,7 +101,6 @@ To run the tests:
 │   │   └── ssl/
 │   └── frontend/
 │       ├── public/
-│       │   └── skybox/
 │       ├── src/
 │       │   ├── components/
 │       │   │   ├── game/
@@ -79,69 +113,106 @@ To run the tests:
 └── ...
 ```
 
-The project is structured into two main directories: `services/backend` and `services/frontend`. The backend is built using Django and Python, while the frontend is built with React and JavaScript.
-
-The `services/backend/project` directory contains the Django project, including the authentication, score, and tournament apps. The `services/frontend/src/components` directory contains the React components for various features like games, tournaments, and user management.
+- `docker-compose.yml`: Docker Compose configuration file for setting up the project's containers.
+- `services/backend/`: Django backend application.
+  - `media/`: Directory for storing user-uploaded media files.
+  - `project/`: Django project directory containing apps, settings, and other configuration files.
+    - `authentication/`: Django app for user authentication and management.
+    - `score/`: Django app for handling game scores and leaderboards.
+    - `tournament/`: Django app for managing tournaments and matchmaking.
+    - `manage.py`: Django's command-line utility for administrative tasks.
+  - `ssl/`: Directory for storing SSL certificates (if needed).
+- `services/frontend/`: React frontend application.
+  - `public/`: Directory for static files.
+  - `src/`: Source code directory.
+    - `components/`: React components for different parts of the application.
+      - `game/`: Components related to the game logic and rendering.
+      - `morpion/`: Components for the Tic-Tac-Toe (Morpion) game.
+      - `tournament/`: Components for managing tournaments and matchmaking.
+      - `user/`: Components for user authentication, profiles, and community features.
+  - `serv_config.js`: Configuration file for the frontend server.
 
 ## Main Features
 
-- **User Authentication**: Users can sign up, log in, and manage their profiles. Authentication is handled securely using Django's built-in authentication system and JSON Web Tokens (JWT) for stateless authentication.
+### Classic Games
 
-- **Online Games**: Users can play Pong and Tic-Tac-Toe games against other players or an AI opponent. The games are built using Three.js for smooth 3D rendering and animations.
+Ft_transcendence offers a collection of classic games, including:
 
-- **Tournament Mode**: Users can participate in tournaments for Pong and Tic-Tac-Toe. The tournament system includes matchmaking, leaderboards, and real-time score tracking.
+- **Pong**: The iconic arcade game where players control paddles and try to keep the ball in play.
+- **Tic-Tac-Toe (Morpion)**: The timeless game of strategy and wit, where players take turns placing X's and O's on a 3x3 grid.
 
-- **Social Features**: Users can add friends, view their profiles, and interact with other players through a community page.
+### Multiplayer
 
-- **Responsive Design**: The application is designed to be responsive and accessible across different devices and screen sizes.
+Challenge your friends or other players in exciting multiplayer matches. Ft_transcendence supports both real-time multiplayer and asynchronous gameplay, allowing you to compete with players from around the world.
+
+### Leaderboards
+
+Track your progress and compete against other players on global leaderboards. Climb the ranks and showcase your skills to the community.
+
+### User Profiles
+
+Create and customize your user profile, track your game statistics, and connect with friends. Share your achievements, view your match history, and stay up-to-date with your gaming progress.
+
+### Responsive Design
+
+Ft_transcendence is designed with a responsive and modern user interface, ensuring a seamless gaming experience across various devices and screen sizes, from desktops to mobile devices.
 
 ## Front-end Logic
 
-The front-end of Ft_transcendence is built using React, a popular JavaScript library for building user interfaces. The application follows a component-based architecture, with each feature or functionality encapsulated in reusable components.
+The Ft_transcendence frontend is built using React, a popular JavaScript library for building user interfaces. The frontend follows a component-based architecture, allowing for modular and reusable code.
 
-The `components` directory contains various subdirectories for different parts of the application, such as `game`, `morpion` (Tic-Tac-Toe), `tournament`, and `user`. These components handle rendering, user interactions, and state management.
+Key technologies and libraries used in the frontend include:
 
-The Three.js library is used to render the 3D games, such as Pong, with smooth animations and realistic physics. The game logic and controls are implemented using JavaScript and React hooks.
+- **React**: The core library for building the user interface.
+- **React Router**: For handling client-side routing and navigation.
+- **Three.js**: A powerful 3D graphics library used for rendering the Pong game.
+- **Bootstrap**: A popular CSS framework for responsive and modern UI design.
+- **i18next**: A library for internationalization and localization, supporting multiple languages.
 
-The front-end also utilizes React Router for client-side routing and i18next for internationalization and localization support.
+The frontend components are organized into different directories based on their functionality, such as `game`, `morpion`, `tournament`, and `user`. This structure promotes code organization and maintainability.
 
 ## Back-end Logic
 
-The back-end of Ft_transcendence is built using Django, a high-level Python web framework. The project follows the Model-View-Template (MVT) architectural pattern, with the models, views, and templates separated into different directories.
+The Ft_transcendence backend is built using Django, a high-level Python web framework. The backend follows the Model-View-Template (MVT) architectural pattern and is responsible for handling data processing, authentication, and API endpoints.
 
-The `authentication` app handles user authentication, registration, and profile management. It uses Django's built-in authentication system and includes models for storing user data, such as usernames, passwords, and profile pictures.
+Key technologies and frameworks used in the backend include:
 
-The `score` app manages the scoring system for games and tournaments. It includes models for storing game scores, match histories, and leaderboard data.
+- **Django**: The core web framework for building the backend application.
+- **Django REST Framework**: For creating RESTful APIs and handling HTTP requests.
+- **PostgreSQL**: The relational database management system used for storing application data.
+- **Django Channels**: For enabling real-time communication and multiplayer functionality.
 
-The `tournament` app handles the tournament functionality, including matchmaking, bracket generation, and real-time score tracking.
+The backend consists of several Django apps, each responsible for a specific part of the application:
 
-The back-end communicates with the front-end through a RESTful API built using Django REST Framework. The API endpoints are defined in the `views.py` files within each app.
+- `authentication`: Handles user authentication, registration, and profile management.
+- `score`: Manages game scores, leaderboards, and match history.
+- `tournament`: Handles tournament management, matchmaking, and multiplayer functionality.
 
-The project uses PostgreSQL as the database management system to store user data, game scores, and tournament information.
+The backend follows best practices for security, scalability, and maintainability, ensuring a robust and efficient server-side implementation.
 
 ## Contribution Guidelines
 
-We welcome contributions from the community! If you'd like to contribute to the Ft_transcendence project, please follow these guidelines:
+We welcome contributions from the community to enhance Ft_transcendence and make it even better. If you'd like to contribute, please follow these guidelines:
 
 1. Fork the repository and create a new branch for your feature or bug fix.
-2. Make your changes and ensure that the code follows the project's coding conventions and style guidelines.
+2. Make your changes and ensure that the code follows the project's coding style and conventions.
 3. Write tests for your changes and ensure that all existing tests pass.
 4. Update the documentation if necessary.
-5. Submit a pull request with a detailed description of your changes.
+5. Submit a pull request with a clear description of your changes and the problem they solve.
 
-Please note that all contributions are subject to review, and we may request changes or additional improvements before merging.
+For more detailed contribution guidelines, please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## Additional Resources
 
+- [Ft_transcendence Documentation](https://your-repo.github.io/Ft_transcendence/docs)
 - [Django Documentation](https://docs.djangoproject.com/)
-- [React Documentation](https://reactjs.org/docs/)
+- [React Documentation](https://reactjs.org/docs/getting-started.html)
 - [Three.js Documentation](https://threejs.org/docs/)
-- [Django REST Framework Documentation](https://www.django-rest-framework.org/)
 
 ## Contact Information
 
 If you have any questions, suggestions, or need further assistance, please feel free to reach out to us:
 
-- Email: [your-email@example.com](mailto:your-email@example.com)
-- Twitter: [@yourusername](https://twitter.com/yourusername)
-- GitHub: [https://github.com/krysor/42_ft_transcendence](https://github.com/krysor/42_ft_transcendence)
+- Email: [support@Ft_transcendence.com](mailto:support@Ft_transcendence.com)
+
+We appreciate your interest in Ft_transcendence and look forward to your contributions!
