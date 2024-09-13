@@ -1,4 +1,4 @@
-# Ft_transcendence - Fun Transcending Time
+# Ft_transcendence - Last project of 42 common core
 
 ![42](https://img.shields.io/badge/School-42-black?style=flat-square&logo=42)
 
